@@ -1,12 +1,12 @@
 # Transit Custom Camp Kit
 
-Plans for turning a wheelchair-accessible Ford Transit Custom into a weekend camper, without taking away what makes it wheelchair-accessible.
+Plans for turning a Ford Transit Custom Kombi with a wheelchair lift into a weekend camper, without taking away what makes it wheelchair-accessible.
 
 **Open the planner: https://balexandre.github.io/ford-custom-camping/**
 
 ## The van
 
-- Ford Transit Custom, built in 2023, converted for wheelchair use.
+- Ford Transit Custom **Kombi** (the passenger version), built in 2023 and converted for wheelchair users.
 - A **wheelchair lift** folds up inside the rear doors, so the back of the van can't be used for loading or for a kitchen.
 - A **seat** on the right, just behind the sliding door, is fixed and can't be removed. It folds closed, and folded it is low enough to build a bed over.
 - **Two pairs of floor rails** run along the floor, used for anchoring seats and wheelchairs.
