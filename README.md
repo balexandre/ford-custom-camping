@@ -64,12 +64,12 @@ The measurements that matter most, in order:
 
 With the example values (high roof, seat about 48 cm high when closed, bed raised 5 cm above it, 10 cm mattress):
 
-- A 190 × 140 cm mattress fits, with room to spare in front of the lift.
+- A standard **200 × 140 cm** mattress fits, but on the short (L1) van only just: there's about 6.5 cm to spare in front of the lift. The folded lift's depth decides it. Up to about 46 cm deep it fits; any deeper and the mattress needs to be shorter. On the long (L2) van there's over 40 cm to spare.
 - **Headroom is fine thanks to the high roof.** There's about 1 m from the mattress to the ceiling, so you can sit up in bed. Most adults need 85–90 cm.
 - Two 1 m drawers fit under the bed, about 48 cm high. The rear one holds **both 35 L water containers** standing up; the front one is the kitchen.
 - A storage compartment about 57 cm deep sits behind the drawers.
 - When pulled out, the drawer top is about 1.08 m off the ground, a bit above a kitchen worktop (90 cm).
-- The kit weighs roughly 110 kg in 18 mm plywood, plus about 73 kg of water when full. The water sits low and between the axles, which is the right place for it, but the water drawer needs slides rated around 140 kg. 15 mm poplar and lightening holes bring the kit weight down a lot.
+- The kit weighs roughly 120 kg in 18 mm plywood, plus about 73 kg of water when full. The water sits low and between the axles, which is the right place for it, but the water drawer needs slides rated around 140 kg. 15 mm poplar and lightening holes bring the kit weight down a lot.
 
 ## Building it safely
 
