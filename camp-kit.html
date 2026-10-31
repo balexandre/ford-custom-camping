@@ -1,0 +1,859 @@
+<title>Transit Custom Camp Kit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: drafting table. Measurement sheet pinned on the left; plan view stacked over the side elevation on the right (same scale, aligned), then the section beside the key sizes, then the cut list. */
+:root{
+  --paper:#EEF0EC;
+  --sheet:#FAFBF8;
+  --ink:#1B272E;
+  --muted:#5A676E;
+  --rule:#D2D7D2;
+  --ply:#DDBB82;
+  --ply-lt:#F1E2C4;
+  --ply-edge:#9E7B44;
+  --steel:#7F8D94;
+  --steel-fill:#CDD4D6;
+  --seat:#8DA2B4;
+  --mat:#9C8FC4;
+  --accent:#C2521B;
+  --accent-soft:#F5DCCD;
+  --ok:#2E7A4D; --ok-bg:#DFEEE4;
+  --warn:#94660A; --warn-bg:#F5E9CC;
+  --bad:#B02A20; --bad-bg:#F5DCD8;
+  --info:#45606E; --info-bg:#E2E9EC;
+  --f-display:"Barlow Condensed","Arial Narrow",sans-serif;
+  --f-body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#121719; --sheet:#1A2124; --ink:#DDE4E6; --muted:#97A4AA; --rule:#2D373B;
+    --ply:#A8834F; --ply-lt:#3A3020; --ply-edge:#D9B67E;
+    --steel:#8A979D; --steel-fill:#334046; --seat:#5D7A92; --mat:#8A7FC0;
+    --accent:#F08A54; --accent-soft:#4A2818;
+    --ok:#72C793; --ok-bg:#16301F; --warn:#E6B952; --warn-bg:#33290F;
+    --bad:#F2837A; --bad-bg:#3D1B18; --info:#9DB8C6; --info-bg:#1E2B32;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#121719; --sheet:#1A2124; --ink:#DDE4E6; --muted:#97A4AA; --rule:#2D373B;
+  --ply:#A8834F; --ply-lt:#3A3020; --ply-edge:#D9B67E;
+  --steel:#8A979D; --steel-fill:#334046; --seat:#5D7A92; --mat:#8A7FC0;
+  --accent:#F08A54; --accent-soft:#4A2818;
+  --ok:#72C793; --ok-bg:#16301F; --warn:#E6B952; --warn-bg:#33290F;
+  --bad:#F2837A; --bad-bg:#3D1B18; --info:#9DB8C6; --info-bg:#1E2B32;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1440px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px;display:grid;gap:32px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:clamp(34px,5vw,52px);font-weight:700;letter-spacing:.005em}
+h2{font-size:24px;font-weight:600}
+h3{font-size:18px;font-weight:600}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.mast{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:20px 40px;align-items:end}
+.mast .intro{display:grid;gap:10px;min-width:0}
+.lede{max-width:66ch;font-size:16.5px;color:var(--ink)}
+.vin{border:1px solid var(--rule);border-radius:6px;padding:14px 16px;background:var(--sheet);display:grid;gap:6px;min-width:0}
+.vin h2{font-size:17px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.vin p{font-size:14px}
+.vin code{font-family:var(--f-mono);font-size:13px;background:var(--paper);padding:1px 5px;border-radius:3px}
+@media (max-width:860px){.mast{grid-template-columns:1fr}}
+
+.work{display:grid;grid-template-columns:minmax(290px,350px) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:960px){.work{grid-template-columns:minmax(0,1fr)}}
+
+.sheet{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:16px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);max-height:calc(100vh - 24px);overflow:auto;min-width:0}
+@media (max-width:960px){.sheet{position:static;max-height:none}}
+.sheet-head{display:grid;gap:10px;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--rule)}
+.note{font-size:13.5px;color:var(--muted)}
+.note b{color:var(--ink);font-weight:600}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+button{font:500 14px/1 var(--f-body);padding:9px 12px;border-radius:4px;border:1px solid var(--accent);background:var(--accent);color:var(--sheet);cursor:pointer}
+button.quiet{background:transparent;color:var(--ink);border-color:var(--rule)}
+button:hover{filter:brightness(1.06)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tog{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;color:var(--muted);cursor:pointer;user-select:none}
+.tog input{accent-color:var(--accent);margin:0}
+#copybox{width:100%;min-height:120px;font:12px/1.4 var(--f-mono);background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:4px;padding:8px}
+.status{font-size:13px;color:var(--ok);min-height:1em}
+
+fieldset{border:0;padding:0;margin:0 0 20px}
+legend{font-family:var(--f-display);font-size:15px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:0 0 4px;margin-bottom:10px;width:100%;border-bottom:1px solid var(--rule)}
+.field{display:grid;grid-template-columns:minmax(0,1fr) 112px;gap:3px 10px;align-items:center;margin-bottom:10px}
+.field.wide{grid-template-columns:minmax(0,1fr)}
+.field label{font-size:14px;font-weight:500}
+.field .hint{grid-column:1/-1;font-size:12.5px;line-height:1.38;color:var(--muted)}
+.nohints .field .hint{display:none}
+.num{position:relative;display:block}
+.num::after{content:"mm";position:absolute;right:8px;top:50%;transform:translateY(-50%);font:11px var(--f-mono);color:var(--muted);pointer-events:none}
+input[type=number],input[type=text],select{width:100%;font:14px var(--f-mono);font-variant-numeric:tabular-nums;padding:6px 8px;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink)}
+input[type=number]{padding-right:32px;text-align:right}
+select{font-family:var(--f-body)}
+
+.out{display:grid;gap:20px;min-width:0}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.stat{background:var(--sheet);padding:12px 14px;display:grid;gap:2px;align-content:start;min-width:0}
+.stat .k{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stat .v{font-family:var(--f-display);font-size:28px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat .v small{font-family:var(--f-mono);font-size:12px;font-weight:400;color:var(--muted);margin-left:3px}
+.stat .s{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:baseline}
+.dot{width:8px;height:8px;border-radius:50%;flex:none;transform:translateY(-1px)}
+.st-ok .dot{background:var(--ok)} .st-warn .dot{background:var(--warn)} .st-bad .dot{background:var(--bad)}
+.st-warn .v{color:var(--warn)} .st-bad .v{color:var(--bad)}
+
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.checks li{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;align-items:baseline;font-size:14.5px}
+.pill{font:500 11px/1 var(--f-mono);letter-spacing:.06em;text-align:center;padding:4px 0;border-radius:3px}
+.p-ok{background:var(--ok-bg);color:var(--ok)} .p-warn{background:var(--warn-bg);color:var(--warn)}
+.p-bad{background:var(--bad-bg);color:var(--bad)} .p-info{background:var(--info-bg);color:var(--info)}
+
+.fig{margin:0;background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:12px 14px 14px;display:grid;gap:8px;min-width:0}
+.fig figcaption{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
+.ft{font-family:var(--f-display);font-size:19px;font-weight:600}
+.fs{font-size:13px;color:var(--muted)}
+.fig .tog{margin-left:auto}
+.svgbox{width:100%;min-width:0}
+.svgbox svg{display:block;width:100%;height:auto}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:14px;height:10px;border-radius:2px;border:1px solid var(--rule);display:inline-block}
+.pair{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:1180px){.pair{grid-template-columns:minmax(0,1fr)}}
+.details{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;display:grid;gap:10px;min-width:0}
+.details dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px 14px;font-size:14px}
+.details dt{color:var(--muted)}
+.details dd{margin:0;font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums}
+
+.dw text{font-family:var(--f-mono);fill:var(--muted)}
+.dw .tk{fill:var(--ink)} .dw .ta{fill:var(--accent)} .dw .tb{font-weight:500}
+.dw .tok{fill:var(--ok)} .dw .twarn{fill:var(--warn)} .dw .tbad{fill:var(--bad)}
+.dw .floor{fill:var(--paper);stroke:none}
+.dw .wall{stroke:var(--ink);fill:none;stroke-linecap:round;stroke-linejoin:round}
+.dw .thin{stroke:var(--muted);fill:none}
+.dw .arch{fill:var(--steel-fill);stroke:var(--steel)}
+.dw .lift{stroke:var(--steel)}
+.dw .hbg{fill:var(--steel-fill)} .dw .hln{stroke:var(--steel)}
+.dw .rail{stroke:var(--steel);fill:none}
+.dw .seat{fill:var(--seat);fill-opacity:.5;stroke:var(--seat)}
+.dw .ply{fill:var(--ply);stroke:var(--ply-edge)}
+.dw .plylt{fill:var(--ply-lt);stroke:var(--ply-edge)}
+.dw .face{fill:var(--ply);stroke:var(--ply-edge)}
+.dw .drawer{fill:var(--ply-lt);stroke:var(--ply-edge)}
+.dw .ghost{fill:none;stroke:var(--ply-edge)}
+.dw .alu{fill:var(--steel-fill);stroke:var(--steel)}
+.dw .mat{fill:var(--mat);fill-opacity:.18;stroke:var(--mat)}
+.dw .matS{fill:var(--mat);fill-opacity:.45;stroke:var(--mat)}
+.dw .bedo{fill:none;stroke:var(--ink)}
+.dw .door{stroke:var(--accent);fill:none}
+.dw .dooro{fill:var(--accent-soft);fill-opacity:.55;stroke:var(--accent)}
+.dw .anchor{fill:var(--accent);stroke:var(--sheet)}
+.dw .cabz{fill:var(--paper);stroke:var(--rule)}
+.dw .dim{stroke:var(--muted);fill:none}
+.dw .person{stroke:var(--ink);fill:none;stroke-linecap:round;opacity:.55}
+.dw .ground{stroke:var(--muted);fill:none}
+.dw .ref{stroke:var(--accent);fill:none}
+.dw .gap{stroke:var(--paper);fill:none}
+
+section.block{display:grid;gap:14px;min-width:0}
+.block > p{max-width:72ch;color:var(--muted)}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:6px;background:var(--sheet)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
+th,td{text-align:left;padding:7px 12px;border-bottom:1px solid var(--rule);vertical-align:baseline}
+th{font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td.n,th.n{text-align:right;font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums}
+tr.grp td{font-family:var(--f-display);font-size:16px;font-weight:600;background:var(--paper);padding-top:9px}
+tr.tot td{font-weight:600;border-bottom:0}
+.hw{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px 24px;margin:0;padding:0;list-style:none}
+.hw li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;font-size:14px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--rule)}
+.hw .q{font-family:var(--f-mono);font-size:13px;color:var(--accent);min-width:3.5em}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px 40px}
+.notes > div{display:grid;gap:10px;align-content:start;min-width:0}
+.notes ol,.notes ul{margin:0;padding-left:20px;display:grid;gap:8px;max-width:68ch}
+.notes li::marker{color:var(--accent);font-family:var(--f-mono)}
+.notes b{font-weight:600}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="mast">
+    <div class="intro">
+      <p class="eyebrow">Ford Transit Custom · wheelchair conversion · rear lift</p>
+      <h1>Transit Custom Camp Kit</h1>
+      <p class="lede">A removable bed and side-door drawer kitchen for a van whose back is taken by a wheelchair lift. The bed sits over the folded seat, the drawers slide out through the sliding door, and everything bolts to the floor rails that are already there. Nothing gets drilled, and the van goes back to wheelchair use when the kit comes out.</p>
+    </div>
+    <div class="vin">
+      <h2>Which generation?</h2>
+      <p>The VIN's year code is <code>P</code>, which means built in 2023, the year Ford changed generations. A 13-inch screen and a light bar across the grille mean <b>Gen 2</b> (2023 on). A smaller screen and the older grille mean <b>Gen 1</b> (2013–2023). Choose it under Van body to prefill brochure sizes, then correct them with a tape measure.</p>
+    </div>
+  </header>
+
+  <main class="work">
+    <aside class="sheet" aria-label="Measurements">
+      <div class="sheet-head">
+        <h2>Measurements</h2>
+        <p class="note"><b>These are example values.</b> Replace them with your own, in millimetres. Lengths are measured back from the front seats.</p>
+        <div class="btns">
+          <button type="button" id="copy">Copy measurements</button>
+          <button type="button" id="reset" class="quiet">Reset to examples</button>
+        </div>
+        <p class="status" id="status" aria-live="polite"></p>
+        <textarea id="copybox" readonly hidden aria-label="Measurements as text"></textarea>
+        <label class="tog"><input type="checkbox" id="hints" checked> Show how to measure</label>
+      </div>
+      <form id="form" autocomplete="off"></form>
+    </aside>
+
+    <section class="out" aria-label="Design">
+      <div class="summary" id="summary"></div>
+      <ul class="checks" id="checks"></ul>
+
+      <figure class="fig">
+        <figcaption>
+          <span class="ft">Plan</span>
+          <span class="fs">from above · front on the right · sliding door at the bottom</span>
+          <label class="tog"><input type="checkbox" id="open" checked> Drawers pulled out</label>
+        </figcaption>
+        <div class="svgbox" id="box-top"></div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--ply)"></i>Plywood</span>
+          <span><i class="sw" style="background:var(--steel-fill)"></i>Aluminium frame / wheel arch</span>
+          <span><i class="sw" style="background:var(--seat)"></i>Seat, closed</span>
+          <span><i class="sw" style="background:var(--mat);opacity:.6"></i>Mattress</span>
+          <span><svg width="12" height="12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="var(--accent)"/></svg>Rail anchor</span>
+          <span><svg width="22" height="6" aria-hidden="true"><line x1="0" y1="3" x2="22" y2="3" stroke="var(--steel)" stroke-width="2" stroke-dasharray="5 3"/></svg>Floor rail</span>
+        </div>
+      </figure>
+
+      <figure class="fig">
+        <figcaption>
+          <span class="ft">Side view</span>
+          <span class="fs">standing at the sliding door · same scale as the plan</span>
+        </figcaption>
+        <div class="svgbox" id="box-side"></div>
+      </figure>
+
+      <div class="pair">
+        <figure class="fig">
+          <figcaption>
+            <span class="ft">Section through the drawers</span>
+            <span class="fs">looking forward · top drawer pulled out</span>
+          </figcaption>
+          <div class="svgbox" id="box-sec"></div>
+        </figure>
+        <div class="details">
+          <h3>Key sizes</h3>
+          <dl id="details"></dl>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="block" aria-labelledby="cut-h">
+    <h2 id="cut-h">Cut list</h2>
+    <p>Generated from the measurements above. Sizes are finished sizes in millimetres; sheet counts assume 2500 × 1250 boards and about 30% waste. Check every size against the real van before cutting.</p>
+    <div class="tablewrap"><table id="cut"></table></div>
+    <h3>Hardware</h3>
+    <ul class="hw" id="hw"></ul>
+  </section>
+
+  <section class="notes">
+    <div>
+      <h2>Measure these first</h2>
+      <ol>
+        <li><b>Seat height when closed.</b> It sets the bed height, and the bed height decides whether you can sit up.</li>
+        <li><b>Floor to ceiling</b> above where the bed will be.</li>
+        <li><b>Folded lift depth</b>, including its arms, handles and the hand pump.</li>
+        <li><b>Floor length</b> from the back of the front seats to the rear doors.</li>
+        <li><b>Rail centres</b> from the door-side wall, plus a photo of a rail fitting so you can buy matching ones.</li>
+        <li><b>Sliding door opening</b>: where it starts, how wide it is, and how far the closed door reaches inside.</li>
+        <li><b>Wheel arches</b>: where they start, how long and how high.</li>
+      </ol>
+    </div>
+    <div>
+      <h2>Build notes</h2>
+      <ul>
+        <li><b>Anchor to the rails only.</b> Use seat-rated stud fittings that match the rail system the converter fitted. Don't drill the floor: the rails and floor are part of the approved wheelchair conversion. Seat anchorages are tested at 20 g, so even a 70 kg kit can push forward with more than a tonne in a crash.</li>
+        <li><b>Use locking slides.</b> Lock-in keeps the drawers shut on the road; lock-out keeps them open on a slope while you cook.</li>
+        <li><b>Keep the lift usable.</b> Its hand pump and emergency release must stay reachable with the bed in place.</li>
+        <li><b>Cook outside</b> on the pulled-out drawer, never under the bed deck with the door shut.</li>
+        <li><b>Ventilate the mattress.</b> Drill 35 mm holes on a 150 mm grid in the deck or use an anti-condensation mat, or mould will grow under it.</li>
+        <li><b>Build in modules</b> (drawer cabinet, aluminium frame, deck panels) so two people can take the kit out. Lightening holes in the big cabinet panels save several kilos.</li>
+        <li><b>Paperwork.</b> A removable kit held by the existing rails is normally treated as secured load. A permanent motorhome conversion needs approval, so check with your vehicle authority before fixing anything permanently.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+const $ = s => document.querySelector(s);
+const n = v => Math.round(v * 10) / 10;
+const fmt = v => Math.round(v).toLocaleString('en-US').replace(/,/g, ' ');
+const STORE = 'tc-camp-kit-v1';
+
+const MAT = {
+  poplar15: {label:'Poplar plywood 15 mm', sp:'Poplar plywood', t:15, rho:450},
+  poplar18: {label:'Poplar plywood 18 mm', sp:'Poplar plywood', t:18, rho:450},
+  birch18:  {label:'Birch plywood 18 mm',  sp:'Birch plywood',  t:18, rho:680},
+};
+const PRESETS = {
+  'g1-l1-h1': {label:'Gen 1 (2013–23) · L1 · low roof',  L:2555, roofH:1400},
+  'g1-l2-h1': {label:'Gen 1 (2013–23) · L2 · low roof',  L:2922, roofH:1400},
+  'g1-l1-h2': {label:'Gen 1 (2013–23) · L1 · high roof', L:2555, roofH:1750},
+  'g1-l2-h2': {label:'Gen 1 (2013–23) · L2 · high roof', L:2922, roofH:1750},
+  'g2-l1':    {label:'Gen 2 (2023 on) · L1',             L:2602, roofH:1420},
+  'g2-l2':    {label:'Gen 2 (2023 on) · L2',             L:3002, roofH:1420},
+};
+
+const FIELDS = [
+  {g:'Van body', preset:true, items:[
+    {id:'L', l:'Floor length', d:2555, h:'From the back of the front seats (or the bulkhead) to the inside of the rear doors.'},
+    {id:'W', l:'Width at floor', d:1700, h:'Wall lining to wall lining just above the floor, ahead of the wheel arches.'},
+    {id:'Wbed', l:'Width at bed height', d:1660, h:'The same, about 55 cm up. The walls lean in as they rise.'},
+    {id:'roofH', l:'Floor to ceiling', d:1400, h:'Floor to the ceiling lining above the bed area.'},
+    {id:'floorGround', l:'Floor above ground', d:550, h:'Ground to the van floor at the sliding door.'},
+  ]},
+  {g:'Rear wheel arches', items:[
+    {id:'archStart', l:'Arch starts at', d:1180, h:'From the back of the front seats to the front of the arch.'},
+    {id:'archLen', l:'Arch length', d:900},
+    {id:'archH', l:'Arch height', d:330},
+    {id:'archGap', l:'Width between arches', d:1360},
+  ]},
+  {g:'Sliding door', items:[
+    {id:'doorStart', l:'Opening starts at', d:60, h:'From the back of the front seats to the front edge of the opening.'},
+    {id:'doorW', l:'Opening width', d:1030},
+    {id:'doorH', l:'Opening height', d:1300},
+    {id:'sill', l:'Sill above floor', d:0, h:'Height of the step trim above the floor. 0 if it is flush.'},
+    {id:'doorTrim', l:'Door reaches inside', d:60, h:'How far the closed door panel and lock reach in past the wall lining. The drawer fronts stay behind this.'},
+  ]},
+  {g:'Wheelchair lift, folded', items:[
+    {id:'liftDepth', l:'Depth inside van', d:400, h:'Inside of the rear doors to the most forward part of the folded lift, arms and handles included.'},
+    {id:'liftH', l:'Height', d:1250},
+    {id:'liftClear', l:'Free space in front', d:50, h:'Room for the lift to unfold and to reach its hand pump.'},
+  ]},
+  {g:'Seat, closed', items:[
+    {id:'seatStart', l:'Starts at', d:1150, h:'From the back of the front seats to the front of the closed seat and its base.'},
+    {id:'seatLen', l:'Length', d:550, h:'Front to back.'},
+    {id:'seatDepth', l:'Depth from right wall', d:320},
+    {id:'seatH', l:'Height', d:480, h:'Floor to its highest point when closed. This sets the bed height.'},
+    {id:'seatClear', l:'Gap above it', d:30},
+  ]},
+  {g:'Floor rails', items:[
+    {id:'rails', type:'text', l:'Rail centres from right wall', d:'220, 600, 1100, 1480', h:'Centre of each rail, measured from the door-side wall lining. Separate with commas.'},
+  ]},
+  {g:'Bed', items:[
+    {id:'bedStart', l:'Starts at', d:40, h:'Gap behind the front seats so they can still recline a little.'},
+    {id:'matL', l:'Mattress length', d:1900},
+    {id:'matW', l:'Mattress width', d:1400},
+    {id:'matT', l:'Mattress thickness', d:100},
+    {id:'deckT', l:'Deck board', d:18},
+    {id:'extraH', l:'Raise bed by', d:0, h:'Extra height for taller drawers. Every millimetre comes off the headroom.'},
+  ]},
+  {g:'Drawers', items:[
+    {id:'nDraw', type:'select', l:'Side by side', d:2, opts:[[1,'1 drawer'],[2,'2 drawers'],[3,'3 drawers']]},
+    {id:'rows', type:'select', l:'Stacked', d:1, opts:[[1,'1 row'],[2,'2 rows']]},
+    {id:'slideLen', l:'Drawer length', d:1000, h:'Same as the slide length. Slides come in 50 mm steps.'},
+    {id:'slideT', l:'Slide thickness', d:19, h:'Heavy-duty locking slides take about 19 mm on each side.'},
+    {id:'doorMargin', l:'Clearance at door pillars', d:25},
+    {id:'baseClear', l:'Battens under cabinet', d:20, h:'Lifts the cabinet base clear of the rail fittings.'},
+  ]},
+  {g:'Material', items:[
+    {id:'ply', type:'select', l:'Plywood', d:'poplar18', opts:[['poplar15','Poplar 15 mm, lightest'],['poplar18','Poplar 18 mm'],['birch18','Birch 18 mm, strongest']]},
+  ]},
+];
+const DEF = {};
+FIELDS.forEach(gr => gr.items.forEach(it => DEF[it.id] = it.d));
+const ITEMS = {};
+FIELDS.forEach(gr => gr.items.forEach(it => ITEMS[it.id] = it));
+
+let saved = null;
+try { saved = JSON.parse(localStorage.getItem(STORE) || 'null'); } catch(e) {}
+let p = Object.assign({}, DEF, (saved && saved.p) || {});
+const ui = Object.assign({open:true, hints:true}, (saved && saved.ui) || {});
+function save(){ try { localStorage.setItem(STORE, JSON.stringify({p, ui})); } catch(e) {} }
+
+/* ---------- form ---------- */
+function buildForm(){
+  let h = '';
+  FIELDS.forEach(gr => {
+    h += `<fieldset><legend>${gr.g}</legend>`;
+    if (gr.preset) {
+      h += `<div class="field wide"><label for="f-preset">Prefill from the brochure</label><select id="f-preset"><option value="">Choose a body…</option>${Object.entries(PRESETS).map(([k,v]) => `<option value="${k}">${v.label}</option>`).join('')}</select><p class="hint">Bare-van figures. A lined wheelchair floor and walls measure less, so check with a tape.</p></div>`;
+    }
+    gr.items.forEach(it => {
+      const id = 'f-' + it.id;
+      let ctl;
+      if (it.type === 'select') ctl = `<select id="${id}" data-k="${it.id}">${it.opts.map(([v,l]) => `<option value="${v}">${l}</option>`).join('')}</select>`;
+      else if (it.type === 'text') ctl = `<input id="${id}" data-k="${it.id}" type="text" inputmode="decimal" spellcheck="false">`;
+      else ctl = `<span class="num"><input id="${id}" data-k="${it.id}" type="number" inputmode="numeric" min="0" step="1"></span>`;
+      h += `<div class="field${it.type === 'text' ? ' wide' : ''}"><label for="${id}">${it.l}</label>${ctl}${it.h ? `<p class="hint">${it.h}</p>` : ''}</div>`;
+    });
+    h += `</fieldset>`;
+  });
+  $('#form').innerHTML = h;
+}
+function fillForm(){
+  document.querySelectorAll('#form [data-k]').forEach(el => { el.value = p[el.dataset.k]; });
+}
+function readField(el){
+  const k = el.dataset.k, it = ITEMS[k];
+  if (it.type === 'text' || k === 'ply') p[k] = el.value;
+  else { const v = parseFloat(el.value); if (isFinite(v)) p[k] = v; }
+}
+
+/* ---------- geometry ---------- */
+function compute(p){
+  const M = MAT[p.ply] || MAT.poplar18, t = M.t;
+  const g = {M, t};
+  g.rails = String(p.rails).split(/[^0-9.]+/).map(Number).filter(v => v > 0 && v < p.W).sort((a,b) => a - b);
+  g.aw = Math.max(0, (p.W - p.archGap) / 2);
+  g.dB = Math.max(0, (p.W - p.Wbed) / 2);
+  g.zoneStart = p.doorStart + p.doorMargin;
+  g.zoneEnd = p.doorStart + p.doorW - p.doorMargin;
+  g.Zc = g.zoneEnd - g.zoneStart;
+  g.deckUnder = p.seatH + p.seatClear + p.extraH;
+  g.deckTop = g.deckUnder + p.deckT;
+  g.matTop = g.deckTop + p.matT;
+  g.headroom = p.roofH - g.matTop;
+  g.bedMaxEnd = p.L - p.liftDepth - p.liftClear;
+  g.bedAvail = g.bedMaxEnd - p.bedStart;
+  g.bedLen = Math.max(0, Math.min(p.matL + 20, g.bedAvail));
+  g.bedEnd = p.bedStart + g.bedLen;
+  g.Hc = g.deckUnder - p.baseClear - t;      // cabinet side panels
+  g.Hbay = g.Hc - t;                          // clear height under the top rail
+  g.rowH = g.Hbay / p.rows;
+  g.hb = g.rowH - 25;                         // drawer box height
+  g.yFace = p.doorTrim;
+  g.yCarc = g.yFace + t;
+  g.yBack = g.yCarc + p.slideLen + 25;
+  g.yBackEnd = g.yBack + t;
+  g.yCabEnd = p.W - 10;
+  g.rearComp = g.yCabEnd - g.yBackEnd;
+  g.maxSlide = Math.floor((g.yCabEnd - t - 25 - g.yCarc) / 50) * 50;
+  g.bay = (g.Zc - (p.nDraw + 1) * t) / p.nDraw;
+  g.bw = g.bay - 2 * p.slideT;
+  g.fw = g.Zc / p.nDraw - 3;
+  g.fh = (g.deckUnder - p.baseClear) / p.rows - 3;
+  g.reach = p.slideLen - g.yFace;
+  g.drawerTop = p.baseClear + t + (p.rows - 1) * g.rowH + 8 + g.hb;
+  g.drawerTopGround = p.floorGround + g.drawerTop;
+
+  // aluminium frame behind the cabinet
+  g.rearLen = g.bedEnd - g.zoneEnd;
+  g.seatUnderRear = p.seatStart < g.bedEnd && p.seatStart + p.seatLen > g.zoneEnd;
+  const bR = g.seatUnderRear ? p.seatDepth + 30 : g.dB + 30, bL = p.W - g.dB - 30;
+  g.beams = g.rearLen > 150 ? (bL - bR > 900 ? [bR, (bR + bL) / 2, bL] : [bR, bL]) : [];
+  g.cross = []; g.anchors = [];
+  const cab = g.rails.filter(y => y > g.yCarc + 30 && y < g.yCabEnd - 30);
+  g.cabRails = cab.length ? [...new Set([cab[0], cab[cab.length - 1]])] : [];
+  for (const y of g.cabRails) for (const x of [g.zoneStart + 60, g.zoneEnd - 60]) g.anchors.push({x, y, kind:'cab'});
+  if (g.rearLen > 150) {
+    const k = Math.max(1, Math.ceil(g.rearLen / 900));
+    for (let i = 1; i <= k; i++) {
+      const x = g.zoneEnd + g.rearLen * i / k - 20;
+      const overSeat = x + 20 > p.seatStart && x - 20 < p.seatStart + p.seatLen;
+      const y0 = overSeat ? p.seatDepth + 10 : g.dB + 10, y1 = p.W - g.dB - 10;
+      const ok = g.rails.filter(y => y > y0 + 20 && y < y1 - 20);
+      const legs = ok.length ? [...new Set([ok[0], ok[ok.length - 1]])] : [];
+      g.cross.push({x, y0, y1, legs, overSeat});
+      legs.forEach(y => g.anchors.push({x, y, kind:'leg'}));
+    }
+  }
+  g.legH = g.deckUnder - 40 - 25;
+  g.nd = p.nDraw * p.rows;
+
+  /* checks */
+  const C = []; const add = (lvl, txt) => C.push({lvl, txt});
+  const spare = g.bedAvail - p.matL;
+  if (spare < 0) add('bad', `The mattress is ${fmt(-spare)} mm too long for the space in front of the lift. Use a ${fmt(Math.floor(g.bedAvail / 10) * 10)} mm mattress or start the bed further forward.`);
+  else add('ok', `The ${fmt(p.matL)} mm mattress fits, with ${fmt(spare)} mm to spare before the lift.`);
+  if (p.matW > p.Wbed - 10) add('bad', `The mattress is wider than the van at bed height (${fmt(p.Wbed)} mm).`);
+  if (g.headroom < 750) add('bad', `Only ${fmt(g.headroom)} mm from mattress to ceiling: you can lie down but not sit up. Try a thinner mattress, a smaller gap over the seat, or a pop-top roof.`);
+  else if (g.headroom < 880) add('warn', `${fmt(g.headroom)} mm of sitting headroom. Most adults need 850–900 mm to sit upright, so expect to slouch. Every 10 mm off the mattress or the seat gap helps.`);
+  else add('ok', `${fmt(g.headroom)} mm of sitting headroom, enough to sit upright on the bed.`);
+  if (g.rearComp < 0) add('bad', `The drawers are ${fmt(-g.rearComp)} mm too long for the van width. The longest that fits is ${fmt(g.maxSlide)} mm.`);
+  else if (g.rearComp < 150) add('info', `Only ${fmt(g.rearComp)} mm is left behind the drawers, too little for a storage compartment.`);
+  else add('ok', `Behind the drawers there is a ${fmt(g.rearComp)} mm deep compartment along the left wall, reached through the bed deck. Good for a leisure battery, a water can or bedding.`);
+  if (g.bw < 200) add('warn', `Each drawer box is only ${fmt(g.bw)} mm wide. Use fewer drawers side by side.`);
+  if (p.slideLen > 1200) add('warn', `Slides over 1200 mm carry a long lever when fully out. Choose slides rated 150 kg or more at that length and keep heavy things at the inner end.`);
+  const ov = Math.min(g.zoneEnd, p.archStart + p.archLen) - Math.max(g.zoneStart, p.archStart);
+  if (ov > 0) add('warn', `The drawer cabinet overlaps the wheel arches by ${fmt(ov)} mm along the van. Notch the cabinet ${fmt(p.archH)} mm high around them, or keep the drawers clear of the arches.`);
+  const sov = Math.min(g.zoneEnd, p.seatStart + p.seatLen) - Math.max(g.zoneStart, p.seatStart);
+  if (sov > 0 && p.seatDepth > g.yFace) add('bad', `The seat is ${fmt(sov)} mm inside the drawer zone, so the drawers would hit it.`);
+  if (p.seatStart + p.seatLen > g.bedMaxEnd) add('warn', `The seat reaches ${fmt(p.seatStart + p.seatLen - g.bedMaxEnd)} mm into the lift clearance, so the bed cannot cover all of it.`);
+  else if (p.seatStart + p.seatLen > g.bedEnd) add('info', `The back ${fmt(p.seatStart + p.seatLen - g.bedEnd)} mm of the seat sticks out behind the bed.`);
+  if (p.sill > p.baseClear + t + 8) add('bad', `The door sill is higher than the bottom drawer. Raise the battens by ${fmt(p.sill - (p.baseClear + t + 8) + 5)} mm.`);
+  if (!g.cabRails.length) add('bad', 'No rail runs under the drawer cabinet, so it cannot be anchored. Check the rail positions.');
+  g.cross.forEach(c => { if (!c.legs.length) add('bad', `No rail clear of the seat where the bed frame needs legs, ${fmt(c.x)} mm from the front seats.`); });
+  const na = g.anchors.length;
+  const nCab = g.anchors.filter(a => a.kind === 'cab').length;
+  if (na && na < 6) add('warn', `Only ${na} rail anchor points. Aim for at least 6 on a kit this heavy.`);
+  else if (na) add('ok', `${na} rail anchor points: ${nCab} under the drawer cabinet and ${na - nCab} under the bed frame legs.`);
+  add('info', `Pulled out, the top drawer is about ${fmt(g.drawerTopGround)} mm above the ground. Kitchen worktops are about 900 mm.`);
+  g.checks = C;
+
+  /* cut list */
+  const parts = [];
+  const P = (grp, name, qty, a, b, mat, th, rho) => { if (qty > 0) parts.push({grp, name, qty, a:Math.round(a), b:Math.round(b), mat, th, rho}); };
+  const D = g.yCabEnd - g.yCarc;
+  P('Drawer cabinet', 'Base', 1, g.Zc, D, M.label, t, M.rho);
+  P('Drawer cabinet', 'End panels', 2, D, g.Hc, M.label, t, M.rho);
+  P('Drawer cabinet', 'Dividers', p.nDraw - 1, p.slideLen + 25, g.Hc, M.label, t, M.rho);
+  if (g.rearComp > 0) P('Drawer cabinet', 'Back of drawer bay', 1, g.Zc - 2 * t, g.Hc, M.label, t, M.rho);
+  P('Drawer cabinet', 'Top rails, front and back', 2, g.Zc - 2 * t, 80, M.label, t, M.rho);
+  const dg = `Drawers (${g.nd})`;
+  P(dg, 'Sides', 2 * g.nd, p.slideLen, g.hb, `${M.sp} 12 mm`, 12, M.rho);
+  P(dg, 'Front and back', 2 * g.nd, g.bw - 24, g.hb, `${M.sp} 12 mm`, 12, M.rho);
+  P(dg, 'Bottom', g.nd, g.bw - 12, p.slideLen - 12, `${M.sp} 9 mm`, 9, M.rho);
+  P(dg, 'Drawer fronts', g.nd, g.fw, g.fh, M.label, t, M.rho);
+  const kd = Math.max(1, Math.ceil(g.bedLen / 700));
+  P('Bed deck', 'Deck panels, lift-out', kd, g.bedLen / kd - 3, p.Wbed - 10, `${M.sp} ${p.deckT} mm`, p.deckT, M.rho);
+  g.parts = parts;
+  g.alu = [];
+  if (g.rearLen > 150) {
+    g.alu.push({name:'Long beams', qty:g.beams.length, len:Math.round(g.rearLen + 40)});
+    const byLen = {};
+    g.cross.forEach(c => { const L = Math.round(c.y1 - c.y0); byLen[L] = (byLen[L] || 0) + 1; });
+    Object.entries(byLen).forEach(([L, q]) => g.alu.push({name:'Cross beams', qty:q, len:+L}));
+    const legs = g.cross.reduce((s, c) => s + c.legs.length, 0);
+    if (legs) g.alu.push({name:'Legs', qty:legs, len:Math.round(g.legH)});
+  }
+  let plyKg = 0; const areaBy = {};
+  parts.forEach(q => { const a = q.qty * q.a * q.b / 1e6; plyKg += a * q.rho * q.th / 1000; areaBy[q.mat] = (areaBy[q.mat] || 0) + a; });
+  g.areaBy = areaBy;
+  g.aluM = g.alu.reduce((s, a) => s + a.qty * a.len, 0) / 1000;
+  g.kg = {ply:plyKg, alu:g.aluM * 1.5, slides:g.nd * 5 * p.slideLen / 1000, mat:p.matL * p.matW * p.matT / 1e9 * 40};
+  g.kgTotal = g.kg.ply + g.kg.alu + g.kg.slides + g.kg.mat;
+  return g;
+}
+
+/* ---------- drawing helpers ---------- */
+function scoped(id, px){
+  const w = v => (v * px).toFixed(2);
+  return `<style>
+#${id} text{font-size:${w(11)}px}
+#${id} .ts{font-size:${w(9.5)}px}
+#${id} .tl{font-size:${w(13)}px;letter-spacing:${w(1)}px}
+#${id} .wall{stroke-width:${w(2)}}
+#${id} .thin,#${id} .dim,#${id} .arch,#${id} .seat,#${id} .ply,#${id} .plylt,#${id} .face,#${id} .drawer,#${id} .alu,#${id} .mat,#${id} .matS,#${id} .lift,#${id} .cabz{stroke-width:${w(1)}}
+#${id} .rail{stroke-width:${w(2)};stroke-dasharray:${w(6)} ${w(3)}}
+#${id} .ghost,#${id} .bedo{stroke-width:${w(1)};stroke-dasharray:${w(4)} ${w(3)}}
+#${id} .door{stroke-width:${w(3.5)};stroke-dasharray:${w(8)} ${w(4)}}
+#${id} .dooro{stroke-width:${w(1.2)};stroke-dasharray:${w(5)} ${w(3)}}
+#${id} .anchor{stroke-width:${w(1.5)}}
+#${id} .person{stroke-width:${w(2)}}
+#${id} .gap{stroke-width:${w(5)}}
+#${id} .ground{stroke-width:${w(1)};stroke-dasharray:${w(2)} ${w(3)}}
+#${id} .ref{stroke-width:${w(1)};stroke-dasharray:${w(2)} ${w(3)}}
+</style>`;
+}
+function hatch(id, px){
+  const s = n(8 * px);
+  return `<defs><pattern id="${id}-h" patternUnits="userSpaceOnUse" width="${s}" height="${s}" patternTransform="rotate(45)"><rect width="${s}" height="${s}" class="hbg"/><line x1="0" y1="0" x2="0" y2="${s}" class="hln" style="stroke-width:${n(px)}"/></pattern></defs>`;
+}
+function tools(X, Y, px){
+  const R = (a0, a1, b0, b1, cls, ex = '') => `<rect x="${n(Math.min(X(a0), X(a1)))}" y="${n(Math.min(Y(b0), Y(b1)))}" width="${n(Math.abs(X(a1) - X(a0)))}" height="${n(Math.abs(Y(b1) - Y(b0)))}" class="${cls}" ${ex}/>`;
+  const Ln = (a0, b0, a1, b1, cls) => `<line x1="${n(X(a0))}" y1="${n(Y(b0))}" x2="${n(X(a1))}" y2="${n(Y(b1))}" class="${cls}"/>`;
+  const Tx = (a, b, s, cls = '', anc = 'middle', rot = 0) => `<text x="${n(X(a))}" y="${n(Y(b))}" text-anchor="${anc}" dominant-baseline="middle" class="${cls}"${rot ? ` transform="rotate(${rot} ${n(X(a))} ${n(Y(b))})"` : ''}>${s}</text>`;
+  const dimH = (sx0, sx1, sy, label, cls = '') => { const t = 4 * px; return `<line x1="${n(sx0)}" y1="${n(sy)}" x2="${n(sx1)}" y2="${n(sy)}" class="dim"/><line x1="${n(sx0)}" y1="${n(sy - t)}" x2="${n(sx0)}" y2="${n(sy + t)}" class="dim"/><line x1="${n(sx1)}" y1="${n(sy - t)}" x2="${n(sx1)}" y2="${n(sy + t)}" class="dim"/><text x="${n((sx0 + sx1) / 2)}" y="${n(sy - 5 * px)}" text-anchor="middle" class="${cls}">${label}</text>`; };
+  const dimV = (sx, sy0, sy1, label, cls = '', anc = 'start') => { const t = 4 * px, off = anc === 'start' ? 7 * px : -7 * px; return `<line x1="${n(sx)}" y1="${n(sy0)}" x2="${n(sx)}" y2="${n(sy1)}" class="dim"/><line x1="${n(sx - t)}" y1="${n(sy0)}" x2="${n(sx + t)}" y2="${n(sy0)}" class="dim"/><line x1="${n(sx - t)}" y1="${n(sy1)}" x2="${n(sx + t)}" y2="${n(sy1)}" class="dim"/><text x="${n(sx + off)}" y="${n((sy0 + sy1) / 2)}" text-anchor="${anc}" dominant-baseline="middle" class="${cls}">${label}</text>`; };
+  return {R, Ln, Tx, dimH, dimV};
+}
+const svg = (id, VW, VH, body, label) => `<svg id="${id}" class="dw" viewBox="0 0 ${n(VW)} ${n(VH)}" role="img" aria-label="${label}" xmlns="http://www.w3.org/2000/svg">${body}</svg>`;
+const headCls = g => g.headroom < 750 ? 'tbad' : g.headroom < 880 ? 'twarn' : 'tok';
+
+/* plan, front on the right, door side at the bottom */
+function viewTop(g, p, cw){
+  const id = 'v-top', open = ui.open;
+  const ext = open ? Math.max(0, g.reach) : 0;
+  const VW = (p.L + 430) / (1 - 44 / cw), px = VW / cw;
+  const mL = 34 * px, mT = 58 * px, mB = 36 * px + ext;
+  const VH = mT + p.W + mB;
+  const X = x => mL + (p.L - x), Y = y => mT + (p.W - y);
+  const {R, Ln, Tx, dimH} = tools(X, Y, px);
+  let s = scoped(id, px) + hatch(id, px);
+  s += R(-30, -410, 0, p.W, 'cabz') + Tx(-220, p.W / 2, 'CAB', 'tl');
+  s += R(0, p.L, 0, p.W, 'floor');
+  s += R(p.archStart, p.archStart + p.archLen, 0, g.aw, 'arch') + R(p.archStart, p.archStart + p.archLen, p.W - g.aw, p.W, 'arch');
+  g.rails.forEach(y => s += Ln(0, y, p.L - p.liftDepth, y, 'rail'));
+  s += R(p.L - p.liftDepth, p.L, 0, p.W, 'lift', `fill="url(#${id}-h)"`);
+  s += Ln(g.bedMaxEnd, 0, g.bedMaxEnd, p.W, 'ref');
+  s += Tx(p.L - p.liftDepth / 2, p.W / 2, 'LIFT', 'tl tk', 'middle', -90);
+  s += R(p.seatStart, p.seatStart + p.seatLen, 0, p.seatDepth, 'seat') + Tx(p.seatStart + p.seatLen / 2, p.seatDepth / 2, 'SEAT', 'tk tb');
+  g.beams.forEach(y => s += R(g.zoneEnd - 40, g.bedEnd, y - 20, y + 20, 'alu'));
+  g.cross.forEach(c => s += R(c.x - 20, c.x + 20, c.y0, c.y1, 'alu'));
+  // drawer cabinet
+  s += R(g.zoneStart, g.zoneEnd, g.yCarc, g.yCabEnd, 'plylt');
+  s += R(g.zoneStart, g.zoneStart + g.t, g.yCarc, g.yCabEnd, 'ply') + R(g.zoneEnd - g.t, g.zoneEnd, g.yCarc, g.yCabEnd, 'ply');
+  if (g.rearComp > 0) {
+    s += R(g.zoneStart + g.t, g.zoneEnd - g.t, g.yBack, g.yBackEnd, 'ply');
+    if (g.rearComp > 120) s += Tx((g.zoneStart + g.zoneEnd) / 2, (g.yBackEnd + g.yCabEnd) / 2, 'STORAGE', 'ts tk');
+  }
+  for (let i = 1; i < p.nDraw; i++) { const x = g.zoneStart + i * (g.bay + g.t); s += R(x, x + g.t, g.yCarc, g.yBack, 'ply'); }
+  for (let i = 0; i < p.nDraw; i++) {
+    const bx0 = g.zoneStart + g.t + i * (g.bay + g.t) + p.slideT, bx1 = bx0 + g.bw;
+    const fx0 = g.zoneStart + i * g.Zc / p.nDraw + 1.5, fx1 = fx0 + g.fw;
+    if (open) {
+      s += R(bx0, bx1, g.yCarc, g.yCarc + p.slideLen, 'ghost');
+      s += R(bx0, bx1, g.yCarc - p.slideLen, g.yCarc, 'drawer') + R(fx0, fx1, g.yFace - p.slideLen, g.yCarc - p.slideLen, 'face');
+    } else {
+      s += R(bx0, bx1, g.yCarc, g.yCarc + p.slideLen, 'drawer') + R(fx0, fx1, g.yFace, g.yCarc, 'face');
+    }
+  }
+  if (open) s += Tx((g.zoneStart + g.zoneEnd) / 2, g.yCarc - p.slideLen / 2, 'DRAWERS OUT', 'ts tk');
+  // bed and mattress
+  s += R(p.bedStart, g.bedEnd, g.dB, p.W - g.dB, 'bedo');
+  const mx0 = p.bedStart + 10, mx1 = mx0 + p.matL, my0 = (p.W - p.matW) / 2, my1 = (p.W + p.matW) / 2;
+  s += R(mx0, mx1, my0, my1, 'mat');
+  s += Tx(mx1 - 30, my1 - 18 * px, `MATTRESS ${fmt(p.matL)} × ${fmt(p.matW)}`, 'ts tk', 'start');
+  // walls and door
+  s += Ln(0, p.W, p.L, p.W, 'wall') + Ln(p.L, 0, p.L, p.W, 'wall') + Ln(0, 0, p.doorStart, 0, 'wall') + Ln(p.doorStart + p.doorW, 0, p.L, 0, 'wall') + Ln(0, 0, 0, p.W, 'thin');
+  s += Ln(p.doorStart, 0, p.doorStart + p.doorW, 0, 'door');
+  g.anchors.forEach(a => s += `<circle cx="${n(X(a.x))}" cy="${n(Y(a.y))}" r="${n(5 * px)}" class="anchor"/>`);
+  // labels and dimensions
+  const doorLabelY = (open ? g.yFace - p.slideLen : 0) - 18 * px;
+  s += Tx(p.doorStart + p.doorW / 2, doorLabelY, 'SLIDING DOOR', 'ta tb');
+  s += Tx(p.doorStart + p.doorW + 40, -14 * px, 'right side', 'ts', 'end');
+  s += Tx(-220, p.W + 22 * px, 'FRONT →', 'tk tb');
+  s += dimH(X(p.L), X(0), Y(p.W) - 20 * px, `floor ${fmt(p.L)}`);
+  s += dimH(X(g.bedEnd), X(p.bedStart), Y(p.W) - 42 * px, `bed ${fmt(g.bedLen)}`, 'ta');
+  return svg(id, VW, VH, s, 'Plan view of the van floor with bed, drawers, seat, rails and lift');
+}
+
+/* side elevation from the sliding door, same horizontal scale as the plan */
+function viewSide(g, p, cw){
+  const id = 'v-side';
+  const VW = (p.L + 430) / (1 - 44 / cw), px = VW / cw;
+  const mL = 34 * px, mT = 22 * px, mB = 24 * px;
+  const VH = mT + p.roofH + mB;
+  const X = x => mL + (p.L - x), Y = z => mT + (p.roofH - z);
+  const {R, Ln, Tx, dimV} = tools(X, Y, px);
+  let s = scoped(id, px) + hatch(id, px);
+  s += R(-30, -410, 0, Math.min(1000, p.roofH), 'cabz') + Tx(-220, Math.min(1000, p.roofH) / 2, 'CAB', 'tl');
+  s += R(0, p.L, 0, p.roofH, 'floor');
+  const dTop = Math.min(p.doorH, p.roofH);
+  s += R(p.doorStart, p.doorStart + p.doorW, p.sill, dTop, 'dooro');
+  s += Tx(p.doorStart + p.doorW / 2, dTop - 14 * px, 'DOOR OPENING', 'ta ts');
+  s += R(p.archStart, p.archStart + p.archLen, 0, p.archH, 'arch');
+  s += R(p.L - p.liftDepth, p.L, 0, Math.min(p.liftH, p.roofH), 'lift', `fill="url(#${id}-h)"`);
+  s += Tx(p.L - p.liftDepth / 2, Math.min(p.liftH, p.roofH) / 2, 'LIFT', 'tl tk', 'middle', -90);
+  s += R(p.seatStart, p.seatStart + p.seatLen, 0, p.seatH, 'seat') + Tx(p.seatStart + p.seatLen / 2, p.seatH / 2, 'SEAT', 'tk tb');
+  // cabinet
+  s += R(g.zoneStart, g.zoneEnd, 0, p.baseClear, 'ply') + R(g.zoneStart, g.zoneEnd, p.baseClear, p.baseClear + g.t, 'ply');
+  const fRow = (g.deckUnder - p.baseClear) / p.rows;
+  for (let j = 0; j < p.rows; j++) for (let i = 0; i < p.nDraw; i++) {
+    const fx0 = g.zoneStart + i * g.Zc / p.nDraw + 1.5, fx1 = fx0 + g.fw;
+    const z0 = p.baseClear + j * fRow + 1.5, z1 = z0 + g.fh;
+    s += R(fx0, fx1, z0, z1, 'face');
+    const mid = (fx0 + fx1) / 2;
+    s += R(mid - 60, mid + 60, z1 - 48, z1 - 34, 'alu');
+  }
+  // frame
+  if (g.beams.length) s += R(g.zoneEnd - 40, g.bedEnd, g.deckUnder - 40, g.deckUnder, 'alu');
+  g.cross.forEach(c => { if (c.legs.length) s += R(c.x - 20, c.x + 20, 25, g.deckUnder - 40, 'alu'); s += R(c.x - 20, c.x + 20, g.deckUnder - 40, g.deckUnder, 'alu'); });
+  g.anchors.forEach(a => s += R(a.x - 18, a.x + 18, 0, 22, 'anchor'));
+  // deck, mattress
+  s += R(p.bedStart, g.bedEnd, g.deckUnder, g.deckTop, 'ply');
+  s += R(p.bedStart + 10, p.bedStart + 10 + p.matL, g.deckTop, g.matTop, 'matS', `rx="${n(Math.min(30, p.matT / 3))}"`);
+  // seated adult, 900 mm sitting height
+  const xh = p.bedStart + 560, zb = g.matTop, hr = 105;
+  s += `<g class="person">${Ln(xh, zb + 40, xh, zb + 600, '')}${Ln(xh, zb + 60, xh + 760, zb + 60, '')}${Ln(xh, zb + 520, xh + 330, zb + 300, '')}<circle cx="${n(X(xh))}" cy="${n(Y(zb + 900 - hr))}" r="${n(hr)}"/></g>`;
+  s += Tx(xh + hr + 40, zb + 900 - hr, 'seated adult ≈ 900', 'ts', 'start');
+  // walls
+  s += Ln(0, 0, p.L, 0, 'wall') + Ln(0, p.roofH, p.L, p.roofH, 'wall') + Ln(p.L, 0, p.L, p.roofH, 'wall') + Ln(0, 0, 0, p.roofH, 'thin');
+  s += dimV(X(p.bedStart + 150), Y(g.matTop), Y(p.roofH), `${fmt(g.headroom)} headroom`, headCls(g) + ' tb');
+  s += Tx(p.bedStart + p.matL * 0.62, g.matTop + 16 * px, `mattress top ${fmt(g.matTop)} · deck ${fmt(g.deckTop)}`, 'ts tk');
+  return svg(id, VW, VH, s, 'Side view with lift, seat, drawer fronts, bed and headroom');
+}
+
+/* section looking forward through the drawer cabinet */
+function viewSec(g, p, cw){
+  const id = 'v-sec';
+  const out = Math.max(0, g.reach) + 330;
+  const VW = (p.W + out) / (1 - 36 / cw), px = VW / cw;
+  const mL = 18 * px, mT = 26 * px, mB = 22 * px;
+  const VH = mT + p.roofH + p.floorGround + mB;
+  const X = y => mL + (p.W - y), Y = z => mT + (p.roofH - z);
+  const {R, Ln, Tx, dimH, dimV} = tools(X, Y, px);
+  let s = scoped(id, px);
+  const dB = g.dB, rt = p.roofH;
+  const wallR = [[0, 0], [dB, 550], [dB + 90, rt - 70], [dB + 180, rt]];
+  const wallL = wallR.map(([y, z]) => [p.W - y, z]);
+  const pts = a => a.map(([y, z]) => `${n(X(y))},${n(Y(z))}`).join(' ');
+  s += `<line x1="0" y1="${n(Y(-p.floorGround))}" x2="${n(VW)}" y2="${n(Y(-p.floorGround))}" class="ground"/>`;
+  s += Tx(p.W - 20, -p.floorGround + 14 * px, 'ground', 'ts', 'start');
+  s += R(0, p.W, -60, 0, 'cabz');
+  s += `<polygon points="${pts(wallL.concat(wallR.slice().reverse()))}" class="floor"/>`;
+  s += `<polyline points="${pts(wallL)}" class="wall"/><polyline points="${pts(wallR)}" class="wall"/>`;
+  s += Ln(p.W - dB - 180, rt, dB + 180, rt, 'wall') + Ln(0, 0, p.W, 0, 'wall');
+  // door opening in the right wall
+  const wy = z => { for (let i = 1; i < wallR.length; i++) { const [y0, z0] = wallR[i - 1], [y1, z1] = wallR[i]; if (z <= z1) return y0 + (y1 - y0) * (z - z0) / (z1 - z0); } return wallR[wallR.length - 1][0]; };
+  const zb = Math.max(0, p.sill), zt = Math.min(p.doorH, rt - 80);
+  if (zt > zb) {
+    const zs = [zb, ...[550, rt - 70].filter(z => z > zb && z < zt), zt];
+    const dp = pts(zs.map(z => [wy(z), z]));
+    s += `<polyline points="${dp}" class="gap"/><polyline points="${dp}" class="door"/>`;
+  }
+  // bed
+  s += R(dB + 5, p.W - dB - 5, g.deckUnder, g.deckTop, 'ply');
+  s += R((p.W - p.matW) / 2, (p.W + p.matW) / 2, g.deckTop, g.matTop, 'matS', `rx="${n(Math.min(30, p.matT / 3))}"`);
+  // cabinet
+  [g.yCarc + 10, (g.yCarc + g.yCabEnd) / 2 - 20, g.yCabEnd - 50].forEach(y => s += R(y, y + 40, 0, p.baseClear, 'ply'));
+  s += R(g.yCarc, g.yCabEnd, p.baseClear, p.baseClear + g.t, 'ply');
+  s += R(g.yCarc, g.yCarc + 80, g.deckUnder - g.t, g.deckUnder, 'ply') + R(g.yCabEnd - 80, g.yCabEnd, g.deckUnder - g.t, g.deckUnder, 'ply');
+  if (g.rearComp > 0) {
+    s += R(g.yBack, g.yBackEnd, p.baseClear + g.t, g.deckUnder, 'ply');
+    s += R(g.yBackEnd, g.yCabEnd, p.baseClear + g.t, g.deckUnder - g.t, 'plylt');
+    if (g.rearComp > 160) s += Tx((g.yBackEnd + g.yCabEnd) / 2, (p.baseClear + g.deckUnder) / 2, 'STORAGE', 'ts tk');
+  }
+  const fRow = (g.deckUnder - p.baseClear) / p.rows;
+  for (let j = 0; j < p.rows; j++) {
+    const z0 = p.baseClear + g.t + j * g.rowH + 8, z1 = z0 + g.hb;
+    const f0 = p.baseClear + j * fRow + 1.5, f1 = f0 + g.fh;
+    if (j === p.rows - 1) {
+      s += R(g.yCarc, g.yCarc + p.slideLen, z0, z1, 'ghost');
+      s += R(g.yCarc - p.slideLen, g.yCarc, z0, z1, 'drawer') + R(g.yFace - p.slideLen, g.yCarc - p.slideLen, f0, f1, 'face');
+    } else {
+      s += R(g.yCarc, g.yCarc + p.slideLen, z0, z1, 'drawer') + R(g.yFace, g.yCarc, f0, f1, 'face');
+    }
+  }
+  g.rails.forEach(y => s += R(y - 14, y + 14, -8, 0, 'anchor'));
+  // worktop reference and dimensions
+  const outerY = g.yFace - p.slideLen;
+  s += Ln(0, 900 - p.floorGround, outerY - 260, 900 - p.floorGround, 'ref');
+  s += Tx(-20, 900 - p.floorGround - 12 * px, 'worktop 900', 'ts ta', 'end');
+  s += dimV(X(outerY - 60), Y(-p.floorGround), Y(g.drawerTop), `${fmt(g.drawerTopGround)}`, 'tk tb');
+  s += dimH(X(0), X(outerY), Y(g.drawerTop) - 22 * px, `${fmt(g.reach)} out`, 'ta tb');
+  s += dimV(X(p.W / 2 + 60), Y(g.matTop), Y(rt), `${fmt(g.headroom)}`, headCls(g) + ' tb');
+  s += Tx(dB + 120, rt - 16 * px, 'door side →', 'ts', 'start');
+  return svg(id, VW, VH, s, 'Cross-section through the drawer cabinet with a drawer pulled out of the sliding door');
+}
+
+/* ---------- render ---------- */
+function stat(k, v, unit, sub, st = ''){
+  return `<div class="stat ${st ? 'st-' + st : ''}"><span class="k">${k}</span><span class="v">${v}${unit ? `<small>${unit}</small>` : ''}</span><span class="s">${st ? '<i class="dot"></i>' : ''}<span>${sub}</span></span></div>`;
+}
+function render(){
+  const g = compute(p);
+  const hs = g.headroom < 750 ? 'bad' : g.headroom < 880 ? 'warn' : 'ok';
+  const fits = g.bedAvail >= p.matL && p.matW <= p.Wbed - 10;
+  $('#summary').innerHTML =
+    stat('Mattress', `${fmt(p.matL)} × ${fmt(p.matW)}`, 'mm', fits ? 'fits in front of the lift' : 'does not fit', fits ? 'ok' : 'bad') +
+    stat('Sitting headroom', fmt(g.headroom), 'mm', hs === 'ok' ? 'sit upright' : hs === 'warn' ? 'tight for sitting up' : 'lying down only', hs) +
+    stat('Bed surface', fmt(g.matTop), 'mm', `above the floor, deck at ${fmt(g.deckTop)}`) +
+    stat('Drawers', `${g.nd} × ${fmt(p.slideLen)}`, 'mm', `boxes ${fmt(g.bw)} wide, ${fmt(g.hb)} high`, g.rearComp < 0 || g.bw < 200 ? 'bad' : '') +
+    stat('Pull-out reach', fmt(g.reach), 'mm', 'outside the wall line, fully open') +
+    stat('Kit weight', `≈ ${fmt(g.kgTotal)}`, 'kg', 'with mattress, before contents');
+  const PL = {ok:'OK', warn:'CHECK', bad:'FIX', info:'NOTE'};
+  const order = {bad:0, warn:1, ok:2, info:3};
+  $('#checks').innerHTML = g.checks.slice().sort((a, b) => order[a.lvl] - order[b.lvl]).map(c => `<li><span class="pill p-${c.lvl}">${PL[c.lvl]}</span><span>${c.txt}</span></li>`).join('');
+
+  const w = el => Math.max(260, el.clientWidth || 800);
+  $('#box-top').innerHTML = viewTop(g, p, w($('#box-top')));
+  $('#box-side').innerHTML = viewSide(g, p, w($('#box-side')));
+  $('#box-sec').innerHTML = viewSec(g, p, w($('#box-sec')));
+
+  const legs = g.cross.reduce((s, c) => s + c.legs.length, 0);
+  const rows = [
+    ['Bed platform', `${fmt(g.bedLen)} × ${fmt(p.Wbed - 10)}`],
+    ['Deck top', `${fmt(g.deckTop)} from floor`],
+    ['Mattress top', `${fmt(g.matTop)} from floor`],
+    ['Drawer cabinet', `${fmt(g.Zc)} long × ${fmt(g.yCabEnd - g.yFace)} deep × ${fmt(g.deckUnder)} high`],
+    ['Drawer boxes', `${g.nd} × ${fmt(g.bw)} w × ${fmt(p.slideLen)} l × ${fmt(g.hb)} h`],
+    ['Drawer fronts', `${fmt(g.fw)} × ${fmt(g.fh)}`],
+    ['Storage behind', g.rearComp > 0 ? `${fmt(g.Zc - 2 * g.t)} × ${fmt(g.rearComp)} × ${fmt(g.Hbay)}` : 'none'],
+    ['Bed frame', g.beams.length ? `${g.beams.length} long beams, ${g.cross.length} cross beam${g.cross.length > 1 ? 's' : ''}, ${legs} legs` : 'deck rests on the cabinet'],
+    ['Drawer top', `${fmt(g.drawerTopGround)} above ground`],
+    ['Rail anchors', `${g.anchors.length} fittings`],
+  ];
+  $('#details').innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
+
+  // cut list
+  let h = '<thead><tr><th>Part</th><th class="n">Qty</th><th class="n">Length</th><th class="n">Width</th><th>Material</th></tr></thead><tbody>';
+  let grp = '';
+  g.parts.forEach(q => {
+    if (q.grp !== grp) { grp = q.grp; h += `<tr class="grp"><td colspan="5">${grp}</td></tr>`; }
+    h += `<tr><td>${q.name}</td><td class="n">${q.qty}</td><td class="n">${fmt(Math.max(q.a, q.b))}</td><td class="n">${fmt(Math.min(q.a, q.b))}</td><td>${q.mat}</td></tr>`;
+  });
+  if (g.alu.length) {
+    h += `<tr class="grp"><td colspan="5">Bed frame</td></tr>`;
+    g.alu.forEach(a => h += `<tr><td>${a.name}</td><td class="n">${a.qty}</td><td class="n">${fmt(a.len)}</td><td class="n">40</td><td>Aluminium slot profile 40 × 40</td></tr>`);
+  }
+  h += `<tr class="grp"><td colspan="5">Totals</td></tr>`;
+  Object.entries(g.areaBy).forEach(([m, a]) => h += `<tr><td>${m}</td><td class="n">${Math.max(1, Math.ceil(a * 1.3 / 3.125))}</td><td class="n" colspan="2">${a.toFixed(2)} m²</td><td>sheets of 2500 × 1250</td></tr>`);
+  if (g.alu.length) h += `<tr><td>Aluminium profile</td><td class="n"></td><td class="n" colspan="2">${g.aluM.toFixed(2)} m</td><td>buy cut to length</td></tr>`;
+  h += `<tr class="tot"><td>Estimated weight</td><td class="n"></td><td class="n" colspan="2">≈ ${fmt(g.kgTotal)} kg</td><td>wood ${fmt(g.kg.ply)} · frame ${fmt(g.kg.alu)} · slides ${fmt(g.kg.slides)} · mattress ${fmt(g.kg.mat)}</td></tr>`;
+  $('#cut').innerHTML = h + '</tbody>';
+
+  const joints = legs * 2 + g.cross.length * 2 + g.beams.length * 2;
+  const hw = [
+    [`${g.nd} pairs`, `Drawer slides, ${fmt(p.slideLen)} mm, full extension, lock-in and lock-out, rated 100 kg or more at this length`],
+    [`${g.anchors.length}`, 'Seat-rated rail stud fittings that match the van’s rail system, with nuts and washers'],
+    ['3', `Pine battens 40 × 20 × ${fmt(g.Zc)} mm under the cabinet, notched over the fittings`],
+    joints ? [`${joints * 2}`, 'Corner brackets with T-nuts for the 40 mm profile'] : null,
+    [`${g.nd}`, 'Flush or recessed drawer pulls, so nothing snags in the door opening'],
+    ['1', `Mattress ${fmt(p.matL)} × ${fmt(p.matW)} × ${fmt(p.matT)} mm, high-density foam, plus an anti-condensation mat`],
+    ['1', 'Wood glue, 4 × 40 mm screws and edge banding or varnish for the plywood'],
+  ].filter(Boolean);
+  $('#hw').innerHTML = hw.map(([q, t]) => `<li><span class="q">${q}</span><span>${t}</span></li>`).join('');
+}
+
+/* ---------- wiring ---------- */
+buildForm();
+fillForm();
+$('#hints').checked = ui.hints;
+$('#open').checked = ui.open;
+$('#form').classList.toggle('nohints', !ui.hints);
+
+$('#form').addEventListener('input', e => { if (e.target.dataset.k) { readField(e.target); save(); render(); } });
+$('#form').addEventListener('change', e => {
+  if (e.target.id === 'f-preset' && PRESETS[e.target.value]) {
+    const pr = PRESETS[e.target.value];
+    p.L = pr.L; p.roofH = pr.roofH;
+    fillForm(); save(); render();
+    $('#status').textContent = `Prefilled ${pr.label}. Floor length and ceiling height changed.`;
+  } else if (e.target.dataset.k) { readField(e.target); save(); render(); }
+});
+$('#hints').addEventListener('change', e => { ui.hints = e.target.checked; $('#form').classList.toggle('nohints', !ui.hints); save(); });
+$('#open').addEventListener('change', e => { ui.open = e.target.checked; save(); render(); });
+$('#reset').addEventListener('click', () => {
+  p = Object.assign({}, DEF); $('#f-preset').value = '';
+  fillForm(); save(); render();
+  $('#status').textContent = 'Example values restored.';
+});
+function measurementText(){
+  const lines = ['Transit Custom camp kit: measurements (mm)'];
+  FIELDS.forEach(gr => { lines.push('', gr.g); gr.items.forEach(it => {
+    let v = p[it.id];
+    if (it.type === 'select') { const o = it.opts.find(([k]) => String(k) === String(v)); v = o ? o[1] : v; }
+    lines.push(`- ${it.l}: ${v}`);
+  }); });
+  return lines.join('\n');
+}
+$('#copy').addEventListener('click', () => {
+  const txt = measurementText(), box = $('#copybox');
+  const fallback = () => { box.hidden = false; box.value = txt; box.focus(); box.select(); $('#status').textContent = 'Select all and copy the text below.'; };
+  try {
+    navigator.clipboard.writeText(txt).then(() => { box.hidden = true; $('#status').textContent = 'Measurements copied. Paste them into your chat with Claude.'; }, fallback);
+  } catch (e) { fallback(); }
+});
+
+render();
+let lastW = 0;
+if ('ResizeObserver' in window) {
+  new ResizeObserver(entries => {
+    const cw = Math.round(entries[0].contentRect.width);
+    if (cw !== lastW) { lastW = cw; requestAnimationFrame(render); }
+  }).observe($('.out'));
+} else {
+  window.addEventListener('resize', () => requestAnimationFrame(render));
+}
+})();
+</script>
