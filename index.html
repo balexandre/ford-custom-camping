@@ -23,6 +23,7 @@
   --steel-fill:#CDD4D6;
   --seat:#8DA2B4;
   --mat:#9C8FC4;
+  --water:#3E86B8;
   --accent:#C2521B;
   --accent-soft:#F5DCCD;
   --ok:#2E7A4D; --ok-bg:#DFEEE4;
@@ -37,7 +38,7 @@
   :root:not([data-theme="light"]){
     --paper:#121719; --sheet:#1A2124; --ink:#DDE4E6; --muted:#97A4AA; --rule:#2D373B;
     --ply:#A8834F; --ply-lt:#3A3020; --ply-edge:#D9B67E;
-    --steel:#8A979D; --steel-fill:#334046; --seat:#5D7A92; --mat:#8A7FC0;
+    --steel:#8A979D; --steel-fill:#334046; --seat:#5D7A92; --mat:#8A7FC0; --water:#6CB2E0;
     --accent:#F08A54; --accent-soft:#4A2818;
     --ok:#72C793; --ok-bg:#16301F; --warn:#E6B952; --warn-bg:#33290F;
     --bad:#F2837A; --bad-bg:#3D1B18; --info:#9DB8C6; --info-bg:#1E2B32;
@@ -47,7 +48,7 @@
 :root[data-theme="dark"]{
   --paper:#121719; --sheet:#1A2124; --ink:#DDE4E6; --muted:#97A4AA; --rule:#2D373B;
   --ply:#A8834F; --ply-lt:#3A3020; --ply-edge:#D9B67E;
-  --steel:#8A979D; --steel-fill:#334046; --seat:#5D7A92; --mat:#8A7FC0;
+  --steel:#8A979D; --steel-fill:#334046; --seat:#5D7A92; --mat:#8A7FC0; --water:#6CB2E0;
   --accent:#F08A54; --accent-soft:#4A2818;
   --ok:#72C793; --ok-bg:#16301F; --warn:#E6B952; --warn-bg:#33290F;
   --bad:#F2837A; --bad-bg:#3D1B18; --info:#9DB8C6; --info-bg:#1E2B32;
@@ -99,7 +100,7 @@ legend{font-family:var(--f-display);font-size:15px;font-weight:600;letter-spacin
 .field .hint{grid-column:1/-1;font-size:12.5px;line-height:1.38;color:var(--muted)}
 .nohints .field .hint{display:none}
 .num{position:relative;display:block}
-.num::after{content:"mm";position:absolute;right:8px;top:50%;transform:translateY(-50%);font:11px var(--f-mono);color:var(--muted);pointer-events:none}
+.num::after{content:attr(data-unit);position:absolute;right:8px;top:50%;transform:translateY(-50%);font:11px var(--f-mono);color:var(--muted);pointer-events:none}
 input[type=number],input[type=text],select{width:100%;font:14px var(--f-mono);font-variant-numeric:tabular-nums;padding:6px 8px;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink)}
 input[type=number]{padding-right:32px;text-align:right}
 select{font-family:var(--f-body)}
@@ -157,6 +158,7 @@ select{font-family:var(--f-body)}
 .dw .alu{fill:var(--steel-fill);stroke:var(--steel)}
 .dw .mat{fill:var(--mat);fill-opacity:.18;stroke:var(--mat)}
 .dw .matS{fill:var(--mat);fill-opacity:.45;stroke:var(--mat)}
+.dw .water{fill:var(--water);fill-opacity:.32;stroke:var(--water)}
 .dw .bedo{fill:none;stroke:var(--ink)}
 .dw .door{stroke:var(--accent);fill:none}
 .dw .dooro{fill:var(--accent-soft);fill-opacity:.55;stroke:var(--accent)}
@@ -199,8 +201,8 @@ tr.tot td{font-weight:600;border-bottom:0}
       <p class="lede">A removable bed and side-door drawer kitchen for a van whose back is taken by a wheelchair lift. The bed sits over the folded seat, the drawers slide out through the sliding door, and everything bolts to the floor rails that are already there. Nothing gets drilled, and the van goes back to wheelchair use when the kit comes out.</p>
     </div>
     <div class="vin">
-      <h2>Which generation?</h2>
-      <p>The VIN's year code is <code>P</code>, which means built in 2023, the year Ford changed generations. A 13-inch screen and a light bar across the grille mean <b>Gen 2</b> (2023 on). A smaller screen and the older grille mean <b>Gen 1</b> (2013–2023). Choose it under Van body to prefill brochure sizes, then correct them with a tape measure.</p>
+      <h2>This van</h2>
+      <p>A <b>high-roof Kombi</b> with the first-generation body, built in 2023. One pair of floor rails runs under the left-hand seats and another runs down the middle for the wheelchair. The two left-hand seats sit on quick-release bases and come out for camping. The fold-up seat on the right, behind the sliding door, stays. A two-pillar platform lift folds up inside the rear doors.</p>
     </div>
   </header>
 
@@ -236,6 +238,7 @@ tr.tot td{font-weight:600;border-bottom:0}
           <span><i class="sw" style="background:var(--steel-fill)"></i>Aluminium frame / wheel arch</span>
           <span><i class="sw" style="background:var(--seat)"></i>Seat, closed</span>
           <span><i class="sw" style="background:var(--mat);opacity:.6"></i>Mattress</span>
+          <span><i class="sw" style="background:var(--water);opacity:.6"></i>Water container</span>
           <span><svg width="12" height="12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="var(--accent)"/></svg>Rail anchor</span>
           <span><svg width="22" height="6" aria-hidden="true"><line x1="0" y1="3" x2="22" y2="3" stroke="var(--steel)" stroke-width="2" stroke-dasharray="5 3"/></svg>Floor rail</span>
         </div>
@@ -281,7 +284,7 @@ tr.tot td{font-weight:600;border-bottom:0}
         <li><b>Floor to ceiling</b> above where the bed will be.</li>
         <li><b>Folded lift depth</b>, including its arms, handles and the hand pump.</li>
         <li><b>Floor length</b> from the back of the front seats to the rear doors.</li>
-        <li><b>Rail centres</b> from the door-side wall, plus a photo of a rail fitting so you can buy matching ones.</li>
+        <li><b>Rail centres</b> from the door-side wall, plus the make of the seats' quick-release fittings, so you can buy matching ones.</li>
         <li><b>Sliding door opening</b>: where it starts, how wide it is, and how far the closed door reaches inside.</li>
         <li><b>Wheel arches</b>: where they start, how long and how high.</li>
       </ol>
@@ -289,7 +292,7 @@ tr.tot td{font-weight:600;border-bottom:0}
     <div>
       <h2>Build notes</h2>
       <ul>
-        <li><b>Anchor to the rails only.</b> Use seat-rated stud fittings that match the rail system the converter fitted. Don't drill the floor: the rails and floor are part of the approved wheelchair conversion. Seat anchorages are tested at 20 g, so even a 70 kg kit can push forward with more than a tonne in a crash.</li>
+        <li><b>Anchor to the rails only.</b> Use seat-rated quick-release fittings of the same type the seats already use. Don't drill the floor: the rails and floor are part of the approved wheelchair conversion. Seat anchorages are tested at 20 g, so even a 70 kg kit can push forward with more than a tonne in a crash.</li>
         <li><b>Use locking slides.</b> Lock-in keeps the drawers shut on the road; lock-out keeps them open on a slope while you cook.</li>
         <li><b>Keep the lift usable.</b> Its hand pump and emergency release must stay reachable with the bed in place.</li>
         <li><b>Cook outside</b> on the pulled-out drawer, never under the bed deck with the door shut.</li>
@@ -331,7 +334,7 @@ const FIELDS = [
     {id:'L', l:'Floor length', d:2555, h:'From the back of the front seats (or the bulkhead) to the inside of the rear doors.'},
     {id:'W', l:'Width at floor', d:1700, h:'Wall lining to wall lining just above the floor, ahead of the wheel arches.'},
     {id:'Wbed', l:'Width at bed height', d:1660, h:'The same, about 55 cm up. The walls lean in as they rise.'},
-    {id:'roofH', l:'Floor to ceiling', d:1400, h:'Floor to the ceiling lining above the bed area.'},
+    {id:'roofH', l:'Floor to ceiling', d:1700, h:'Floor to the ceiling lining above the bed area.'},
     {id:'floorGround', l:'Floor above ground', d:550, h:'Ground to the van floor at the sliding door.'},
   ]},
   {g:'Rear wheel arches', items:[
@@ -360,7 +363,7 @@ const FIELDS = [
     {id:'seatClear', l:'Gap above it', d:30},
   ]},
   {g:'Floor rails', items:[
-    {id:'rails', type:'text', l:'Rail centres from right wall', d:'220, 600, 1100, 1480', h:'Centre of each rail, measured from the door-side wall lining. Separate with commas.'},
+    {id:'rails', type:'text', l:'Rail centres from right wall', d:'550, 850, 1200, 1550', h:'Centre of each rail, measured from the door-side wall lining. Separate with commas. The examples are guesses from photos.'},
   ]},
   {g:'Bed', items:[
     {id:'bedStart', l:'Starts at', d:40, h:'Gap behind the front seats so they can still recline a little.'},
@@ -368,7 +371,7 @@ const FIELDS = [
     {id:'matW', l:'Mattress width', d:1400},
     {id:'matT', l:'Mattress thickness', d:100},
     {id:'deckT', l:'Deck board', d:18},
-    {id:'extraH', l:'Raise bed by', d:0, h:'Extra height for taller drawers. Every millimetre comes off the headroom.'},
+    {id:'extraH', l:'Raise bed by', d:50, h:'Extra height above the seat, here so the water containers fit standing up. Every millimetre comes off the headroom.'},
   ]},
   {g:'Drawers', items:[
     {id:'nDraw', type:'select', l:'Side by side', d:2, opts:[[1,'1 drawer'],[2,'2 drawers'],[3,'3 drawers']]},
@@ -377,6 +380,14 @@ const FIELDS = [
     {id:'slideT', l:'Slide thickness', d:19, h:'Heavy-duty locking slides take about 19 mm on each side.'},
     {id:'doorMargin', l:'Clearance at door pillars', d:25},
     {id:'baseClear', l:'Battens under cabinet', d:20, h:'Lifts the cabinet base clear of the rail fittings.'},
+  ]},
+  {g:'Water containers', items:[
+    {id:'waterN', type:'select', l:'Containers', d:2, opts:[[0,'None'],[1,'1 container'],[2,'2 containers']]},
+    {id:'waterWhere', type:'select', l:'Where', d:'drawer', opts:[['drawer','In the rear drawer'],['store','Behind the drawers']], h:'In a drawer you can reach the tap and refill without moving the mattress. Behind the drawers you need a pump and a hose.'},
+    {id:'waterL', l:'Capacity', d:35, u:'L'},
+    {id:'waterH', l:'Height', d:470},
+    {id:'waterW', l:'Width', d:420},
+    {id:'waterD', l:'Depth', d:240, h:'Size of one container. The tap usually sticks out a few centimetres more.'},
   ]},
   {g:'Material', items:[
     {id:'ply', type:'select', l:'Plywood', d:'poplar18', opts:[['poplar15','Poplar 15 mm, lightest'],['poplar18','Poplar 18 mm'],['birch18','Birch 18 mm, strongest']]},
@@ -406,7 +417,7 @@ function buildForm(){
       let ctl;
       if (it.type === 'select') ctl = `<select id="${id}" data-k="${it.id}">${it.opts.map(([v,l]) => `<option value="${v}">${l}</option>`).join('')}</select>`;
       else if (it.type === 'text') ctl = `<input id="${id}" data-k="${it.id}" type="text" inputmode="decimal" spellcheck="false">`;
-      else ctl = `<span class="num"><input id="${id}" data-k="${it.id}" type="number" inputmode="numeric" min="0" step="1"></span>`;
+      else ctl = `<span class="num" data-unit="${it.u || 'mm'}"><input id="${id}" data-k="${it.id}" type="number" inputmode="numeric" min="0" step="1"></span>`;
       h += `<div class="field${it.type === 'text' ? ' wide' : ''}"><label for="${id}">${it.l}</label>${ctl}${it.h ? `<p class="hint">${it.h}</p>` : ''}</div>`;
     });
     h += `</fieldset>`;
@@ -418,7 +429,7 @@ function fillForm(){
 }
 function readField(el){
   const k = el.dataset.k, it = ITEMS[k];
-  if (it.type === 'text' || k === 'ply') p[k] = el.value;
+  if (it.type === 'text' || typeof it.d === 'string') p[k] = el.value;
   else { const v = parseFloat(el.value); if (isFinite(v)) p[k] = v; }
 }
 
@@ -483,6 +494,46 @@ function compute(p){
   g.legH = g.deckUnder - 40 - 25;
   g.nd = p.nDraw * p.rows;
 
+  // water containers: standing up in the rear drawer (bottom row), or behind the drawers
+  const wn = +p.waterN || 0;
+  g.waterBoxes = []; g.waterKg = wn * (p.waterL + 1.5); g.waterPerDrawer = 0;
+  g.waterInDrawer = p.waterWhere !== 'store'; g.waterFits = true; g.waterSpare = 0;
+  if (wn > 0) {
+    const inD = g.waterInDrawer;
+    const iw = inD ? g.bw - 24 : g.rearComp;
+    const il = inD ? p.slideLen - 24 : g.Zc - 2 * t;
+    const zb = inD ? p.baseClear + t + 17 : p.baseClear + t;
+    const top = inD ? (p.rows === 1 ? g.deckUnder - t : p.baseClear + t + g.rowH + 8) : g.deckUnder;
+    g.waterSpare = top - zb - p.waterH - 10;
+    let o = null;
+    for (const c of [{across:p.waterD, along:p.waterW}, {across:p.waterW, along:p.waterD}]) {
+      c.na = Math.max(0, Math.floor((iw + 10) / (c.across + 10)));
+      c.nl = Math.max(0, Math.floor((il + 10) / (c.along + 10)));
+      c.cap = c.na * c.nl;
+      if (!o || c.cap > o.cap) o = c;
+    }
+    let left = wn;
+    if (inD) {
+      g.waterPerDrawer = Math.min(wn, o.cap);
+      for (let i = p.nDraw - 1; i >= 0 && left > 0; i--) {
+        const x0 = g.zoneStart + t + i * (g.bay + t) + p.slideT + 12 + (iw - o.na * (o.across + 10) + 10) / 2;
+        for (let a = 0; a < o.na && left > 0; a++) for (let l = 0; l < o.nl && left > 0; l++, left--) {
+          const x = x0 + a * (o.across + 10), y = g.yCarc + 12 + l * (o.along + 10);
+          g.waterBoxes.push({x0:x, x1:x + o.across, y0:y, y1:y + o.along, z0:zb, drawer:i});
+        }
+      }
+    } else {
+      for (let a = 0; a < o.na && left > 0; a++) for (let l = 0; l < o.nl && left > 0; l++, left--) {
+        const x = g.zoneStart + t + 10 + l * (o.along + 10), y = g.yBackEnd + 10 + a * (o.across + 10);
+        g.waterBoxes.push({x0:x, x1:x + o.along, y0:y, y1:y + o.across, z0:zb, drawer:null});
+      }
+    }
+    g.waterFits = left === 0;
+  }
+  const wDrawers = new Set(g.waterBoxes.map(b => b.drawer)).size;
+  g.waterWhereText = !g.waterInDrawer ? 'behind the drawers' : wDrawers > 1 ? 'in the drawers' : 'in the rear drawer';
+  g.slideRating = Math.max(100, Math.ceil((g.waterPerDrawer * (p.waterL + 1.5) + 20) * 1.5 / 10) * 10);
+
   /* checks */
   const C = []; const add = (lvl, txt) => C.push({lvl, txt});
   const spare = g.bedAvail - p.matL;
@@ -510,6 +561,16 @@ function compute(p){
   const nCab = g.anchors.filter(a => a.kind === 'cab').length;
   if (na && na < 6) add('warn', `Only ${na} rail anchor points. Aim for at least 6 on a kit this heavy.`);
   else if (na) add('ok', `${na} rail anchor points: ${nCab} under the drawer cabinet and ${na - nCab} under the bed frame legs.`);
+  if (wn > 0) {
+    const what = wn === 1 ? 'The water container' : 'Both water containers';
+    if (!g.waterFits) add('bad', `Only ${g.waterBoxes.length} of the ${wn} water containers fit ${g.waterWhereText}. Try the other place, or ${g.waterInDrawer ? 'fewer, wider drawers' : 'shorter drawers'}.`);
+    else if (g.waterSpare < 0 && g.waterInDrawer && p.rows > 1) add('bad', 'With two rows of drawers the water containers can’t stand up. Use one row, or keep the water behind the drawers.');
+    else if (g.waterSpare < 0) add('bad', `The water containers are ${fmt(-g.waterSpare)} mm too tall to stand ${g.waterWhereText}. Set “Raise bed by” to at least ${fmt(p.extraH - g.waterSpare)} mm.`);
+    else add('ok', `${what} (${fmt(wn * p.waterL)} L) fit standing up ${g.waterWhereText}, with ${fmt(g.waterSpare + 10)} mm to spare above.`);
+    const axles = g.zoneEnd < p.archStart + p.archLen / 2 ? ', low down and between the axles, a good place for that weight' : '';
+    if (g.waterInDrawer) add('info', `Full, the water weighs about ${fmt(g.waterKg)} kg${axles}. Cut a notch in the drawer front for the tap, and strap the containers down so they can’t slide.`);
+    else add('info', `Full, the water weighs about ${fmt(g.waterKg)} kg${axles}. Behind the drawers it can only be reached by lifting the mattress, so plan on a hand or 12 V pump with a hose to the kitchen drawer.`);
+  }
   add('info', `Pulled out, the top drawer is about ${fmt(g.drawerTopGround)} mm above the ground. Kitchen worktops are about 900 mm.`);
   g.checks = C;
 
@@ -556,7 +617,7 @@ function scoped(id, px){
 #${id} .ts{font-size:${w(9.5)}px}
 #${id} .tl{font-size:${w(13)}px;letter-spacing:${w(1)}px}
 #${id} .wall{stroke-width:${w(2)}}
-#${id} .thin,#${id} .dim,#${id} .arch,#${id} .seat,#${id} .ply,#${id} .plylt,#${id} .face,#${id} .drawer,#${id} .alu,#${id} .mat,#${id} .matS,#${id} .lift,#${id} .cabz{stroke-width:${w(1)}}
+#${id} .thin,#${id} .dim,#${id} .arch,#${id} .seat,#${id} .ply,#${id} .plylt,#${id} .face,#${id} .drawer,#${id} .alu,#${id} .mat,#${id} .matS,#${id} .lift,#${id} .cabz,#${id} .water{stroke-width:${w(1)}}
 #${id} .rail{stroke-width:${w(2)};stroke-dasharray:${w(6)} ${w(3)}}
 #${id} .ghost,#${id} .bedo{stroke-width:${w(1)};stroke-dasharray:${w(4)} ${w(3)}}
 #${id} .door{stroke-width:${w(3.5)};stroke-dasharray:${w(8)} ${w(4)}}
@@ -621,7 +682,13 @@ function viewTop(g, p, cw){
       s += R(bx0, bx1, g.yCarc, g.yCarc + p.slideLen, 'drawer') + R(fx0, fx1, g.yFace, g.yCarc, 'face');
     }
   }
-  if (open) s += Tx((g.zoneStart + g.zoneEnd) / 2, g.yCarc - p.slideLen / 2, 'DRAWERS OUT', 'ts tk');
+  const freeDrawer = [...Array(p.nDraw).keys()].find(i => !g.waterBoxes.some(b => b.drawer === i));
+  if (open) s += Tx(g.zoneStart + ((freeDrawer ?? 0) + 0.5) * g.Zc / p.nDraw, g.yCarc - p.slideLen / 2, p.nDraw > 1 && freeDrawer !== undefined ? 'KITCHEN' : 'DRAWERS OUT', 'ts tk');
+  g.waterBoxes.forEach(b => {
+    const dy = b.drawer !== null && open && p.rows === 1 ? -p.slideLen : 0;
+    s += R(b.x0, b.x1, b.y0 + dy, b.y1 + dy, 'water', `rx="${n(15)}"`);
+    s += Tx((b.x0 + b.x1) / 2, (b.y0 + b.y1) / 2 + dy, `${fmt(p.waterL)} L`, 'ts tk');
+  });
   // bed and mattress
   s += R(p.bedStart, g.bedEnd, g.dB, p.W - g.dB, 'bedo');
   const mx0 = p.bedStart + 10, mx1 = mx0 + p.matL, my0 = (p.W - p.matW) / 2, my1 = (p.W + p.matW) / 2;
@@ -738,6 +805,11 @@ function viewSec(g, p, cw){
       s += R(g.yCarc, g.yCarc + p.slideLen, z0, z1, 'drawer') + R(g.yFace, g.yCarc, f0, f1, 'face');
     }
   }
+  g.waterBoxes.forEach((b, k) => {
+    const dy = b.drawer !== null && p.rows === 1 ? -p.slideLen : 0;
+    s += R(b.y0 + dy, b.y1 + dy, b.z0, b.z0 + p.waterH, 'water', `rx="${n(15)}"`);
+    if (k === 0) s += Tx((b.y0 + b.y1) / 2 + dy, b.z0 + p.waterH / 2, 'WATER', 'ts tk');
+  });
   g.rails.forEach(y => s += R(y - 14, y + 14, -8, 0, 'anchor'));
   // worktop reference and dimensions
   const outerY = g.yFace - p.slideLen;
@@ -764,7 +836,7 @@ function render(){
     stat('Bed surface', fmt(g.matTop), 'mm', `above the floor, deck at ${fmt(g.deckTop)}`) +
     stat('Drawers', `${g.nd} × ${fmt(p.slideLen)}`, 'mm', `boxes ${fmt(g.bw)} wide, ${fmt(g.hb)} high`, g.rearComp < 0 || g.bw < 200 ? 'bad' : '') +
     stat('Pull-out reach', fmt(g.reach), 'mm', 'outside the wall line, fully open') +
-    stat('Kit weight', `≈ ${fmt(g.kgTotal)}`, 'kg', 'with mattress, before contents');
+    stat('Kit weight', `≈ ${fmt(g.kgTotal)}`, 'kg', g.waterKg ? `plus ${fmt(g.waterKg)} kg of water when full` : 'with mattress, before contents');
   const PL = {ok:'OK', warn:'CHECK', bad:'FIX', info:'NOTE'};
   const order = {bad:0, warn:1, ok:2, info:3};
   $('#checks').innerHTML = g.checks.slice().sort((a, b) => order[a.lvl] - order[b.lvl]).map(c => `<li><span class="pill p-${c.lvl}">${PL[c.lvl]}</span><span>${c.txt}</span></li>`).join('');
@@ -784,6 +856,7 @@ function render(){
     ['Drawer fronts', `${fmt(g.fw)} × ${fmt(g.fh)}`],
     ['Storage behind', g.rearComp > 0 ? `${fmt(g.Zc - 2 * g.t)} × ${fmt(g.rearComp)} × ${fmt(g.Hbay)}` : 'none'],
     ['Bed frame', g.beams.length ? `${g.beams.length} long beams, ${g.cross.length} cross beam${g.cross.length > 1 ? 's' : ''}, ${legs} legs` : 'deck rests on the cabinet'],
+    ['Water', +p.waterN ? `${p.waterN} × ${fmt(p.waterL)} L ${g.waterWhereText}` : 'none'],
     ['Drawer top', `${fmt(g.drawerTopGround)} above ground`],
     ['Rail anchors', `${g.anchors.length} fittings`],
   ];
@@ -808,8 +881,9 @@ function render(){
 
   const joints = legs * 2 + g.cross.length * 2 + g.beams.length * 2;
   const hw = [
-    [`${g.nd} pairs`, `Drawer slides, ${fmt(p.slideLen)} mm, full extension, lock-in and lock-out, rated 100 kg or more at this length`],
-    [`${g.anchors.length}`, 'Seat-rated rail stud fittings that match the van’s rail system, with nuts and washers'],
+    [`${g.nd} pairs`, `Drawer slides, ${fmt(p.slideLen)} mm, full extension, lock-in and lock-out, rated ${g.slideRating} kg or more at this length`],
+    +p.waterN ? [`${p.waterN}`, `Water containers, ${fmt(p.waterL)} L with tap, ${fmt(p.waterH)} × ${fmt(p.waterW)} × ${fmt(p.waterD)} mm, plus a strap to hold them down`] : null,
+    [`${g.anchors.length}`, 'Seat-rated quick-release rail fittings, the same type the seats use'],
     ['3', `Pine battens 40 × 20 × ${fmt(g.Zc)} mm under the cabinet, notched over the fittings`],
     joints ? [`${joints * 2}`, 'Corner brackets with T-nuts for the 40 mm profile'] : null,
     [`${g.nd}`, 'Flush or recessed drawer pulls, so nothing snags in the door opening'],
@@ -843,11 +917,11 @@ $('#reset').addEventListener('click', () => {
   $('#status').textContent = 'Example values restored.';
 });
 function measurementText(){
-  const lines = ['Transit Custom camp kit: measurements (mm)'];
+  const lines = ['Transit Custom camp kit: measurements'];
   FIELDS.forEach(gr => { lines.push('', gr.g); gr.items.forEach(it => {
     let v = p[it.id];
     if (it.type === 'select') { const o = it.opts.find(([k]) => String(k) === String(v)); v = o ? o[1] : v; }
-    lines.push(`- ${it.l}: ${v}`);
+    lines.push(`- ${it.l}: ${v}${it.type ? '' : ' ' + (it.u || 'mm')}`);
   }); });
   return lines.join('\n');
 }

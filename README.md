@@ -6,10 +6,11 @@ Plans for turning a Ford Transit Custom Kombi with a wheelchair lift into a week
 
 ## The van
 
-- Ford Transit Custom **Kombi** (the passenger version), built in 2023 and converted for wheelchair users.
-- A **wheelchair lift** folds up inside the rear doors, so the back of the van can't be used for loading or for a kitchen.
-- A **seat** on the right, just behind the sliding door, is fixed and can't be removed. It folds closed, and folded it is low enough to build a bed over.
-- **Two pairs of floor rails** run along the floor, used for anchoring seats and wheelchairs.
+- Ford Transit Custom **Kombi** (the passenger version) with the **high roof**, built in 2023 and converted for wheelchair users.
+- A two-pillar **wheelchair lift** (rated 400 kg) folds up inside the rear doors, so the back of the van can't be used for loading or for a kitchen.
+- **Two pairs of floor rails** run the length of the floor: one pair under the seats along the left wall, and one pair down the middle for strapping in a wheelchair.
+- The **two seats along the left wall** sit on quick-release bases in the rails, so they come out for camping.
+- The **seat on the right**, behind the sliding door, is fixed and can't be removed. It folds closed, and folded it is low enough to build a bed over.
 
 ## The idea
 
@@ -17,8 +18,9 @@ A removable kit that bolts to the floor rails that are already there:
 
 - A **bed** that runs front to back, from behind the front seats to just in front of the folded lift, built over the closed seat.
 - A **drawer unit** under the bed, lined up with the sliding door. The drawers pull out sideways through the door, which makes an outdoor kitchen and storage that are easy to reach.
-- A **storage compartment** behind the drawers, along the left wall, reached by lifting a deck panel. It suits a leisure battery, a water can or bedding.
-- **No drilling.** Everything is held by seat-rated fittings in the existing rails, so the wheelchair conversion stays as it was approved, and the kit comes out when the van is needed for the wheelchair.
+- **Water** in one or two 35 L containers with taps (47 × 42 × 24 cm). They stand in the rear drawer, so pulling the drawer out brings the tap to you, and the containers can be lifted out from above to refill.
+- A **storage compartment** behind the drawers, along the left wall, reached by lifting a deck panel. It suits a leisure battery or bedding.
+- **No drilling.** Everything is held in the existing rails by seat-rated quick-release fittings, the same type the seats already use. The wheelchair conversion stays as it was approved, and the kit comes out when the van is needed for the wheelchair.
 
 Seen from above, with the front on the right:
 
@@ -28,7 +30,7 @@ Seen from above, with the front on the right:
   |        |                          +---------+ |        |
   |  lift  |       bed over the       | storage | |  front |
   |(folded)|       whole floor        +---------+ |  seats |
-  |        |  +-------------+         | drawers | |        |
+  |        |  +-------------+         |water|kit| |        |
   |        |  | seat, closed|         |  v   v  | |        |
   +--------+--+-------------+---------+---------+-+--------+
                                    < sliding door >
@@ -40,7 +42,7 @@ Seen from above, with the front on the right:
 The planner is a single web page. Type in the van's measurements and it redraws everything to scale:
 
 - a **plan**, a **side view** and a **cross-section** through the drawers
-- **checks** that flag problems: a mattress that doesn't fit, too little headroom, drawers that are too long, the seat in the way, missing anchor points
+- **checks** that flag problems: a mattress that doesn't fit, too little headroom, drawers that are too long, water containers that don't fit, the seat in the way, missing anchor points
 - a **cut list** for the plywood and the aluminium frame, with a sheet count
 - a **hardware list** and a **weight estimate**
 
@@ -52,7 +54,7 @@ The measurements that matter most, in order:
 2. **Floor to ceiling** above the bed area.
 3. **The folded lift's depth** inside the van, including arms, handles and the hand pump.
 4. **Floor length** from the back of the front seats to the rear doors.
-5. **Where the rails are**, measured from the door-side wall, plus a photo of a rail fitting so matching ones can be bought.
+5. **Where the rails are**, measured from the door-side wall, plus the make of the seats' quick-release fittings so matching ones can be bought.
 6. **The sliding door opening**: where it starts, how wide it is, and how far the closed door reaches inside.
 7. **The wheel arches**: where they start, how long and how high.
 
@@ -60,18 +62,20 @@ The measurements that matter most, in order:
 
 ## What the example numbers show
 
-With the example values (low roof, seat about 48 cm high when closed, 10 cm mattress):
+With the example values (high roof, seat about 48 cm high when closed, bed raised 5 cm above it, 10 cm mattress):
 
 - A 190 × 140 cm mattress fits, with room to spare in front of the lift.
-- Two 1 m drawers fit under the bed, with a storage compartment about 57 cm deep behind them.
-- When pulled out, the drawer top is about 1 m off the ground, a comfortable height for cooking outside.
-- **Headroom is the weak point.** There are only about 77 cm from the mattress to the ceiling, and most adults need 85–90 cm to sit upright. Fine for sleeping, a slouch for sitting. A high-roof van doesn't have this problem.
-- The whole kit weighs roughly 100 kg in 18 mm plywood. 15 mm poplar and lightening holes bring it down a lot.
+- **Headroom is fine thanks to the high roof.** There's about 1 m from the mattress to the ceiling, so you can sit up in bed. Most adults need 85–90 cm.
+- Two 1 m drawers fit under the bed, about 48 cm high. The rear one holds **both 35 L water containers** standing up; the front one is the kitchen.
+- A storage compartment about 57 cm deep sits behind the drawers.
+- When pulled out, the drawer top is about 1.08 m off the ground, a bit above a kitchen worktop (90 cm).
+- The kit weighs roughly 110 kg in 18 mm plywood, plus about 73 kg of water when full. The water sits low and between the axles, which is the right place for it, but the water drawer needs slides rated around 140 kg. 15 mm poplar and lightening holes bring the kit weight down a lot.
 
 ## Building it safely
 
-- **Anchor only to the rails**, with seat-rated fittings that match the rail system. Seat anchorages are tested at 20 g, so even a 70 kg kit can push forward with more than a tonne in a crash.
+- **Anchor only to the rails**, with seat-rated quick-release fittings of the same type the seats use. Seat anchorages are tested at 20 g, so even a 70 kg kit can push forward with more than a tonne in a crash.
 - **Use locking drawer slides**: they lock shut for driving and lock open on a slope while cooking.
+- **Strap the water containers down** inside their drawer. Full, each one is a 36 kg block.
 - **Keep the lift usable.** Its hand pump and emergency release must stay reachable with the bed in place.
 - **Cook outside**, on the pulled-out drawer.
 - **Ventilate under the mattress** (holes in the deck or an anti-condensation mat) to keep mould away.
