@@ -1,5 +1,10 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Interactive planner for a removable bed and side-door slide-out drawers in a wheelchair-accessible Ford Transit Custom with a rear lift.">
 <title>Transit Custom Camp Kit</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -49,7 +54,9 @@
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+img{max-width:100%}
+[hidden]{display:none!important}
 .wrap{max-width:1440px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px;display:grid;gap:32px}
 h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
 h1{font-size:clamp(34px,5vw,52px);font-weight:700;letter-spacing:.005em}
@@ -178,9 +185,12 @@ tr.tot td{font-weight:600;border-bottom:0}
 .notes ol,.notes ul{margin:0;padding-left:20px;display:grid;gap:8px;max-width:68ch}
 .notes li::marker{color:var(--accent);font-family:var(--f-mono)}
 .notes b{font-weight:600}
+.foot{border-top:1px solid var(--rule);padding-top:14px;font-size:13px;color:var(--muted)}
+.foot a{color:var(--accent)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
-
+</head>
+<body>
 <div class="wrap">
   <header class="mast">
     <div class="intro">
@@ -289,6 +299,10 @@ tr.tot td{font-weight:600;border-bottom:0}
       </ul>
     </div>
   </section>
+
+  <footer class="foot">
+    <p>Your measurements stay in this browser only. Source and notes on <a href="https://github.com/balexandre/ford-custom-camping">GitHub</a>.</p>
+  </footer>
 </div>
 
 <script>
@@ -841,7 +855,7 @@ $('#copy').addEventListener('click', () => {
   const txt = measurementText(), box = $('#copybox');
   const fallback = () => { box.hidden = false; box.value = txt; box.focus(); box.select(); $('#status').textContent = 'Select all and copy the text below.'; };
   try {
-    navigator.clipboard.writeText(txt).then(() => { box.hidden = true; $('#status').textContent = 'Measurements copied. Paste them into your chat with Claude.'; }, fallback);
+    navigator.clipboard.writeText(txt).then(() => { box.hidden = true; $('#status').textContent = 'Measurements copied to the clipboard.'; }, fallback);
   } catch (e) { fallback(); }
 });
 
@@ -857,3 +871,5 @@ if ('ResizeObserver' in window) {
 }
 })();
 </script>
+</body>
+</html>
