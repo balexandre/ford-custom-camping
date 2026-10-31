@@ -41,6 +41,7 @@ Seen from above, with the front on the right:
 
 The planner is a single web page. Type in the van's measurements and it redraws everything to scale:
 
+- a **3D view** you can turn and zoom, with the drawers in or out, and the bed hidden to show the frame and drawers underneath
 - a **plan**, a **side view** and a **cross-section** through the drawers
 - **checks** that flag problems: a mattress that doesn't fit, too little headroom, drawers that are too long, water containers that don't fit, the seat in the way, missing anchor points
 - a **cut list** for the plywood and the aluminium frame, with a sheet count
@@ -85,7 +86,7 @@ With the example values (high roof, seat about 48 cm high when closed, bed raise
 
 | File | What it is |
 | --- | --- |
-| `index.html` | The planner. One self-contained page, no build step. Open it in a browser or serve it with GitHub Pages. |
+| `index.html` | The planner. One page, no build step. Open it in a browser or serve it with GitHub Pages. The 3D view loads three.js from the jsDelivr CDN. |
 | `README.md` | This file. |
 
 This is a planning aid, not an engineering sign-off. Check every size against the real van before cutting anything, and ask the company that did the wheelchair conversion before attaching anything to its rails.
