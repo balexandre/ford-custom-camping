@@ -176,6 +176,7 @@ button.small{padding:6px 10px;font-size:13px}
 .dw .ground{stroke:var(--muted);fill:none}
 .dw .ref{stroke:var(--accent);fill:none}
 .dw .gap{stroke:var(--paper);fill:none}
+.dw .hinge{stroke:var(--steel);fill:none}
 
 section.block{display:grid;gap:14px;min-width:0}
 .block > p{max-width:72ch;color:var(--muted)}
@@ -205,7 +206,7 @@ tr.tot td{font-weight:600;border-bottom:0}
     <div class="intro">
       <p class="eyebrow">Ford Transit Custom Kombi · wheelchair lift</p>
       <h1>Transit Custom Camp Kit</h1>
-      <p class="lede">A removable bed and side-door drawer kitchen for a van whose back is taken by a wheelchair lift. The bed sits over the folded seat, the drawers slide out through the sliding door, and everything bolts to the floor rails that are already there. Nothing gets drilled, and the van goes back to wheelchair use when the kit comes out.</p>
+      <p class="lede">A removable plywood bed and side-door drawer kitchen for a van whose back is taken by a wheelchair lift. Two boxes hold the drawers and storage, a slotted deck on piano hinges folds out over the folded seat onto a slot-together support, and everything locks to the floor rails that are already there. Nothing gets drilled, it goes together without tools, and it comes out in pieces one person can carry.</p>
     </div>
     <div class="vin">
       <h2>This van</h2>
@@ -238,12 +239,13 @@ tr.tot td{font-weight:600;border-bottom:0}
           <span class="ft">3D view</span>
           <span class="fs">drag to turn · click, then scroll or pinch to zoom</span>
           <span class="ctl">
+            <label class="tog"><input type="checkbox" id="drive3d"> Folded for driving</label>
             <label class="tog"><input type="checkbox" id="open3d" checked> Drawers pulled out</label>
             <label class="tog"><input type="checkbox" id="hidebed"> Hide bed</label>
             <button type="button" id="view3d" class="quiet small">Reset view</button>
           </span>
         </figcaption>
-        <div class="box3d" id="box-3d" role="img" aria-label="3D model of the van interior with the bed, drawers, water containers, seat and lift"></div>
+        <div class="box3d" id="box-3d" role="img" aria-label="3D model of the van interior with the drawer and storage boxes, bed beams, rear support, deck, water containers, seat and lift"></div>
       </figure>
 
       <figure class="fig">
@@ -255,7 +257,8 @@ tr.tot td{font-weight:600;border-bottom:0}
         <div class="svgbox" id="box-top"></div>
         <div class="legend">
           <span><i class="sw" style="background:var(--ply)"></i>Plywood</span>
-          <span><i class="sw" style="background:var(--steel-fill)"></i>Aluminium frame / wheel arch</span>
+          <span><i class="sw" style="background:var(--steel-fill)"></i>Wheel arch</span>
+          <span><svg width="22" height="6" aria-hidden="true"><line x1="0" y1="3" x2="22" y2="3" stroke="var(--steel)" stroke-width="2" stroke-dasharray="2 2"/></svg>Deck split and hinges</span>
           <span><i class="sw" style="background:var(--seat)"></i>Seat, closed</span>
           <span><i class="sw" style="background:var(--mat);opacity:.6"></i>Mattress</span>
           <span><i class="sw" style="background:var(--water);opacity:.6"></i>Water container</span>
@@ -307,6 +310,7 @@ tr.tot td{font-weight:600;border-bottom:0}
         <li><b>Rail centres</b> from the door-side wall, plus the make of the seats' quick-release fittings, so you can buy matching ones.</li>
         <li><b>Sliding door opening</b>: where it starts, how wide it is, and how far the closed door reaches inside.</li>
         <li><b>Wheel arches</b>: where they start, how long and how high.</li>
+        <li><b>The seat unfolded</b>: how far forward its backrest and cushion reach, if you want to use it with the bed folded away.</li>
       </ol>
     </div>
     <div>
@@ -316,8 +320,11 @@ tr.tot td{font-weight:600;border-bottom:0}
         <li><b>Use locking slides.</b> Lock-in keeps the drawers shut on the road; lock-out keeps them open on a slope while you cook.</li>
         <li><b>Keep the lift usable.</b> Its hand pump and emergency release must stay reachable with the bed in place.</li>
         <li><b>Cook outside</b> on the pulled-out drawer, never under the bed deck with the door shut.</li>
-        <li><b>Ventilate the mattress.</b> Drill 35 mm holes on a 150 mm grid in the deck or use an anti-condensation mat, or mould will grow under it.</li>
-        <li><b>Build in modules</b> (drawer cabinet, aluminium frame, deck panels) so two people can take the kit out. Lightening holes in the big cabinet panels save several kilos.</li>
+        <li><b>Slot the deck.</b> Cut 30 × 200 mm slots between the beams, keeping 60 mm solid over each beam and along the edges. They save weight and let the mattress breathe. Add an anti-condensation mat in cold weather.</li>
+        <li><b>No tools to set up.</b> The bed beams drop into slots in the boxes and the rear support. The storage box joins the drawer box with wing nuts, and ring pins set the height of the support's feet in 25 mm steps, to level the bed or fit a deeper lift.</li>
+        <li><b>Fold it for driving.</b> In each deck half, the front panel covers the boxes and the rear panels fold onto it like a Z: put the hinge between the front panel and the next one on top, and the next hinge underneath. Lay the support and beams flat on the folded panels, fold the mattress over them and strap the stack to the rails. The boxes stay closed, and the floor behind them is free.</li>
+        <li><b>The storage lid.</b> The front panel of the wall-side half lifts at its front edge like a lid, pivoting on its hinge, to reach the storage box.</li>
+        <li><b>Lift it out in pieces.</b> Take the drawers out before lifting the drawer box. Every other piece is light enough for one person.</li>
         <li><b>Paperwork.</b> A removable kit held by the existing rails is normally treated as secured load. A permanent motorhome conversion needs approval, so check with your vehicle authority before fixing anything permanently.</li>
       </ul>
     </div>
@@ -399,9 +406,10 @@ const FIELDS = [
     {id:'nDraw', type:'select', l:'Side by side', d:2, opts:[[1,'1 drawer'],[2,'2 drawers'],[3,'3 drawers']]},
     {id:'rows', type:'select', l:'Stacked', d:1, opts:[[1,'1 row'],[2,'2 rows']]},
     {id:'slideLen', l:'Drawer length', d:1000, h:'Same as the slide length. Slides come in 50 mm steps.'},
+    {id:'sideH', l:'Drawer side height', d:250, h:'Low sides keep the drawers light. The drawer front stays full height, so strap tall things like the water containers to it.'},
     {id:'slideT', l:'Slide thickness', d:19, h:'Heavy-duty locking slides take about 19 mm on each side.'},
     {id:'doorMargin', l:'Clearance at door pillars', d:25},
-    {id:'baseClear', l:'Battens under cabinet', d:20, h:'Lifts the cabinet base clear of the rail fittings.'},
+    {id:'baseClear', l:'Battens under boxes', d:20, h:'Lifts the box bases clear of the rail fittings.'},
   ]},
   {g:'Water containers', items:[
     {id:'waterN', type:'select', l:'Containers', d:2, opts:[[0,'None'],[1,'1 container'],[2,'2 containers']]},
@@ -473,10 +481,11 @@ function compute(p){
   g.bedAvail = g.bedMaxEnd - p.bedStart;
   g.bedLen = Math.max(0, Math.min(p.matL + 20, g.bedAvail));
   g.bedEnd = p.bedStart + g.bedLen;
-  g.Hc = g.deckUnder - p.baseClear - t;      // cabinet side panels
+  g.Hc = g.deckUnder - p.baseClear - t;      // box side panels
   g.Hbay = g.Hc - t;                          // clear height under the top rail
   g.rowH = g.Hbay / p.rows;
-  g.hb = g.rowH - 25;                         // drawer box height
+  g.hb = g.rowH - 25;                         // drawer box height, at the front
+  g.sideH = Math.min(g.hb, p.sideH > 0 ? p.sideH : g.hb);
   g.yFace = p.doorTrim;
   g.yCarc = g.yFace + t;
   g.yBack = g.yCarc + p.slideLen + 25;
@@ -491,30 +500,87 @@ function compute(p){
   g.reach = p.slideLen - g.yFace;
   g.drawerTop = p.baseClear + t + (p.rows - 1) * g.rowH + 8 + g.hb;
   g.drawerTopGround = p.floorGround + g.drawerTop;
+  g.store = g.rearComp >= 150;                // separate storage box along the left wall
 
-  // aluminium frame behind the cabinet
+  // rail anchors under the drawer box and the storage box
+  const ends = a => a.length ? [...new Set([a[0], a[a.length - 1]])] : [];
+  const railsIn = (a, b) => g.rails.filter(y => y > a + 30 && y < b - 30);
+  g.anchors = [];
+  g.boxRails = ends(railsIn(g.yCarc, g.yBackEnd));
+  const sr = g.store ? railsIn(g.yBackEnd, g.yCabEnd) : [];
+  g.storeRails = sr.length ? [sr[sr.length - 1]] : [];
+  for (const x of [g.zoneStart + 60, g.zoneEnd - 60]) {
+    g.boxRails.forEach(y => g.anchors.push({x, y, kind:'box'}));
+    g.storeRails.forEach(y => g.anchors.push({x, y, kind:'store'}));
+  }
+
+  // plywood bed beams, slotted into the boxes and a rear support standing on the rails
+  g.jD = 120;                                 // bed beam depth
+  g.tbD = 150;                                // rear support beam depth
   g.rearLen = g.bedEnd - g.zoneEnd;
   g.seatUnderRear = p.seatStart < g.bedEnd && p.seatStart + p.seatLen > g.zoneEnd;
   const bR = g.seatUnderRear ? p.seatDepth + 30 : g.dB + 30, bL = p.W - g.dB - 30;
-  g.beams = g.rearLen > 150 ? (bL - bR > 900 ? [bR, (bR + bL) / 2, bL] : [bR, bL]) : [];
-  g.cross = []; g.anchors = [];
-  const cab = g.rails.filter(y => y > g.yCarc + 30 && y < g.yCabEnd - 30);
-  g.cabRails = cab.length ? [...new Set([cab[0], cab[cab.length - 1]])] : [];
-  for (const y of g.cabRails) for (const x of [g.zoneStart + 60, g.zoneEnd - 60]) g.anchors.push({x, y, kind:'cab'});
-  if (g.rearLen > 150) {
-    const k = Math.max(1, Math.ceil(g.rearLen / 900));
+  const gaps = Math.max(1, Math.ceil((bL - bR) / 500));
+  g.joists = g.rearLen > 150 ? Array.from({length:gaps + 1}, (_, i) => bR + (bL - bR) * i / gaps) : [];
+  g.jx0 = g.zoneEnd - t; g.jx1 = g.bedEnd - 10; g.jLen = g.jx1 - g.jx0;
+  g.footH = g.deckUnder - 85;                 // foot plate, above its shoe
+  g.trestles = [];
+  if (g.joists.length) {
+    const span = g.bedEnd - 70 - g.zoneEnd;
+    const k = Math.max(1, Math.ceil(span / 1100));
     for (let i = 1; i <= k; i++) {
-      const x = g.zoneEnd + g.rearLen * i / k - 20;
-      const overSeat = x + 20 > p.seatStart && x - 20 < p.seatStart + p.seatLen;
-      const y0 = overSeat ? p.seatDepth + 10 : g.dB + 10, y1 = p.W - g.dB - 10;
-      const ok = g.rails.filter(y => y > y0 + 20 && y < y1 - 20);
-      const legs = ok.length ? [...new Set([ok[0], ok[ok.length - 1]])] : [];
-      g.cross.push({x, y0, y1, legs, overSeat});
-      legs.forEach(y => g.anchors.push({x, y, kind:'leg'}));
+      const x = g.zoneEnd + span * i / k;
+      const over = (a, b, s, l) => b > s && a < s + l;
+      const beamOverSeat = over(x - 9, x + 9, p.seatStart, p.seatLen);
+      const footOverSeat = over(x - 200, x + 40, p.seatStart, p.seatLen);
+      const footOverArch = over(x - 200, x + 40, p.archStart, p.archLen);
+      const y0 = beamOverSeat ? p.seatDepth + 10 : g.dB + 10, y1 = p.W - g.dB - 10;
+      const ok = g.rails.filter(y => y > y0 + 100 && y < y1 - 100
+        && !(footOverSeat && y < p.seatDepth + 100)
+        && !(footOverArch && (y < g.aw + 100 || y > p.W - g.aw - 100)));
+      const legs = ends(ok);
+      g.trestles.push({x, y0, y1, legs});
+      legs.forEach(y => g.anchors.push({x:x - 80, y, kind:'leg'}));
     }
   }
-  g.legH = g.deckUnder - 80 - 25;             // cross beams sit under the long beams
   g.nd = p.nDraw * p.rows;
+
+  // deck: two halves side by side. In each, the front panel covers the boxes and the
+  // shorter panels behind it fold onto it on piano hinges, so the boxes stay closed for driving.
+  g.ySplit = p.W / 2;
+  g.halves = [[g.dB + 5, g.ySplit - 1.5], [g.ySplit + 1.5, p.W - g.dB - 5]];
+  g.halfW = g.ySplit - 1.5 - (g.dB + 5);
+  const p1End = Math.min(g.bedEnd, Math.max(p.bedStart + 300, g.zoneEnd));
+  const rest = g.bedEnd - p1End;
+  g.panels = [[p.bedStart, rest > 150 ? p1End : g.bedEnd]];
+  if (rest > 150) {
+    const k = Math.max(Math.ceil(rest / 700), Math.ceil(rest / (p1End - p.bedStart)));
+    for (let i = 0; i < k; i++) g.panels.push([p1End + rest * i / k, p1End + rest * (i + 1) / k]);
+  }
+  g.kd = g.panels.length;
+  g.stackTop = g.deckUnder + g.kd * p.deckT;  // folded for driving
+
+  // folded for driving: the rear panels lie on the front one against its back edge, and the
+  // bed beams, rear support and feet lie flat on top of them, packed in rows across the van
+  g.stow = [];
+  const fx1 = g.panels[0][1], fx0 = g.kd > 1 ? fx1 - (g.panels[1][1] - g.panels[1][0]) : g.panels[0][0];
+  const yS = g.dB + 10, yE = p.W - g.dB - 10;
+  const loose = [];
+  g.trestles.forEach(c => c.legs.forEach(() => loose.push({w:200, l:g.footH})));
+  g.trestles.forEach(c => loose.push({w:g.tbD, l:c.y1 - c.y0}));
+  g.joists.forEach(() => loose.push({w:g.jD, l:g.jLen}));
+  let z = g.stackTop, xc = fx1, rows = [];
+  loose.forEach(it => {
+    let r = rows.find(r => it.w <= r.w && r.y + it.l <= yE);
+    if (!r) {
+      if (xc - it.w < fx0 - 5 && rows.length) { z += 18; xc = fx1; rows = []; }
+      r = {x1:xc, w:it.w, y:yS}; rows.push(r); xc -= it.w + 8;
+    }
+    g.stow.push({x0:r.x1 - it.w, x1:r.x1, y0:r.y, y1:r.y + it.l, z0:z, z1:z + 18});
+    r.y += it.l + 10;
+  });
+  g.stowTop = g.stow.length ? z + 18 : g.stackTop;
+  g.driveTop = g.stowTop + 3 * p.matT;
 
   // water containers: standing up in the rear drawer (bottom row), or behind the drawers
   const wn = +p.waterN || 0;
@@ -566,23 +632,33 @@ function compute(p){
   else if (g.headroom < 880) add('warn', `${fmt(g.headroom)} mm of sitting headroom. Most adults need 850–900 mm to sit upright, so expect to slouch. Every 10 mm off the mattress or the seat gap helps.`);
   else add('ok', `${fmt(g.headroom)} mm of sitting headroom, enough to sit upright on the bed.`);
   if (g.rearComp < 0) add('bad', `The drawers are ${fmt(-g.rearComp)} mm too long for the van width. The longest that fits is ${fmt(g.maxSlide)} mm.`);
-  else if (g.rearComp < 150) add('info', `Only ${fmt(g.rearComp)} mm is left behind the drawers, too little for a storage compartment.`);
-  else add('ok', `Behind the drawers there is a ${fmt(g.rearComp)} mm deep compartment along the left wall, reached through the bed deck. Good for a leisure battery, a water can or bedding.`);
+  else if (!g.store) add('info', `Only ${fmt(g.rearComp)} mm is left behind the drawers, too little for a storage box.`);
+  else add('ok', `Behind the drawers there is room for a ${fmt(g.rearComp)} mm deep storage box along the left wall, reached by lifting the front panel of the wall-side deck half. Good for a leisure battery or bedding.`);
   if (g.bw < 200) add('warn', `Each drawer box is only ${fmt(g.bw)} mm wide. Use fewer drawers side by side.`);
   if (p.slideLen > 1200) add('warn', `Slides over 1200 mm carry a long lever when fully out. Choose slides rated 150 kg or more at that length and keep heavy things at the inner end.`);
   const ov = Math.min(g.zoneEnd, p.archStart + p.archLen) - Math.max(g.zoneStart, p.archStart);
-  if (ov > 0) add('warn', `The drawer cabinet overlaps the wheel arches by ${fmt(ov)} mm along the van. Notch the cabinet ${fmt(p.archH)} mm high around them, or keep the drawers clear of the arches.`);
+  if (ov > 0) add('warn', `The boxes overlap the wheel arches by ${fmt(ov)} mm along the van. Notch them ${fmt(p.archH)} mm high around the arches, or keep the drawers clear of them.`);
   const sov = Math.min(g.zoneEnd, p.seatStart + p.seatLen) - Math.max(g.zoneStart, p.seatStart);
   if (sov > 0 && p.seatDepth > g.yFace) add('bad', `The seat is ${fmt(sov)} mm inside the drawer zone, so the drawers would hit it.`);
   if (p.seatStart + p.seatLen > g.bedMaxEnd) add('warn', `The seat reaches ${fmt(p.seatStart + p.seatLen - g.bedMaxEnd)} mm into the lift clearance, so the bed cannot cover all of it.`);
   else if (p.seatStart + p.seatLen > g.bedEnd) add('info', `The back ${fmt(p.seatStart + p.seatLen - g.bedEnd)} mm of the seat sticks out behind the bed.`);
   if (p.sill > p.baseClear + t + 8) add('bad', `The door sill is higher than the bottom drawer. Raise the battens by ${fmt(p.sill - (p.baseClear + t + 8) + 5)} mm.`);
-  if (!g.cabRails.length) add('bad', 'No rail runs under the drawer cabinet, so it cannot be anchored. Check the rail positions.');
-  g.cross.forEach(c => { if (!c.legs.length) add('bad', `No rail clear of the seat where the bed frame needs legs, ${fmt(c.x)} mm from the front seats.`); });
+  if (!g.boxRails.length) add('bad', 'No rail runs under the drawer box, so it cannot be anchored. Check the rail positions.');
+  if (g.store && !g.storeRails.length) add('warn', 'No rail runs under the storage box. It is held only by its bolts to the drawer box, so strap it down as well.');
+  g.trestles.forEach(c => {
+    if (!c.legs.length) add('bad', `The rear support ${fmt(c.x)} mm from the front seats has no rail for its feet that is clear of the seat and the wheel arches.`);
+    else if (c.legs.length < 2) add('warn', `The rear support ${fmt(c.x)} mm from the front seats has only one rail for its feet. It needs two to stand steady.`);
+  });
+  const lowJ = g.deckUnder - g.jD;
+  const archBeam = g.joists.some(y => y < g.aw + 10 || y > p.W - g.aw - 10) && g.jx1 > p.archStart && g.jx0 < p.archStart + p.archLen;
+  if (archBeam && lowJ < p.archH + 10) add('bad', `A bed beam runs over the wheel arch and would hit it. Cut its underside ${fmt(p.archH + 10 - lowJ)} mm shallower over the arch.`);
+  const over = g.joists.length ? g.joists[0] - g.halves[0][0] : 0;
+  if (over > 250 && p.deckT < 18) add('warn', `The deck reaches ${fmt(over)} mm past the first bed beam to cover the seat. Use 18 mm panels so that edge doesn't bounce.`);
   const na = g.anchors.length;
-  const nCab = g.anchors.filter(a => a.kind === 'cab').length;
+  const nk = k => g.anchors.filter(a => a.kind === k).length;
   if (na && na < 6) add('warn', `Only ${na} rail anchor points. Aim for at least 6 on a kit this heavy.`);
-  else if (na) add('ok', `${na} rail anchor points: ${nCab} under the drawer cabinet and ${na - nCab} under the bed frame legs.`);
+  else if (na) add('ok', `${na} rail anchor points: ${nk('box')} under the drawer box, ${nk('store')} under the storage box and ${nk('leg')} under the rear support.`);
+  add('info', `Folded for driving, the deck halves fold onto their front panels over the boxes, with the beams and rear support flat on top and the mattress folded over them, ${fmt(g.driveTop)} mm off the floor. The floor behind is free, so the fixed seat can be unfolded if its backrest clears the drawer box.`);
   if (wn > 0) {
     const what = wn === 1 ? 'The water container' : 'Both water containers';
     if (!g.waterFits) add('bad', `Only ${g.waterBoxes.length} of the ${wn} water containers fit ${g.waterWhereText}. Try the other place, or ${g.waterInDrawer ? 'fewer, wider drawers' : 'shorter drawers'}.`);
@@ -598,36 +674,63 @@ function compute(p){
 
   /* cut list */
   const parts = [];
-  const P = (grp, name, qty, a, b, mat, th, rho) => { if (qty > 0) parts.push({grp, name, qty, a:Math.round(a), b:Math.round(b), mat, th, rho}); };
-  const D = g.yCabEnd - g.yCarc;
-  P('Drawer cabinet', 'Base', 1, g.Zc, D, M.label, t, M.rho);
-  P('Drawer cabinet', 'End panels', 2, D, g.Hc, M.label, t, M.rho);
-  P('Drawer cabinet', 'Dividers', p.nDraw - 1, p.slideLen + 25, g.Hc, M.label, t, M.rho);
-  if (g.rearComp > 0) P('Drawer cabinet', 'Back of drawer bay', 1, g.Zc - 2 * t, g.Hc, M.label, t, M.rho);
-  P('Drawer cabinet', 'Top rails, front and back', 2, g.Zc - 2 * t, 80, M.label, t, M.rho);
+  // keep: share of the board left after cut-outs, for the weight
+  const P = (grp, name, qty, a, b, mat, th, rho, keep = 1) => { if (qty > 0) parts.push({grp, name, qty, a:Math.round(a), b:Math.round(b), mat, th, rho, keep}); };
+  const B18 = MAT.birch18;
+  const D1 = g.yBackEnd - g.yCarc;
+  const frameKeep = (a, b) => 1 - Math.max(0, a - 160) * Math.max(0, b - 200 - (p.rows - 1) * 100) / (a * b);
+  P('Drawer box', 'Base, with cut-outs between the battens', 1, g.Zc, D1, M.label, t, M.rho, 0.6);
+  P('Drawer box', 'End panels, open frame', 2, D1, g.Hc, M.label, t, M.rho, frameKeep(D1, g.Hc));
+  P('Drawer box', 'Dividers, open frame', p.nDraw - 1, p.slideLen + 25, g.Hc, M.label, t, M.rho, frameKeep(p.slideLen + 25, g.Hc));
+  P('Drawer box', 'Back panel', 1, g.Zc - 2 * t, g.Hc, M.label, t, M.rho);
+  P('Drawer box', 'Top rail, front', 1, g.Zc - 2 * t, 80, M.label, t, M.rho);
   const dg = `Drawers (${g.nd})`;
-  P(dg, 'Sides', 2 * g.nd, p.slideLen, g.hb, `${M.sp} 12 mm`, 12, M.rho);
-  P(dg, 'Front and back', 2 * g.nd, g.bw - 24, g.hb, `${M.sp} 12 mm`, 12, M.rho);
+  P(dg, 'Sides', 2 * g.nd, p.slideLen, g.sideH, `${M.sp} 12 mm`, 12, M.rho);
+  P(dg, 'Fronts, full height', g.nd, g.bw - 24, g.hb, `${M.sp} 12 mm`, 12, M.rho);
+  P(dg, 'Backs', g.nd, g.bw - 24, g.sideH, `${M.sp} 12 mm`, 12, M.rho);
   P(dg, 'Bottom', g.nd, g.bw - 12, p.slideLen - 12, `${M.sp} 9 mm`, 9, M.rho);
   P(dg, 'Drawer fronts', g.nd, g.fw, g.fh, M.label, t, M.rho);
-  const kd = Math.max(1, Math.ceil(g.bedLen / 700));
-  P('Bed deck', 'Deck panels, lift-out', kd, g.bedLen / kd - 3, p.Wbed - 10, `${M.sp} ${p.deckT} mm`, p.deckT, M.rho);
-  g.parts = parts;
-  g.alu = [];
-  if (g.rearLen > 150) {
-    g.alu.push({name:'Long beams', qty:g.beams.length, len:Math.round(g.rearLen + 40)});
-    const byLen = {};
-    g.cross.forEach(c => { const L = Math.round(c.y1 - c.y0); byLen[L] = (byLen[L] || 0) + 1; });
-    Object.entries(byLen).forEach(([L, q]) => g.alu.push({name:'Cross beams', qty:q, len:+L}));
-    const legs = g.cross.reduce((s, c) => s + c.legs.length, 0);
-    if (legs) g.alu.push({name:'Legs', qty:legs, len:Math.round(g.legH)});
+  if (g.store) {
+    const sD = g.yCabEnd - g.yBackEnd - 2;
+    P('Storage box', 'Base', 1, g.Zc, sD, M.label, t, M.rho);
+    P('Storage box', 'End panels, with hand holes', 2, sD, g.Hc, M.label, t, M.rho, 0.9);
+    P('Storage box', 'Wall-side panel, with hand holes', 1, g.Zc - 2 * t, g.Hc, M.label, t, M.rho, 0.9);
   }
-  let plyKg = 0; const areaBy = {};
-  parts.forEach(q => { const a = q.qty * q.a * q.b / 1e6; plyKg += a * q.rho * q.th / 1000; areaBy[q.mat] = (areaBy[q.mat] || 0) + a; });
+  if (g.trestles.length) {
+    const byLen = {};
+    g.trestles.forEach(c => { const L = Math.round(c.y1 - c.y0); byLen[L] = (byLen[L] || 0) + 1; });
+    Object.entries(byLen).forEach(([L, q]) => P('Rear support', 'Beam, slotted for the bed beams', q, +L, g.tbD, B18.label, 18, B18.rho));
+    const legs = g.trestles.reduce((s, c) => s + c.legs.length, 0);
+    P('Rear support', 'Feet, with pin holes every 25 mm', legs, g.footH, 200, B18.label, 18, B18.rho);
+    P('Rear support', 'Shoes, two layers glued', 2 * legs, 240, 80, B18.label, 18, B18.rho);
+    P('Rear support', 'Guide cleats that hold each foot to the beam', 2 * legs, g.tbD, 60, B18.label, 18, B18.rho);
+  }
+  P('Bed beams', 'Beams, notched at both ends, with two spare notches at the back', g.joists.length, g.jLen, g.jD, B18.label, 18, B18.rho);
+  const dm = `${M.sp} ${p.deckT} mm`, [f0, f1] = g.panels[0];
+  P('Deck', 'Front panels, slotted, over the boxes', 2, f1 - f0 - 3, g.halfW, dm, p.deckT, M.rho, 0.75);
+  if (g.kd > 1) P('Deck', 'Rear panels, slotted, folding onto the front ones', 2 * (g.kd - 1), g.panels[1][1] - g.panels[1][0] - 3, g.halfW, dm, p.deckT, M.rho, 0.75);
+  g.parts = parts;
+  let plyKg = 0; const areaBy = {}, kgBy = {};
+  parts.forEach(q => {
+    const a = q.qty * q.a * q.b / 1e6, kg = a * q.keep * q.rho * q.th / 1000;
+    plyKg += kg; kgBy[q.grp] = (kgBy[q.grp] || 0) + kg; areaBy[q.mat] = (areaBy[q.mat] || 0) + a;
+  });
   g.areaBy = areaBy;
-  g.aluM = g.alu.reduce((s, a) => s + a.qty * a.len, 0) / 1000;
-  g.kg = {ply:plyKg, alu:g.aluM * 1.5, slides:g.nd * 5 * p.slideLen / 1000, mat:p.matL * p.matW * p.matT / 1e9 * 40};
-  g.kgTotal = g.kg.ply + g.kg.alu + g.kg.slides + g.kg.mat;
+  g.hingeM = 2 * (g.kd - 1) * g.halfW / 1000;
+  const slidesKg = g.nd * 5 * p.slideLen / 1000, fitKg = 0.4;
+  g.kg = {ply:plyKg, slides:slidesKg, mat:p.matL * p.matW * p.matT / 1e9 * 40, hw:g.anchors.length * fitKg + g.hingeM * 0.4};
+  g.kgTotal = g.kg.ply + g.kg.slides + g.kg.mat + g.kg.hw;
+  // the pieces someone has to lift in and out
+  g.pieces = [
+    {name:'Drawer box, drawers out', kg:(kgBy['Drawer box'] || 0) + slidesKg / 2 + 4 * fitKg},
+    {name:'One drawer', kg:((kgBy[dg] || 0) + slidesKg / 2) / g.nd},
+    g.store && {name:'Storage box', kg:(kgBy['Storage box'] || 0) + 2 * fitKg},
+    g.trestles.length && {name:'Rear support', kg:(kgBy['Rear support'] || 0) / g.trestles.length + 2 * fitKg},
+    g.joists.length && {name:'One bed beam', kg:(kgBy['Bed beams'] || 0) / g.joists.length},
+    {name:'Deck half', kg:((kgBy['Deck'] || 0) + g.hingeM * 0.4) / 2},
+    {name:'Mattress', kg:g.kg.mat},
+  ].filter(Boolean);
+  g.heaviest = g.pieces.reduce((a, b) => b.kg > a.kg ? b : a);
   return g;
 }
 
@@ -642,6 +745,7 @@ function scoped(id, px){
 #${id} .thin,#${id} .dim,#${id} .arch,#${id} .seat,#${id} .ply,#${id} .plylt,#${id} .face,#${id} .drawer,#${id} .alu,#${id} .mat,#${id} .matS,#${id} .lift,#${id} .cabz,#${id} .water{stroke-width:${w(1)}}
 #${id} .rail{stroke-width:${w(2)};stroke-dasharray:${w(6)} ${w(3)}}
 #${id} .ghost,#${id} .bedo{stroke-width:${w(1)};stroke-dasharray:${w(4)} ${w(3)}}
+#${id} .hinge{stroke-width:${w(1.5)};stroke-dasharray:${w(2)} ${w(2)}}
 #${id} .door{stroke-width:${w(3.5)};stroke-dasharray:${w(8)} ${w(4)}}
 #${id} .dooro{stroke-width:${w(1.2)};stroke-dasharray:${w(5)} ${w(3)}}
 #${id} .anchor{stroke-width:${w(1.5)}}
@@ -684,16 +788,23 @@ function viewTop(g, p, cw){
   s += Ln(g.bedMaxEnd, 0, g.bedMaxEnd, p.W, 'ref');
   s += Tx(p.L - p.liftDepth / 2, p.W / 2, 'LIFT', 'tl tk', 'middle', -90);
   s += R(p.seatStart, p.seatStart + p.seatLen, 0, p.seatDepth, 'seat') + Tx(p.seatStart + p.seatLen / 2, p.seatDepth / 2, 'SEAT', 'tk tb');
-  g.beams.forEach(y => s += R(g.zoneEnd - 40, g.bedEnd, y - 20, y + 20, 'alu'));
-  g.cross.forEach(c => s += R(c.x - 20, c.x + 20, c.y0, c.y1, 'alu'));
-  // drawer cabinet
-  s += R(g.zoneStart, g.zoneEnd, g.yCarc, g.yCabEnd, 'plylt');
-  s += R(g.zoneStart, g.zoneStart + g.t, g.yCarc, g.yCabEnd, 'ply') + R(g.zoneEnd - g.t, g.zoneEnd, g.yCarc, g.yCabEnd, 'ply');
-  if (g.rearComp > 0) {
-    s += R(g.zoneStart + g.t, g.zoneEnd - g.t, g.yBack, g.yBackEnd, 'ply');
-    if (g.rearComp > 120) s += Tx((g.zoneStart + g.zoneEnd) / 2, (g.yBackEnd + g.yCabEnd) / 2, 'STORAGE', 'ts tk');
+  // bed beams and the rear support with its feet
+  g.joists.forEach(y => s += R(g.jx0, g.jx1, y - 9, y + 9, 'ply'));
+  g.trestles.forEach(c => {
+    s += R(c.x - 9, c.x + 9, c.y0, c.y1, 'ply');
+    c.legs.forEach(y => s += R(c.x - 200, c.x + 40, y - 40, y + 40, 'plylt') + R(c.x - 27, c.x - 9, y - 100, y + 100, 'ply'));
+  });
+  // drawer box and storage box
+  const zs = g.zoneStart, ze = g.zoneEnd, t = g.t;
+  s += R(zs, ze, g.yCarc, g.yBackEnd, 'plylt');
+  s += R(zs, zs + t, g.yCarc, g.yBackEnd, 'ply') + R(ze - t, ze, g.yCarc, g.yBackEnd, 'ply');
+  s += R(zs + t, ze - t, g.yBack, g.yBackEnd, 'ply');
+  if (g.store) {
+    const y0 = g.yBackEnd + 2;
+    s += R(zs, ze, y0, g.yCabEnd, 'plylt') + R(zs, zs + t, y0, g.yCabEnd, 'ply') + R(ze - t, ze, y0, g.yCabEnd, 'ply') + R(zs + t, ze - t, g.yCabEnd - t, g.yCabEnd, 'ply');
+    s += Tx((zs + ze) / 2, (y0 + g.yCabEnd) / 2, 'STORAGE BOX', 'ts tk');
   }
-  for (let i = 1; i < p.nDraw; i++) { const x = g.zoneStart + i * (g.bay + g.t); s += R(x, x + g.t, g.yCarc, g.yBack, 'ply'); }
+  for (let i = 1; i < p.nDraw; i++) { const x = zs + i * (g.bay + t); s += R(x, x + t, g.yCarc, g.yBack, 'ply'); }
   for (let i = 0; i < p.nDraw; i++) {
     const bx0 = g.zoneStart + g.t + i * (g.bay + g.t) + p.slideT, bx1 = bx0 + g.bw;
     const fx0 = g.zoneStart + i * g.Zc / p.nDraw + 1.5, fx1 = fx0 + g.fw;
@@ -715,6 +826,9 @@ function viewTop(g, p, cw){
   s += R(p.bedStart, g.bedEnd, g.dB, p.W - g.dB, 'bedo');
   const mx0 = p.bedStart + 10, mx1 = mx0 + p.matL, my0 = (p.W - p.matW) / 2, my1 = (p.W + p.matW) / 2;
   s += R(mx0, mx1, my0, my1, 'mat');
+  // deck: split down the middle, hinged across
+  g.panels.slice(1).forEach(([x]) => s += Ln(x, g.dB + 5, x, p.W - g.dB - 5, 'hinge'));
+  s += Ln(p.bedStart, g.ySplit, g.bedEnd, g.ySplit, 'hinge');
   s += Tx(mx1 - 30, my1 - 18 * px, `MATTRESS ${fmt(p.matL)} × ${fmt(p.matW)}`, 'ts tk', 'start');
   // walls and door
   s += Ln(0, p.W, p.L, p.W, 'wall') + Ln(p.L, 0, p.L, p.W, 'wall') + Ln(0, 0, p.doorStart, 0, 'wall') + Ln(p.doorStart + p.doorW, 0, p.L, 0, 'wall') + Ln(0, 0, 0, p.W, 'thin');
@@ -747,8 +861,16 @@ function viewSide(g, p, cw){
   s += R(p.archStart, p.archStart + p.archLen, 0, p.archH, 'arch');
   s += R(p.L - p.liftDepth, p.L, 0, Math.min(p.liftH, p.roofH), 'lift', `fill="url(#${id}-h)"`);
   s += Tx(p.L - p.liftDepth / 2, Math.min(p.liftH, p.roofH) / 2, 'LIFT', 'tl tk', 'middle', -90);
+  // bed beams and rear support, behind the seat as seen from the door
+  const du = g.deckUnder;
+  if (g.joists.length) s += R(g.jx0, g.jx1, du - g.jD, du, 'plylt');
+  g.trestles.forEach(c => {
+    s += R(c.x - 9, c.x + 9, du - g.tbD, du, 'ply');
+    if (c.legs.length) s += R(c.x - 27, c.x - 9, 65, du - 20, 'ply') + R(c.x - 200, c.x + 40, 25, 65, 'ply');
+  });
+  if (g.trestles.length) { const c = g.trestles[g.trestles.length - 1]; s += Tx(c.x - 100, (65 + du - g.jD) / 2, 'SUPPORT', 'ts tk', 'middle', -90); }
   s += R(p.seatStart, p.seatStart + p.seatLen, 0, p.seatH, 'seat') + Tx(p.seatStart + p.seatLen / 2, p.seatH / 2, 'SEAT', 'tk tb');
-  // cabinet
+  // drawer box
   s += R(g.zoneStart, g.zoneEnd, 0, p.baseClear, 'ply') + R(g.zoneStart, g.zoneEnd, p.baseClear, p.baseClear + g.t, 'ply');
   const fRow = (g.deckUnder - p.baseClear) / p.rows;
   for (let j = 0; j < p.rows; j++) for (let i = 0; i < p.nDraw; i++) {
@@ -758,12 +880,9 @@ function viewSide(g, p, cw){
     const mid = (fx0 + fx1) / 2;
     s += R(mid - 60, mid + 60, z1 - 48, z1 - 34, 'alu');
   }
-  // frame
-  if (g.beams.length) s += R(g.zoneEnd - 40, g.bedEnd, g.deckUnder - 40, g.deckUnder, 'alu');
-  g.cross.forEach(c => { if (c.legs.length) s += R(c.x - 20, c.x + 20, 25, g.deckUnder - 80, 'alu'); s += R(c.x - 20, c.x + 20, g.deckUnder - 80, g.deckUnder - 40, 'alu'); });
   g.anchors.forEach(a => s += R(a.x - 18, a.x + 18, 0, 22, 'anchor'));
-  // deck, mattress
-  s += R(p.bedStart, g.bedEnd, g.deckUnder, g.deckTop, 'ply');
+  // hinged deck panels, mattress
+  g.panels.forEach(([a, b]) => s += R(a + 1.5, b - 1.5, du, g.deckTop, 'ply'));
   s += R(p.bedStart + 10, p.bedStart + 10 + p.matL, g.deckTop, g.matTop, 'matS', `rx="${n(Math.min(30, p.matT / 3))}"`);
   // seated adult, 900 mm sitting height
   const xh = p.bedStart + 560, zb = g.matTop, hr = 105;
@@ -776,7 +895,7 @@ function viewSide(g, p, cw){
   return svg(id, VW, VH, s, 'Side view with lift, seat, drawer fronts, bed and headroom');
 }
 
-/* section looking forward through the drawer cabinet */
+/* section looking forward through the drawer box and storage box */
 function viewSec(g, p, cw){
   const id = 'v-sec';
   const out = Math.max(0, g.reach) + 330;
@@ -804,28 +923,32 @@ function viewSec(g, p, cw){
     const dp = pts(zs.map(z => [wy(z), z]));
     s += `<polyline points="${dp}" class="gap"/><polyline points="${dp}" class="door"/>`;
   }
-  // bed
-  s += R(dB + 5, p.W - dB - 5, g.deckUnder, g.deckTop, 'ply');
+  // bed: two deck halves
+  g.halves.forEach(([a, b]) => s += R(a, b, g.deckUnder, g.deckTop, 'ply'));
   s += R((p.W - p.matW) / 2, (p.W + p.matW) / 2, g.deckTop, g.matTop, 'matS', `rx="${n(Math.min(30, p.matT / 3))}"`);
-  // cabinet
-  [g.yCarc + 10, (g.yCarc + g.yCabEnd) / 2 - 20, g.yCabEnd - 50].forEach(y => s += R(y, y + 40, 0, p.baseClear, 'ply'));
-  s += R(g.yCarc, g.yCabEnd, p.baseClear, p.baseClear + g.t, 'ply');
-  s += R(g.yCarc, g.yCarc + 80, g.deckUnder - g.t, g.deckUnder, 'ply') + R(g.yCabEnd - 80, g.yCabEnd, g.deckUnder - g.t, g.deckUnder, 'ply');
-  if (g.rearComp > 0) {
-    s += R(g.yBack, g.yBackEnd, p.baseClear + g.t, g.deckUnder, 'ply');
-    s += R(g.yBackEnd, g.yCabEnd, p.baseClear + g.t, g.deckUnder - g.t, 'plylt');
-    if (g.rearComp > 160) s += Tx((g.yBackEnd + g.yCabEnd) / 2, (p.baseClear + g.deckUnder) / 2, 'STORAGE', 'ts tk');
+  // drawer box
+  const bt = p.baseClear + g.t;
+  [g.yCarc + 10, (g.yCarc + g.yBackEnd) / 2 - 20, g.yBackEnd - 50].forEach(y => s += R(y, y + 40, 0, p.baseClear, 'ply'));
+  s += R(g.yCarc, g.yBackEnd, p.baseClear, bt, 'ply');
+  s += R(g.yCarc, g.yCarc + 80, g.deckUnder - g.t, g.deckUnder, 'ply');
+  s += R(g.yBack, g.yBackEnd, bt, g.deckUnder, 'ply');
+  // storage box, bolted to its back
+  if (g.store) {
+    const y0 = g.yBackEnd + 2;
+    [y0 + 10, g.yCabEnd - 50].forEach(y => s += R(y, y + 40, 0, p.baseClear, 'ply'));
+    s += R(y0, g.yCabEnd, p.baseClear, bt, 'ply');
+    s += R(y0, g.yCabEnd - g.t, bt, g.deckUnder, 'plylt') + R(g.yCabEnd - g.t, g.yCabEnd, bt, g.deckUnder, 'ply');
+    if (g.rearComp > 160) s += Tx((y0 + g.yCabEnd) / 2, (p.baseClear + g.deckUnder) / 2, 'STORAGE', 'ts tk');
   }
+  // drawers: low sides, full-height front
   const fRow = (g.deckUnder - p.baseClear) / p.rows;
   for (let j = 0; j < p.rows; j++) {
-    const z0 = p.baseClear + g.t + j * g.rowH + 8, z1 = z0 + g.hb;
+    const z0 = bt + j * g.rowH + 8, z1 = z0 + g.hb;
     const f0 = p.baseClear + j * fRow + 1.5, f1 = f0 + g.fh;
-    if (j === p.rows - 1) {
-      s += R(g.yCarc, g.yCarc + p.slideLen, z0, z1, 'ghost');
-      s += R(g.yCarc - p.slideLen, g.yCarc, z0, z1, 'drawer') + R(g.yFace - p.slideLen, g.yCarc - p.slideLen, f0, f1, 'face');
-    } else {
-      s += R(g.yCarc, g.yCarc + p.slideLen, z0, z1, 'drawer') + R(g.yFace, g.yCarc, f0, f1, 'face');
-    }
+    const dy = j === p.rows - 1 ? -p.slideLen : 0;
+    if (dy) s += R(g.yCarc, g.yCarc + p.slideLen, z0, z1, 'ghost');
+    s += R(g.yCarc + dy, g.yCarc + p.slideLen + dy, z0, z0 + g.sideH, 'drawer') + R(g.yCarc + dy, g.yCarc + 12 + dy, z0, z1, 'drawer');
+    s += R(g.yFace + dy, g.yCarc + dy, f0, f1, 'face');
   }
   g.waterBoxes.forEach((b, k) => {
     const dy = b.drawer !== null && p.rows === 1 ? -p.slideLen : 0;
@@ -841,7 +964,7 @@ function viewSec(g, p, cw){
   s += dimH(X(0), X(outerY), Y(g.drawerTop) - 22 * px, `${fmt(g.reach)} out`, 'ta tb');
   s += dimV(X(p.W / 2 + 60), Y(g.matTop), Y(rt), `${fmt(g.headroom)}`, headCls(g) + ' tb');
   s += Tx(dB + 120, rt - 16 * px, 'door side →', 'ts', 'start');
-  return svg(id, VW, VH, s, 'Cross-section through the drawer cabinet with a drawer pulled out of the sliding door');
+  return svg(id, VW, VH, s, 'Cross-section through the drawer box and storage box with a drawer pulled out of the sliding door');
 }
 
 /* ---------- 3D view: three.js x = along the van, y = up, z = across from the door side ---------- */
@@ -889,13 +1012,15 @@ function build3d(g, p){
   S.background = new T.Color(cssVar('--paper'));
   const mats = [];
   const col = k => new T.Color(cssVar(k));
-  const mk = (k, o = {}) => { const m = new T.MeshStandardMaterial(Object.assign({color:col(k), roughness:0.85, metalness:0}, o)); mats.push(m); return m; };
+  const mk = (k, o = {}) => { const m = new T.MeshStandardMaterial(Object.assign({color:k[0] === '#' ? new T.Color(k) : col(k), roughness:0.85, metalness:0}, o)); mats.push(m); return m; };
   const M = {
     floor: mk('--sheet'), ply: mk('--ply'), plylt: mk('--ply-lt'),
     alu: mk('--steel-fill', {metalness:0.35, roughness:0.45}), steel: mk('--steel', {metalness:0.4, roughness:0.5}),
-    seat: mk('--seat'), mat: mk('--mat', {roughness:1}), accent: mk('--accent'), tyre: mk('--ink', {roughness:0.9}),
+    seat: mk('--seat'), mat: mk('--mat', {roughness:1}), accent: mk('--accent'),
     water: mk('--water', {transparent:true, opacity:0.55, roughness:0.3}),
     ghost: mk('--muted', {transparent:true, opacity:0.18}),
+    slot: mk('--ink', {transparent:true, opacity:0.45}),
+    tyre: mk('#262c30', {roughness:0.9}),  // fixed: tyres stay dark in both themes
     wall: mk('--muted', {transparent:true, opacity:0.07, side:T.DoubleSide, depthWrite:false}),
   };
   const edge = new T.LineBasicMaterial({color:col('--ink'), transparent:true, opacity:0.28});
@@ -942,51 +1067,91 @@ function build3d(g, p){
   B(lx, lx + 90, 30, 120, 0, lh, M.steel);
   B(lx, lx + 90, W - 120, W - 30, 0, lh, M.steel);
   B(lx + 110, L - 40, 140, W - 140, 20, lh * 0.92, M.alu);
-  B(p.seatStart, p.seatStart + p.seatLen, 0, p.seatDepth, 0, p.seatH, M.seat);
+  B(p.seatStart, p.seatStart + p.seatLen, 3, p.seatDepth, 0, p.seatH, M.seat);  // 3 mm off the wall so it doesn't flicker against the arch
 
-  // drawer cabinet
+  // open-frame panel across the van (end panels and dividers): rails top and bottom, stiles at the ends
+  const frame = (x0, x1, y0, y1, z0, z1, m) => {
+    if (y1 - y0 < 300 || z1 - z0 < 320) return B(x0, x1, y0, y1, z0, z1, m);
+    B(x0, x1, y0, y1, z1 - 80, z1, m); B(x0, x1, y0, y1, z0, z0 + 120, m);
+    B(x0, x1, y0, y0 + 80, z0 + 120, z1 - 80, m); B(x0, x1, y1 - 80, y1, z0 + 120, z1 - 80, m);
+    for (let j = 1; j < p.rows; j++) { const zr = bt + j * g.rowH; B(x0, x1, y0 + 80, y1 - 80, zr, zr + 100, m); }
+  };
+  // drawer box
   const zs = g.zoneStart, ze = g.zoneEnd;
-  [g.yCarc + 10, (g.yCarc + g.yCabEnd) / 2 - 20, g.yCabEnd - 50].forEach(y => B(zs, ze, y, y + 40, 0, p.baseClear, M.ply));
-  B(zs, ze, g.yCarc, g.yCabEnd, p.baseClear, bt, M.ply);
-  B(zs, zs + t, g.yCarc, g.yCabEnd, bt, du, M.ply);
-  B(ze - t, ze, g.yCarc, g.yCabEnd, bt, du, M.ply);
-  for (let i = 1; i < p.nDraw; i++) { const x = zs + i * (g.bay + t); B(x, x + t, g.yCarc, g.yBack, bt, du - t, M.ply); }
-  if (g.rearComp > 0) B(zs + t, ze - t, g.yBack, g.yBackEnd, bt, du, M.ply);
+  [g.yCarc + 10, (g.yCarc + g.yBackEnd) / 2 - 20, g.yBackEnd - 50].forEach(y => B(zs, ze, y, y + 40, 0, p.baseClear, M.ply));
+  B(zs, ze, g.yCarc, g.yBackEnd, p.baseClear, bt, M.ply);
+  frame(zs, zs + t, g.yCarc, g.yBackEnd, bt, du, M.ply);
+  frame(ze - t, ze, g.yCarc, g.yBackEnd, bt, du, M.ply);
+  for (let i = 1; i < p.nDraw; i++) { const x = zs + i * (g.bay + t); frame(x, x + t, g.yCarc, g.yBack, bt, du - t, M.ply); }
+  B(zs + t, ze - t, g.yBack, g.yBackEnd, bt, du, M.ply);
   B(zs + t, ze - t, g.yCarc, g.yCarc + 80, du - t, du, M.ply);
-  B(zs + t, ze - t, g.yCabEnd - 80, g.yCabEnd, du - t, du, M.ply);
+  // storage box, open towards the drawer box's back panel
+  if (g.store) {
+    const y0 = g.yBackEnd + 2;
+    [y0 + 10, g.yCabEnd - 50].forEach(y => B(zs, ze, y, y + 40, 0, p.baseClear, M.ply));
+    B(zs, ze, y0, g.yCabEnd, p.baseClear, bt, M.ply);
+    B(zs, zs + t, y0, g.yCabEnd, bt, du, M.ply);
+    B(ze - t, ze, y0, g.yCabEnd, bt, du, M.ply);
+    B(zs + t, ze - t, g.yCabEnd - t, g.yCabEnd, bt, du, M.ply);
+  }
 
-  // drawers: open-topped boxes, the top row pulled out when asked
+  // drawers: low sides and a full-height front, the top row pulled out when asked
+  const open = ui.open && !ui.drive;
   const fRow = (du - p.baseClear) / p.rows;
   for (let j = 0; j < p.rows; j++) for (let i = 0; i < p.nDraw; i++) {
-    const dy = ui.open && j === p.rows - 1 ? -p.slideLen : 0;
+    const dy = open && j === p.rows - 1 ? -p.slideLen : 0;
     const x0 = zs + t + i * (g.bay + t) + p.slideT, x1 = x0 + g.bw;
     const y0 = g.yCarc + dy, y1 = y0 + p.slideLen;
-    const z0 = bt + j * g.rowH + 8, z1 = z0 + g.hb;
+    const z0 = bt + j * g.rowH + 8, z1 = z0 + g.hb, zsd = z0 + g.sideH;
     B(x0, x1, y0, y1, z0, z0 + 9, M.plylt);
-    B(x0, x0 + 12, y0, y1, z0, z1, M.plylt);
-    B(x1 - 12, x1, y0, y1, z0, z1, M.plylt);
+    B(x0, x0 + 12, y0, y1, z0, zsd, M.plylt);
+    B(x1 - 12, x1, y0, y1, z0, zsd, M.plylt);
     B(x0 + 12, x1 - 12, y0, y0 + 12, z0, z1, M.plylt);
-    B(x0 + 12, x1 - 12, y1 - 12, y1, z0, z1, M.plylt);
+    B(x0 + 12, x1 - 12, y1 - 12, y1, z0, zsd, M.plylt);
     const fx0 = zs + i * g.Zc / p.nDraw + 1.5, f0 = p.baseClear + j * fRow + 1.5, mid = fx0 + g.fw / 2;
     B(fx0, fx0 + g.fw, g.yFace + dy, g.yCarc + dy, f0, f0 + g.fh, M.ply);
     B(mid - 60, mid + 60, g.yFace + dy - 14, g.yFace + dy, f0 + g.fh - 50, f0 + g.fh - 36, M.steel, false);
   }
   g.waterBoxes.forEach(b => {
-    const dy = b.drawer !== null && ui.open && p.rows === 1 ? -p.slideLen : 0;
+    const dy = b.drawer !== null && open && p.rows === 1 ? -p.slideLen : 0;
     B(b.x0, b.x1, b.y0 + dy, b.y1 + dy, b.z0, b.z0 + p.waterH, M.water);
   });
-
-  // bed frame, rail anchors, deck and mattress
-  g.beams.forEach(y => B(ze, g.bedEnd, y - 20, y + 20, du - 40, du, M.alu));
-  g.cross.forEach(c => {
-    B(c.x - 20, c.x + 20, c.y0, c.y1, du - 80, du - 40, M.alu);
-    c.legs.forEach(y => B(c.x - 20, c.x + 20, y - 20, y + 20, 25, du - 80, M.alu));
-  });
   g.anchors.forEach(a => B(a.x - 18, a.x + 18, a.y - 18, a.y + 18, 0, 25, M.accent, false));
-  if (!ui.hideBed) {
-    const kd = Math.max(1, Math.ceil(g.bedLen / 700)), pl = g.bedLen / kd;
-    for (let i = 0; i < kd; i++) B(p.bedStart + i * pl + 2, p.bedStart + (i + 1) * pl - 2, g.dB + 5, W - g.dB - 5, du, g.deckTop, M.ply);
-    B(p.bedStart + 10, p.bedStart + 10 + p.matL, (W - p.matW) / 2, (W + p.matW) / 2, g.deckTop, g.matTop, M.mat);
+
+  if (!ui.drive) {
+    // bed beams in slots, rear support on pinned feet
+    g.joists.forEach(y => B(g.jx0, g.jx1, y - 9, y + 9, du - g.jD, du, M.ply));
+    g.trestles.forEach(c => {
+      B(c.x - 9, c.x + 9, c.y0, c.y1, du - g.tbD, du, M.ply);
+      c.legs.forEach(y => { B(c.x - 27, c.x - 9, y - 100, y + 100, 65, du - 20, M.ply); B(c.x - 200, c.x + 40, y - 40, y + 40, 25, 65, M.ply); });
+    });
+    if (!ui.hideBed) {
+      // two deck halves, each a row of slotted panels joined by piano hinges
+      g.halves.forEach(([h0, h1]) => {
+        const cols = Math.max(1, Math.floor((h1 - h0 - 80) / 270)), cw = (h1 - h0) / cols;
+        for (let i = 0; i < g.kd; i++) {
+          const a = g.panels[i][0] + 1.5, b = g.panels[i][1] - 1.5;
+          B(a, b, h0, h1, du, g.deckTop, M.ply);
+          if (i) B(a - 3, a, h0 + 20, h1 - 20, g.deckTop, g.deckTop + 3, M.steel, false);
+          const rows = Math.max(1, Math.floor((b - a - 100) / 120) + 1), r0 = (a + b) / 2 - (rows - 1) * 60;
+          for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+            const x = r0 + r * 120, y = h0 + (c + 0.5) * cw;
+            B(x - 15, x + 15, y - 100, y + 100, g.deckTop, g.deckTop + 1, M.slot, false);
+          }
+        }
+      });
+      B(p.bedStart + 10, p.bedStart + 10 + p.matL, (W - p.matW) / 2, (W + p.matW) / 2, g.deckTop, g.matTop, M.mat);
+    }
+  } else if (!ui.hideBed) {
+    // folded for driving: rear panels on the front one, loose parts flat on top, mattress folded in three
+    const [a, b] = g.panels[0];
+    g.halves.forEach(([h0, h1]) => {
+      B(a + 1.5, b - 1.5, h0, h1, du, g.deckTop, M.ply);
+      for (let i = 1; i < g.kd; i++) { const len = g.panels[i][1] - g.panels[i][0]; B(b - 1.5 - len, b - 1.5, h0, h1, du + i * p.deckT, du + (i + 1) * p.deckT, M.ply); }
+    });
+    g.stow.forEach(q => B(q.x0, q.x1, q.y0, q.y1, q.z0, q.z1, M.ply));
+    const mf = p.matL / 3, mx1 = b - 5;
+    for (let i = 0; i < 3; i++) B(mx1 - mf, mx1, (W - p.matW) / 2, (W + p.matW) / 2, g.stowTop + i * p.matT, g.stowTop + (i + 1) * p.matT, M.mat);
   }
   S.add(grp);
   v3.group = grp; v3.mats = mats;
@@ -1015,9 +1180,9 @@ function render(){
     stat('Mattress', `${fmt(p.matL)} × ${fmt(p.matW)}`, 'mm', fits ? 'fits in front of the lift' : 'does not fit', fits ? 'ok' : 'bad') +
     stat('Sitting headroom', fmt(g.headroom), 'mm', hs === 'ok' ? 'sit upright' : hs === 'warn' ? 'tight for sitting up' : 'lying down only', hs) +
     stat('Bed surface', fmt(g.matTop), 'mm', `above the floor, deck at ${fmt(g.deckTop)}`) +
-    stat('Drawers', `${g.nd} × ${fmt(p.slideLen)}`, 'mm', `boxes ${fmt(g.bw)} wide, ${fmt(g.hb)} high`, g.rearComp < 0 || g.bw < 200 ? 'bad' : '') +
+    stat('Drawers', `${g.nd} × ${fmt(p.slideLen)}`, 'mm', `${fmt(g.bw)} wide, sides ${fmt(g.sideH)} high`, g.rearComp < 0 || g.bw < 200 ? 'bad' : '') +
     stat('Pull-out reach', fmt(g.reach), 'mm', 'outside the wall line, fully open') +
-    stat('Kit weight', `≈ ${fmt(g.kgTotal)}`, 'kg', g.waterKg ? `plus ${fmt(g.waterKg)} kg of water when full` : 'with mattress, before contents');
+    stat('Kit weight', `≈ ${fmt(g.kgTotal)}`, 'kg', `heaviest piece ${fmt(g.heaviest.kg)} kg${g.waterKg ? `, plus ${fmt(g.waterKg)} kg of water` : ''}`);
   const PL = {ok:'OK', warn:'CHECK', bad:'FIX', info:'NOTE'};
   const order = {bad:0, warn:1, ok:2, info:3};
   $('#checks').innerHTML = g.checks.slice().sort((a, b) => order[a.lvl] - order[b.lvl]).map(c => `<li><span class="pill p-${c.lvl}">${PL[c.lvl]}</span><span>${c.txt}</span></li>`).join('');
@@ -1031,16 +1196,20 @@ function render(){
     $('#box-3d').innerHTML = '<p class="note">The 3D view hit an error and was switched off. The drawings below show the same design.</p>';
   }
 
-  const legs = g.cross.reduce((s, c) => s + c.legs.length, 0);
+  const legs = g.trestles.reduce((s, c) => s + c.legs.length, 0);
   const rows = [
     ['Bed platform', `${fmt(g.bedLen)} × ${fmt(p.Wbed - 10)}`],
+    ['Deck', `2 halves, each ${g.kd > 1 ? `${fmt(g.panels[0][1] - g.panels[0][0])} + ${g.kd - 1} × ${fmt(g.panels[1][1] - g.panels[1][0])}` : fmt(g.bedLen)} long, ${fmt(g.halfW)} wide`],
     ['Deck top', `${fmt(g.deckTop)} from floor`],
     ['Mattress top', `${fmt(g.matTop)} from floor`],
-    ['Drawer cabinet', `${fmt(g.Zc)} long × ${fmt(g.yCabEnd - g.yFace)} deep × ${fmt(g.deckUnder)} high`],
-    ['Drawer boxes', `${g.nd} × ${fmt(g.bw)} w × ${fmt(p.slideLen)} l × ${fmt(g.hb)} h`],
+    ['Drawer box', `${fmt(g.Zc)} long × ${fmt(g.yBackEnd - g.yFace)} deep × ${fmt(g.deckUnder)} high`],
+    ['Drawers', `${g.nd} × ${fmt(g.bw)} w × ${fmt(p.slideLen)} l, sides ${fmt(g.sideH)} h`],
     ['Drawer fronts', `${fmt(g.fw)} × ${fmt(g.fh)}`],
-    ['Storage behind', g.rearComp > 0 ? `${fmt(g.Zc - 2 * g.t)} × ${fmt(g.rearComp)} × ${fmt(g.Hbay)}` : 'none'],
-    ['Bed frame', g.beams.length ? `${g.beams.length} long beams, ${g.cross.length} cross beam${g.cross.length > 1 ? 's' : ''}, ${legs} legs` : 'deck rests on the cabinet'],
+    ['Storage box', g.store ? `${fmt(g.Zc)} × ${fmt(g.rearComp)} × ${fmt(g.deckUnder)}` : 'none'],
+    ['Bed beams', g.joists.length ? `${g.joists.length} × ${fmt(g.jLen)} × ${g.jD} birch` : 'none, the deck rests on the boxes'],
+    ['Rear support', g.trestles.length ? `${g.trestles.length} beam${g.trestles.length > 1 ? 's' : ''}, ${legs} pinned feet` : 'none'],
+    ['Folded for driving', `${fmt(g.driveTop)} high on the boxes`],
+    ['Heaviest piece', `${g.heaviest.name}, ≈ ${fmt(g.heaviest.kg)} kg`],
     ['Water', +p.waterN ? `${p.waterN} × ${fmt(p.waterL)} L ${g.waterWhereText}` : 'none'],
     ['Drawer top', `${fmt(g.drawerTopGround)} above ground`],
     ['Rail anchors', `${g.anchors.length} fittings`],
@@ -1054,26 +1223,24 @@ function render(){
     if (q.grp !== grp) { grp = q.grp; h += `<tr class="grp"><td colspan="5">${grp}</td></tr>`; }
     h += `<tr><td>${q.name}</td><td class="n">${q.qty}</td><td class="n">${fmt(Math.max(q.a, q.b))}</td><td class="n">${fmt(Math.min(q.a, q.b))}</td><td>${q.mat}</td></tr>`;
   });
-  if (g.alu.length) {
-    h += `<tr class="grp"><td colspan="5">Bed frame</td></tr>`;
-    g.alu.forEach(a => h += `<tr><td>${a.name}</td><td class="n">${a.qty}</td><td class="n">${fmt(a.len)}</td><td class="n">40</td><td>Aluminium slot profile 40 × 40</td></tr>`);
-  }
   h += `<tr class="grp"><td colspan="5">Totals</td></tr>`;
   Object.entries(g.areaBy).forEach(([m, a]) => h += `<tr><td>${m}</td><td class="n">${Math.max(1, Math.ceil(a * 1.3 / 3.125))}</td><td class="n" colspan="2">${a.toFixed(2)} m²</td><td>sheets of 2500 × 1250</td></tr>`);
-  if (g.alu.length) h += `<tr><td>Aluminium profile</td><td class="n"></td><td class="n" colspan="2">${g.aluM.toFixed(2)} m</td><td>buy cut to length</td></tr>`;
-  h += `<tr class="tot"><td>Estimated weight</td><td class="n"></td><td class="n" colspan="2">≈ ${fmt(g.kgTotal)} kg</td><td>wood ${fmt(g.kg.ply)} · frame ${fmt(g.kg.alu)} · slides ${fmt(g.kg.slides)} · mattress ${fmt(g.kg.mat)}</td></tr>`;
+  h += `<tr class="tot"><td>Estimated weight</td><td class="n"></td><td class="n" colspan="2">≈ ${fmt(g.kgTotal)} kg</td><td>wood ${fmt(g.kg.ply)} · slides ${fmt(g.kg.slides)} · fittings and hinges ${fmt(g.kg.hw)} · mattress ${fmt(g.kg.mat)}</td></tr>`;
+  h += `<tr><td colspan="5" class="note">Pieces to lift: ${g.pieces.map(q => `${q.name.toLowerCase()} ${fmt(q.kg)} kg`).join(' · ')}</td></tr>`;
   $('#cut').innerHTML = h + '</tbody>';
 
-  const joints = legs * 2 + g.cross.length * 2 + g.beams.length * 2;
   const hw = [
     [`${g.nd} pairs`, `Drawer slides, ${fmt(p.slideLen)} mm, full extension, lock-in and lock-out, rated ${g.slideRating} kg or more at this length`],
-    +p.waterN ? [`${p.waterN}`, `Water containers, ${fmt(p.waterL)} L with tap, ${fmt(p.waterH)} × ${fmt(p.waterW)} × ${fmt(p.waterD)} mm, plus a strap to hold them down`] : null,
+    +p.waterN ? [`${p.waterN}`, `Water containers, ${fmt(p.waterL)} L with tap, ${fmt(p.waterH)} × ${fmt(p.waterW)} × ${fmt(p.waterD)} mm, plus a strap to hold them to the drawer front`] : null,
     [`${g.anchors.length}`, 'Seat-rated quick-release rail fittings, the same type the seats use'],
-    ['3', `Pine battens 40 × 20 × ${fmt(g.Zc)} mm under the cabinet, notched over the fittings`],
-    joints ? [`${joints * 2}`, 'Corner brackets with T-nuts for the 40 mm profile'] : null,
+    [g.store ? '5' : '3', `Pine battens 40 × 20 × ${fmt(g.Zc)} mm under the boxes, notched over the fittings`],
+    g.store ? ['4', 'M8 carriage bolts, 60 mm, with wing nuts and washers, to join the storage box to the drawer box without tools'] : null,
+    g.kd > 1 ? [`${2 * (g.kd - 1)}`, `Piano hinges, ${fmt(g.halfW - 40)} mm, to join the deck panels`] : null,
+    legs ? [`${legs + 2}`, 'Ring pins (lynch pins), 8 mm, to set the height of the support feet, plus two spares'] : null,
+    ['2', 'Ratchet straps rated 500 kg or more, and 4 rail tie-down rings, to hold the folded deck down for driving'],
     [`${g.nd}`, 'Flush or recessed drawer pulls, so nothing snags in the door opening'],
-    ['1', `Mattress ${fmt(p.matL)} × ${fmt(p.matW)} × ${fmt(p.matT)} mm, high-density foam, plus an anti-condensation mat`],
-    ['1', 'Wood glue, 4 × 40 mm screws and edge banding or varnish for the plywood'],
+    ['1', `Mattress ${fmt(p.matL)} × ${fmt(p.matW)} × ${fmt(p.matT)} mm, high-density foam, folding in three ${fmt(p.matL / 3)} mm sections`],
+    ['1', 'Wood glue, 4 × 40 mm screws, and oil or varnish for the plywood'],
   ].filter(Boolean);
   $('#hw').innerHTML = hw.map(([q, t]) => `<li><span class="q">${q}</span><span>${t}</span></li>`).join('');
 }
@@ -1097,6 +1264,8 @@ $('#form').addEventListener('change', e => {
 $('#hints').addEventListener('change', e => { ui.hints = e.target.checked; $('#form').classList.toggle('nohints', !ui.hints); save(); });
 $('#open3d').checked = ui.open;
 $('#hidebed').checked = !!ui.hideBed;
+$('#drive3d').checked = !!ui.drive;
+$('#drive3d').addEventListener('change', e => { ui.drive = e.target.checked; save(); render(); });
 const setOpen = v => { ui.open = v; $('#open').checked = v; $('#open3d').checked = v; save(); render(); };
 $('#open').addEventListener('change', e => setOpen(e.target.checked));
 $('#open3d').addEventListener('change', e => setOpen(e.target.checked));
