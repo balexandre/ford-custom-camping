@@ -104,6 +104,7 @@ legend{font-family:var(--f-display);font-size:15px;font-weight:600;letter-spacin
 input[type=number],input[type=text],select{width:100%;font:14px var(--f-mono);font-variant-numeric:tabular-nums;padding:6px 8px;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink)}
 input[type=number]{padding-right:32px;text-align:right}
 select{font-family:var(--f-body)}
+select.small{width:auto;padding:4px 6px;font-size:13px}
 
 .out{display:grid;gap:20px;min-width:0}
 .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
@@ -178,6 +179,8 @@ button.small{padding:6px 10px;font-size:13px}
 .dw .gap{stroke:var(--paper);fill:none}
 .dw .hinge{stroke:var(--steel);fill:none}
 .dw .board{fill:none;stroke:var(--ply-edge)}
+.dw .hole{fill:var(--paper);stroke:var(--ply-edge)}
+.dw .halo{paint-order:stroke;stroke:var(--ply);stroke-linejoin:round}
 .dw .cut{stroke:var(--accent);fill:none}
 .dw .cutn{fill:var(--accent)}
 .dw .tw{fill:var(--sheet)}
@@ -261,7 +264,7 @@ tr.tot td{font-weight:600;border-bottom:0}
           <span class="ctl">
             <label class="tog"><input type="checkbox" id="drive3d"> Folded for driving</label>
             <label class="tog"><input type="checkbox" id="open3d" checked> Drawers pulled out</label>
-            <label class="tog"><input type="checkbox" id="hidebed"> Hide bed</label>
+            <label class="tog">Show <select id="layers" class="small"><option value="all">everything</option><option value="deck">deck, no mattress</option><option value="frame">frame, no deck</option></select></label>
             <button type="button" id="view3d" class="quiet small">Reset view</button>
           </span>
         </figcaption>
@@ -319,7 +322,7 @@ tr.tot td{font-weight:600;border-bottom:0}
       <h3 id="nest-h">Cutting plan</h3>
       <label class="tog"><input type="checkbox" id="cuts" checked> Show cut order</label>
     </div>
-    <p>Every part laid out on the boards. Each cut runs straight across the piece you're holding, so a track saw or a circular saw with a straight edge can do all of it. Follow the numbers on each board, or open "Cut by cut", for an order that works. Distances run from the top edge or left end of each piece as drawn, so keep the blade on the waste side of the line. Long strips keep their length along the board, with the grain, and the hatched areas are offcuts.</p>
+    <p>Every part laid out on the boards. Each cut runs straight across the piece you're holding, so a track saw or a circular saw with a straight edge can do all of it. Follow the numbers on each board, or open "Cut by cut", for an order that works. Distances run from the top edge or left end of each piece as drawn, so keep the blade on the waste side of the line. Dashed shapes are cut-outs for a jigsaw, done after the straight cuts. Long strips keep their length along the board, with the grain, and the hatched areas are offcuts.</p>
     <div class="nest" id="nest" aria-labelledby="nest-h"></div>
     <h3>Hardware</h3>
     <ul class="hw" id="hw"></ul>
@@ -346,7 +349,8 @@ tr.tot td{font-weight:600;border-bottom:0}
         <li><b>Use locking slides.</b> Lock-in keeps the drawers shut on the road; lock-out keeps them open on a slope while you cook.</li>
         <li><b>Keep the lift usable.</b> Its hand pump and emergency release must stay reachable with the bed in place.</li>
         <li><b>Cook outside</b> on the pulled-out drawer, never under the bed deck with the door shut.</li>
-        <li><b>Slot the deck.</b> Cut 30 × 200 mm slots between the beams, keeping 60 mm solid over each beam and along the edges. They save weight and let the mattress breathe. Add an anti-condensation mat in cold weather.</li>
+        <li><b>Slot the deck.</b> 40 × 240 mm slots in rows 100 mm apart, at least 70 mm from the hinged ends. They save weight and let the mattress breathe. Add an anti-condensation mat in cold weather.</li>
+        <li><b>Cut out what doesn't carry load.</b> The box end panels and dividers are open frames, keeping a 120 mm bottom rail where the slides screw on. The storage box is open frame too, with a 150 mm lip so things stay in. The beams, the rear support, the feet and the drawer sides get oval holes down the middle. The drawer box's back panel stays solid so the storage can't spill into the drawers. Drill a hole in each corner of a cut-out, jigsaw between them, and round over the edges.</li>
         <li><b>No tools to set up.</b> The bed beams drop into slots in the boxes and the rear support. The storage box joins the drawer box with wing nuts, and ring pins set the height of the support's feet in 25 mm steps, to level the bed or fit a deeper lift.</li>
         <li><b>Fold it for driving.</b> In each deck half, the front panel covers the boxes and the rear panels fold onto it like a Z: put the hinge between the front panel and the next one on top, and the next hinge underneath. Lay the support and beams flat on the folded panels, fold the mattress over them and strap the stack to the rails. The boxes stay closed, and the floor behind them is free.</li>
         <li><b>The storage lid.</b> The front panel of the wall-side half lifts at its front edge like a lid, pivoting on its hinge, to reach the storage box.</li>
@@ -492,6 +496,50 @@ function readField(el){
   if (it.type === 'text' || typeof it.d === 'string') p[k] = el.value;
   else { const v = parseFloat(el.value); if (isFinite(v)) p[k] = v; }
 }
+
+/* ---------- cut-outs: rounded holes in a part's own frame, u along its first size and v along its second ---------- */
+const hole = (u, v, w, h, r = Math.min(w, h) / 2) => ({u, v, w, h, r:Math.min(r, w / 2, h / 2)});
+const holeArea = hs => (hs || []).reduce((s, h) => s + h.w * h.h - (4 - Math.PI) * h.r * h.r, 0);
+const HOLES = {
+  // open frame: a bottom rail (slide mount or lip), 80 mm top rail and stiles, a 100 mm rail between drawer rows
+  frame(a, b, rails = [], bottom = 120){
+    const w = a - 160;
+    if (w < 150) return [];
+    const edges = [bottom, ...rails.flatMap(v => [v, v + 100]), b - 80], hs = [];
+    const cols = w > 900 ? 2 : 1, cw = (w - (cols - 1) * 80) / cols;
+    for (let i = 0; i + 1 < edges.length; i += 2) {
+      if (edges[i + 1] - edges[i] < 100) continue;
+      for (let c = 0; c < cols; c++) hs.push(hole(80 + c * (cw + 80), edges[i], cw, edges[i + 1] - edges[i], 40));
+    }
+    return hs;
+  },
+  // deck-style slots running along v, in rows 100 mm apart
+  slots(a, b, len = 240, wid = 40, step = 100){
+    const cols = Math.max(1, Math.floor((b - 100) / 300)), L = Math.min(len, b / cols - 80);
+    if (L < 60 || a < 200) return [];
+    const n = Math.floor((a - 140 - wid) / step) + 1, u0 = (a - (n - 1) * step - wid) / 2, hs = [];
+    for (let i = 0; i < n; i++) for (let c = 0; c < cols; c++) hs.push(hole(u0 + i * step, b * (c + 0.5) / cols - L / 2, wid, L));
+    return hs;
+  },
+  // a row of long ovals down the middle, clear of the ends
+  row(a, b, len, hgt, m0 = 120, m1 = 120, gap = 100){
+    const span = a - m0 - m1;
+    if (span < len || b < hgt + 40) return [];
+    const n = Math.floor((span + gap) / (len + gap)), s0 = m0 + (span - n * len - (n - 1) * gap) / 2;
+    return Array.from({length:n}, (_, i) => hole(s0 + i * (len + gap), (b - hgt) / 2, len, hgt));
+  },
+  // the same, fitted into each clear stretch between blocked spans ([centre, half-width])
+  between(a, b, len, hgt, blocks, m = 120, gap = 80){
+    const free = [];
+    let s = m;
+    blocks.map(([c, r]) => [c - r, c + r]).sort((x, y) => x[0] - y[0]).forEach(([b0, b1]) => {
+      if (Math.min(b0, a - m) > s) free.push([s, Math.min(b0, a - m)]);
+      s = Math.max(s, b1);
+    });
+    if (a - m > s) free.push([s, a - m]);
+    return free.flatMap(([f0, f1]) => HOLES.row(f1 - f0, b, len, hgt, 0, 0, gap).map(h => Object.assign(h, {u:h.u + f0})));
+  },
+};
 
 /* ---------- geometry ---------- */
 function compute(p){
@@ -704,41 +752,65 @@ function compute(p){
 
   /* cut list */
   const parts = [];
-  // keep: share of the board left after cut-outs, for the weight
-  const P = (grp, name, qty, a, b, mat, th, rho, keep = 1) => { if (qty > 0) parts.push({grp, name, qty, a:Math.round(a), b:Math.round(b), mat, th, rho, keep}); };
+  // every cut-out is defined once here and reused by the drawings, the 3D view and the cutting plan;
+  // the weight counts only the wood that's left
+  const P = (grp, name, qty, a, b, mat, th, rho, holes = []) => {
+    if (qty > 0) parts.push({grp, name, qty, a:Math.round(a), b:Math.round(b), mat, th, rho, holes, keep:1 - holeArea(holes) / (a * b)});
+  };
   const B18 = g.B18 = MAT[p.beamPly] || MAT.birch18;   // bed beams and rear support
-  const D1 = g.yBackEnd - g.yCarc;
-  const frameKeep = (a, b) => 1 - Math.max(0, a - 160) * Math.max(0, b - 200 - (p.rows - 1) * 100) / (a * b);
-  P('Drawer box', 'Base, with cut-outs between the battens', 1, g.Zc, D1, M.label, t, M.rho, 0.6);
-  P('Drawer box', 'End panels, open frame', 2, D1, g.Hc, M.label, t, M.rho, frameKeep(D1, g.Hc));
-  P('Drawer box', 'Dividers, open frame', p.nDraw - 1, p.slideLen + 25, g.Hc, M.label, t, M.rho, frameKeep(p.slideLen + 25, g.Hc));
-  P('Drawer box', 'Back panel', 1, g.Zc - 2 * t, g.Hc, M.label, t, M.rho);
+  const D1 = g.yBackEnd - g.yCarc, sD = g.yCabEnd - g.yBackEnd - 2;
+  const rails = Array.from({length:p.rows - 1}, (_, j) => (j + 1) * g.rowH);
+  const H = g.H = {
+    end:HOLES.frame(D1, g.Hc, rails),
+    divider:HOLES.frame(p.slideLen + 25, g.Hc - t, rails),
+    base:[],
+    side:g.sideH >= 200 ? HOLES.row(p.slideLen, g.sideH, 220, g.sideH - 150, 130, 130, 90) : [],
+    back:g.bw >= 220 && g.sideH >= 150 ? [hole((g.bw - 24 - 120) / 2, g.sideH - 75, 120, 35)] : [],
+    storeBase:HOLES.slots(g.Zc, sD),
+    storeEnd:HOLES.frame(sD, g.Hc, [], 150),
+    storeWall:HOLES.frame(g.Zc - 2 * t, g.Hc, [], 150),
+    beam:HOLES.row(g.jLen, g.jD, 150, 50, 120, 220),
+    foot:g.footH >= 400 ? [hole(120, 60, g.footH - 320, 80)] : [],
+    deckFront:HOLES.slots(g.panels[0][1] - g.panels[0][0] - 3, g.halfW),
+    deckRear:g.kd > 1 ? HOLES.slots(g.panels[1][1] - g.panels[1][0] - 3, g.halfW) : [],
+  };
+  // drawer box base: one opening per drawer bay on each side of the middle batten, clear of the fittings
+  for (let i = 0; i < p.nDraw; i++) {
+    const u0 = t + i * (g.bay + t) + 100, w = g.bay - 200;
+    if (w >= 120) [[90, D1 / 2 - 60], [D1 / 2 + 60, D1 - 90]].forEach(([v0, v1]) => { if (v1 - v0 >= 100) H.base.push(hole(u0, v0, w, v1 - v0, 40)); });
+  }
+  // rear support beam: ovals between the bed beam slots and the feet
+  g.trestles.forEach(c => c.holes = HOLES.between(c.y1 - c.y0, g.tbD, 140, 60,
+    [...g.joists.map(y => [y - c.y0, 45]), ...c.legs.map(y => [y - c.y0, 170])]));
+  P('Drawer box', 'Base, with an opening under each drawer', 1, g.Zc, D1, M.label, t, M.rho, H.base);
+  P('Drawer box', 'End panels, open frame', 2, D1, g.Hc, M.label, t, M.rho, H.end);
+  P('Drawer box', 'Dividers, open frame', p.nDraw - 1, p.slideLen + 25, g.Hc - t, M.label, t, M.rho, H.divider);
+  P('Drawer box', 'Back panel, solid so storage can’t spill into the drawers', 1, g.Zc - 2 * t, g.Hc, M.label, t, M.rho);
   P('Drawer box', 'Top rail, front', 1, g.Zc - 2 * t, 80, M.label, t, M.rho);
   const dg = `Drawers (${g.nd})`;
-  P(dg, 'Sides', 2 * g.nd, p.slideLen, g.sideH, `${M.sp} 12 mm`, 12, M.rho);
+  P(dg, H.side.length ? 'Sides, with lightening holes above the slide' : 'Sides', 2 * g.nd, p.slideLen, g.sideH, `${M.sp} 12 mm`, 12, M.rho, H.side);
   P(dg, 'Fronts, full height', g.nd, g.bw - 24, g.hb, `${M.sp} 12 mm`, 12, M.rho);
-  P(dg, 'Backs', g.nd, g.bw - 24, g.sideH, `${M.sp} 12 mm`, 12, M.rho);
+  P(dg, H.back.length ? 'Backs, with a hand hole' : 'Backs', g.nd, g.bw - 24, g.sideH, `${M.sp} 12 mm`, 12, M.rho, H.back);
   P(dg, 'Bottom', g.nd, g.bw - 12, p.slideLen - 12, `${M.sp} 9 mm`, 9, M.rho);
   P(dg, 'Drawer fronts', g.nd, g.fw, g.fh, M.label, t, M.rho);
   if (g.store) {
-    const sD = g.yCabEnd - g.yBackEnd - 2;
-    P('Storage box', 'Base', 1, g.Zc, sD, M.label, t, M.rho);
-    P('Storage box', 'End panels, with hand holes', 2, sD, g.Hc, M.label, t, M.rho, 0.9);
-    P('Storage box', 'Wall-side panel, with hand holes', 1, g.Zc - 2 * t, g.Hc, M.label, t, M.rho, 0.9);
+    P('Storage box', 'Base, slotted', 1, g.Zc, sD, M.label, t, M.rho, H.storeBase);
+    P('Storage box', 'End panels, open frame with a 150 mm lip', 2, sD, g.Hc, M.label, t, M.rho, H.storeEnd);
+    P('Storage box', 'Wall-side panel, open frame with a 150 mm lip', 1, g.Zc - 2 * t, g.Hc, M.label, t, M.rho, H.storeWall);
   }
   if (g.trestles.length) {
     const byLen = {};
-    g.trestles.forEach(c => { const L = Math.round(c.y1 - c.y0); byLen[L] = (byLen[L] || 0) + 1; });
-    Object.entries(byLen).forEach(([L, q]) => P('Rear support', 'Beam, slotted for the bed beams', q, +L, g.tbD, B18.label, 18, B18.rho));
+    g.trestles.forEach(c => { const L = Math.round(c.y1 - c.y0); (byLen[L] = byLen[L] || []).push(c); });
+    Object.entries(byLen).forEach(([L, cs]) => P('Rear support', 'Beam, slotted for the bed beams, with lightening holes', cs.length, +L, g.tbD, B18.label, 18, B18.rho, cs[0].holes));
     const legs = g.trestles.reduce((s, c) => s + c.legs.length, 0);
-    P('Rear support', 'Feet, with pin holes every 25 mm', legs, g.footH, 200, B18.label, 18, B18.rho);
+    P('Rear support', 'Feet, with pin holes every 25 mm at the top', legs, g.footH, 200, B18.label, 18, B18.rho, H.foot);
     P('Rear support', 'Shoes, two layers glued', 2 * legs, 240, 80, B18.label, 18, B18.rho);
     P('Rear support', 'Guide cleats that hold each foot to the beam', 2 * legs, g.tbD, 60, B18.label, 18, B18.rho);
   }
-  P('Bed beams', 'Beams, notched at both ends, with two spare notches at the back', g.joists.length, g.jLen, g.jD, B18.label, 18, B18.rho);
+  P('Bed beams', 'Beams, notched at both ends, two spare notches at the back, lightening holes', g.joists.length, g.jLen, g.jD, B18.label, 18, B18.rho, H.beam);
   const dm = `${M.sp} ${p.deckT} mm`, [f0, f1] = g.panels[0];
-  P('Deck', 'Front panels, slotted, over the boxes', 2, f1 - f0 - 3, g.halfW, dm, p.deckT, M.rho, 0.75);
-  if (g.kd > 1) P('Deck', 'Rear panels, slotted, folding onto the front ones', 2 * (g.kd - 1), g.panels[1][1] - g.panels[1][0] - 3, g.halfW, dm, p.deckT, M.rho, 0.75);
+  P('Deck', 'Front panels, slotted, over the boxes', 2, f1 - f0 - 3, g.halfW, dm, p.deckT, M.rho, H.deckFront);
+  if (g.kd > 1) P('Deck', 'Rear panels, slotted, folding onto the front ones', 2 * (g.kd - 1), g.panels[1][1] - g.panels[1][0] - 3, g.halfW, dm, p.deckT, M.rho, H.deckRear);
   parts.forEach((q, i) => q.id = i < 26 ? String.fromCharCode(65 + i) : String.fromCharCode(64 + Math.floor(i / 26)) + String.fromCharCode(65 + i % 26));
   g.parts = parts;
   let plyKg = 0; const areaBy = {}, kgBy = {};
@@ -773,11 +845,13 @@ function scoped(id, px){
 #${id} .ts{font-size:${w(9.5)}px}
 #${id} .tl{font-size:${w(13)}px;letter-spacing:${w(1)}px}
 #${id} .wall{stroke-width:${w(2)}}
-#${id} .thin,#${id} .dim,#${id} .arch,#${id} .seat,#${id} .ply,#${id} .plylt,#${id} .face,#${id} .drawer,#${id} .alu,#${id} .mat,#${id} .matS,#${id} .lift,#${id} .cabz,#${id} .water{stroke-width:${w(1)}}
+#${id} .thin,#${id} .dim,#${id} .arch,#${id} .seat,#${id} .ply,#${id} .plylt,#${id} .face,#${id} .drawer,#${id} .alu,#${id} .mat,#${id} .matS,#${id} .lift,#${id} .cabz,#${id} .water,#${id} .hole{stroke-width:${w(1)}}
 #${id} .rail{stroke-width:${w(2)};stroke-dasharray:${w(6)} ${w(3)}}
 #${id} .ghost,#${id} .bedo{stroke-width:${w(1)};stroke-dasharray:${w(4)} ${w(3)}}
 #${id} .hinge{stroke-width:${w(1.5)};stroke-dasharray:${w(2)} ${w(2)}}
 #${id} .board{stroke-width:${w(1.5)}}
+#${id} .cutout{stroke-dasharray:${w(3)} ${w(2)}}
+#${id} .halo{stroke-width:${w(4)}}
 #${id} .cut{stroke-width:${w(1.5)}}
 #${id} .door{stroke-width:${w(3.5)};stroke-dasharray:${w(8)} ${w(4)}}
 #${id} .dooro{stroke-width:${w(1.2)};stroke-dasharray:${w(5)} ${w(3)}}
@@ -896,7 +970,7 @@ function viewSide(g, p, cw){
   s += Tx(p.L - p.liftDepth / 2, Math.min(p.liftH, p.roofH) / 2, 'LIFT', 'tl tk', 'middle', -90);
   // bed beams and rear support, behind the seat as seen from the door
   const du = g.deckUnder;
-  if (g.joists.length) s += R(g.jx0, g.jx1, du - g.jD, du, 'plylt');
+  if (g.joists.length) s += R(g.jx0, g.jx1, du - g.jD, du, 'plylt') + g.H.beam.map(h => R(g.jx0 + h.u, g.jx0 + h.u + h.w, du - g.jD + h.v, du - g.jD + h.v + h.h, 'hole', `rx="${n(h.r)}"`)).join('');
   g.trestles.forEach(c => {
     s += R(c.x - 9, c.x + 9, du - g.tbD, du, 'ply');
     if (c.legs.length) s += R(c.x - 27, c.x - 9, 65, du - 20, 'ply') + R(c.x - 200, c.x + 40, 25, 65, 'ply');
@@ -959,19 +1033,21 @@ function viewSec(g, p, cw){
   // bed: two deck halves
   g.halves.forEach(([a, b]) => s += R(a, b, g.deckUnder, g.deckTop, 'ply'));
   s += R((p.W - p.matW) / 2, (p.W + p.matW) / 2, g.deckTop, g.matTop, 'matS', `rx="${n(Math.min(30, p.matT / 3))}"`);
-  // drawer box
+  // drawer box, with its front end panel and open frame seen behind the drawers
   const bt = p.baseClear + g.t;
+  const holes = (hs, y0, z0) => hs.map(h => R(y0 + h.u, y0 + h.u + h.w, z0 + h.v, z0 + h.v + h.h, 'hole', `rx="${n(h.r)}"`)).join('');
   [g.yCarc + 10, (g.yCarc + g.yBackEnd) / 2 - 20, g.yBackEnd - 50].forEach(y => s += R(y, y + 40, 0, p.baseClear, 'ply'));
   s += R(g.yCarc, g.yBackEnd, p.baseClear, bt, 'ply');
+  s += R(g.yCarc, g.yBackEnd, bt, g.deckUnder, 'plylt') + holes(g.H.end, g.yCarc, bt);
   s += R(g.yCarc, g.yCarc + 80, g.deckUnder - g.t, g.deckUnder, 'ply');
   s += R(g.yBack, g.yBackEnd, bt, g.deckUnder, 'ply');
-  // storage box, bolted to its back
+  // storage box, bolted to its back, its end panel an open frame with a lip
   if (g.store) {
     const y0 = g.yBackEnd + 2;
     [y0 + 10, g.yCabEnd - 50].forEach(y => s += R(y, y + 40, 0, p.baseClear, 'ply'));
     s += R(y0, g.yCabEnd, p.baseClear, bt, 'ply');
-    s += R(y0, g.yCabEnd - g.t, bt, g.deckUnder, 'plylt') + R(g.yCabEnd - g.t, g.yCabEnd, bt, g.deckUnder, 'ply');
-    if (g.rearComp > 160) s += Tx((y0 + g.yCabEnd) / 2, (p.baseClear + g.deckUnder) / 2, 'STORAGE', 'ts tk');
+    s += R(y0, g.yCabEnd - g.t, bt, g.deckUnder, 'plylt') + holes(g.H.storeEnd, y0, bt) + R(g.yCabEnd - g.t, g.yCabEnd, bt, g.deckUnder, 'ply');
+    if (g.rearComp > 160) s += Tx((y0 + g.yCabEnd) / 2, bt + 75, 'STORAGE', 'ts tk');
   }
   // drawers: low sides, full-height front
   const fRow = (g.deckUnder - p.baseClear) / p.rows;
@@ -1012,7 +1088,7 @@ function packBoards(items, BL, BW, k, longSplit, shortFit){
         const w = (rot ? it.W : it.L) + k, h = (rot ? it.L : it.W) + k;
         if (w > f.w || h > f.h) continue;
         const left = shortFit ? Math.min(f.w - w, f.h - h) : f.w * f.h - w * h;
-        if (!best || left < best.left) best = {fi, w, h, left};
+        if (!best || left < best.left) best = {fi, w, h, left, rot};
       }
     });
     return best;
@@ -1022,7 +1098,7 @@ function packBoards(items, BL, BW, k, longSplit, shortFit){
     const m = fit(b, it);
     if (!m) continue;
     const f = b.free.splice(m.fi, 1)[0];
-    b.parts.push(Object.assign({x:f.x, y:f.y, w:m.w - k, h:m.h - k}, it));
+    b.parts.push(Object.assign({x:f.x, y:f.y, w:m.w - k, h:m.h - k, rot:m.rot}, it));
     const rw = f.w - m.w, rh = f.h - m.h;
     // each cut: its line, rip (along the board) or crosscut, where it falls in the piece being cut, and that piece's size
     const cut = (x0, y0, x1, y1, rip, at, pl, pw) => b.cuts.push({x0, y0, x1, y1, rip, at, pl, pw});
@@ -1057,7 +1133,7 @@ function nest(parts, p){
     const items = [], tooBig = [];
     qs.forEach(q => {
       const L = Math.max(q.a, q.b), W = Math.min(q.a, q.b);
-      for (let i = 0; i < q.qty; i++) (L <= BL && W <= BW ? items : tooBig).push({id:q.id, name:q.name, L, W, strip:L >= 4 * W});
+      for (let i = 0; i < q.qty; i++) (L <= BL && W <= BW ? items : tooBig).push({id:q.id, name:q.name, L, W, strip:L >= 4 * W, holes:q.holes, uLong:q.a >= q.b});
     });
     // try the usual orders, then shuffled ones from a fixed seed so the same measurements give the same plan
     let best = null, seed = 7;
@@ -1086,14 +1162,18 @@ function viewBoard(b, id, BL, BW, cw){
   s += R(0, BL, 0, BW, 'lift', `fill="url(#${id}-h)"`);
   b.parts.forEach(q => {
     s += R(q.x, q.x + q.w, q.y, q.y + q.h, 'ply');
+    // cut-outs: u runs along the part's long side unless it was its short one; turned parts swap again
+    const ux = q.uLong !== !!q.rot;
+    (q.holes || []).forEach(h => s += ux ? R(q.x + h.u, q.x + h.u + h.w, q.y + h.v, q.y + h.v + h.h, 'hole cutout', `rx="${n(h.r)}"`)
+      : R(q.x + h.v, q.x + h.v + h.h, q.y + h.u, q.y + h.u + h.w, 'hole cutout', `rx="${n(h.r)}"`));
     const pw = q.w / px, ph = q.h / px, cx = q.x + q.w / 2, cy = q.y + q.h / 2;
     const tall = ph > pw * 1.3, rot = tall ? -90 : 0, along = tall ? ph : pw, thick = tall ? pw : ph;
     const dims = `${fmt(Math.max(q.w, q.h))} × ${fmt(Math.min(q.w, q.h))}`;
     if (along >= 78 && thick >= 42) {
       const d = 7 * px;
-      s += Tx(tall ? cx - d : cx, tall ? cy : cy - d, q.id, 'tk tb', 'middle', rot) + Tx(tall ? cx + d : cx, tall ? cy : cy + d, dims, 'ts', 'middle', rot);
-    } else if (along >= 70 && thick >= 13) s += Tx(cx, cy, `${q.id} ${dims}`, 'ts tk', 'middle', rot);
-    else if (Math.min(pw, ph) >= 11) s += Tx(cx, cy, q.id, 'ts tk tb');
+      s += Tx(tall ? cx - d : cx, tall ? cy : cy - d, q.id, 'tk tb halo', 'middle', rot) + Tx(tall ? cx + d : cx, tall ? cy : cy + d, dims, 'ts halo', 'middle', rot);
+    } else if (along >= 70 && thick >= 13) s += Tx(cx, cy, `${q.id} ${dims}`, 'ts tk halo', 'middle', rot);
+    else if (Math.min(pw, ph) >= 11) s += Tx(cx, cy, q.id, 'ts tk tb halo');
   });
   s += R(0, BL, 0, BW, 'board');
   if (ui.cuts !== false) {
@@ -1163,7 +1243,6 @@ function build3d(g, p){
     seat: mk('--seat'), mat: mk('--mat', {roughness:1}), accent: mk('--accent'),
     water: mk('--water', {transparent:true, opacity:0.55, roughness:0.3}),
     ghost: mk('--muted', {transparent:true, opacity:0.18}),
-    slot: mk('--ink', {transparent:true, opacity:0.45}),
     tyre: mk('#262c30', {roughness:0.9}),  // fixed: tyres stay dark in both themes
     wall: mk('--muted', {transparent:true, opacity:0.07, side:T.DoubleSide, depthWrite:false}),
   };
@@ -1213,33 +1292,61 @@ function build3d(g, p){
   B(lx + 110, L - 40, 140, W - 140, 20, lh * 0.92, M.alu);
   B(p.seatStart, p.seatStart + p.seatLen, 3, p.seatDepth, 0, p.seatH, M.seat);  // 3 mm off the wall so it doesn't flicker against the arch
 
-  // open-frame panel across the van (end panels and dividers): rails top and bottom, stiles at the ends
-  const frame = (x0, x1, y0, y1, z0, z1, m) => {
-    if (y1 - y0 < 300 || z1 - z0 < 320) return B(x0, x1, y0, y1, z0, z1, m);
-    B(x0, x1, y0, y1, z1 - 80, z1, m); B(x0, x1, y0, y1, z0, z0 + 120, m);
-    B(x0, x1, y0, y0 + 80, z0 + 120, z1 - 80, m); B(x0, x1, y1 - 80, y1, z0 + 120, z1 - 80, m);
-    for (let j = 1; j < p.rows; j++) { const zr = bt + j * g.rowH; B(x0, x1, y0 + 80, y1 - 80, zr, zr + 100, m); }
+  // plywood plate with cut-outs: axes names the van axes its two sizes run along (u then v), as the holes use them
+  const AX = {x:new T.Vector3(1, 0, 0), y:new T.Vector3(0, 0, 1), z:new T.Vector3(0, 1, 0)};
+  const rr = (P, {u, v, w, h, r}) => {
+    P.moveTo(u + r, v);
+    if (w > 2 * r) P.lineTo(u + w - r, v);
+    P.quadraticCurveTo(u + w, v, u + w, v + r);
+    if (h > 2 * r) P.lineTo(u + w, v + h - r);
+    P.quadraticCurveTo(u + w, v + h, u + w - r, v + h);
+    if (w > 2 * r) P.lineTo(u + r, v + h);
+    P.quadraticCurveTo(u, v + h, u, v + h - r);
+    if (h > 2 * r) P.lineTo(u, v + r);
+    P.quadraticCurveTo(u, v, u + r, v);
+    return P;
   };
+  const plate = (axes, x0, x1, y0, y1, z0, z1, holes, m) => {
+    if (!holes || !holes.length) return B(x0, x1, y0, y1, z0, z1, m);
+    const lo = {x:x0, y:y0, z:z0}, hi = {x:x1, y:y1, z:z1};
+    const ua = axes[0], va = axes[1], na = 'xyz'.replace(ua, '').replace(va, '');
+    const Lu = hi[ua] - lo[ua], Lv = hi[va] - lo[va], Ln = hi[na] - lo[na];
+    if (!(Lu > 0 && Lv > 0 && Ln > 0)) return;
+    const sh = new T.Shape();
+    sh.moveTo(0, 0); sh.lineTo(Lu, 0); sh.lineTo(Lu, Lv); sh.lineTo(0, Lv); sh.lineTo(0, 0);
+    holes.forEach(h => sh.holes.push(rr(new T.Path(), h)));
+    const geo = new T.ExtrudeGeometry(sh, {depth:Ln, bevelEnabled:false, curveSegments:4});
+    // local x, y, extrusion → the van axes, keeping the basis right-handed so faces point outwards
+    const eu = AX[ua], ev = AX[va], en = new T.Vector3().crossVectors(eu, ev);
+    const o = new T.Vector3(lo.x, lo.z, lo.y);
+    if (en.dot(AX[na]) < 0) o.addScaledVector(AX[na], Ln);
+    geo.applyMatrix4(new T.Matrix4().makeBasis(eu, ev, en).setPosition(o));
+    geo.scale(0.001, 0.001, 0.001);
+    grp.add(new T.Mesh(geo, m));
+    grp.add(new T.LineSegments(new T.EdgesGeometry(geo, 30), edge));
+  };
+  const Hh = g.H;
+  const showDeck = ui.layers !== 'frame', showMat = !ui.layers || ui.layers === 'all';
   // drawer box
   const zs = g.zoneStart, ze = g.zoneEnd;
   [g.yCarc + 10, (g.yCarc + g.yBackEnd) / 2 - 20, g.yBackEnd - 50].forEach(y => B(zs, ze, y, y + 40, 0, p.baseClear, M.ply));
-  B(zs, ze, g.yCarc, g.yBackEnd, p.baseClear, bt, M.ply);
-  frame(zs, zs + t, g.yCarc, g.yBackEnd, bt, du, M.ply);
-  frame(ze - t, ze, g.yCarc, g.yBackEnd, bt, du, M.ply);
-  for (let i = 1; i < p.nDraw; i++) { const x = zs + i * (g.bay + t); frame(x, x + t, g.yCarc, g.yBack, bt, du - t, M.ply); }
+  plate('xy', zs, ze, g.yCarc, g.yBackEnd, p.baseClear, bt, Hh.base, M.ply);
+  plate('yz', zs, zs + t, g.yCarc, g.yBackEnd, bt, du, Hh.end, M.ply);
+  plate('yz', ze - t, ze, g.yCarc, g.yBackEnd, bt, du, Hh.end, M.ply);
+  for (let i = 1; i < p.nDraw; i++) { const x = zs + i * (g.bay + t); plate('yz', x, x + t, g.yCarc, g.yBack, bt, du - t, Hh.divider, M.ply); }
   B(zs + t, ze - t, g.yBack, g.yBackEnd, bt, du, M.ply);
   B(zs + t, ze - t, g.yCarc, g.yCarc + 80, du - t, du, M.ply);
   // storage box, open towards the drawer box's back panel
   if (g.store) {
     const y0 = g.yBackEnd + 2;
     [y0 + 10, g.yCabEnd - 50].forEach(y => B(zs, ze, y, y + 40, 0, p.baseClear, M.ply));
-    B(zs, ze, y0, g.yCabEnd, p.baseClear, bt, M.ply);
-    B(zs, zs + t, y0, g.yCabEnd, bt, du, M.ply);
-    B(ze - t, ze, y0, g.yCabEnd, bt, du, M.ply);
-    B(zs + t, ze - t, g.yCabEnd - t, g.yCabEnd, bt, du, M.ply);
+    plate('xy', zs, ze, y0, g.yCabEnd, p.baseClear, bt, Hh.storeBase, M.ply);
+    plate('yz', zs, zs + t, y0, g.yCabEnd, bt, du, Hh.storeEnd, M.ply);
+    plate('yz', ze - t, ze, y0, g.yCabEnd, bt, du, Hh.storeEnd, M.ply);
+    plate('xz', zs + t, ze - t, g.yCabEnd - t, g.yCabEnd, bt, du, Hh.storeWall, M.ply);
   }
 
-  // drawers: low sides and a full-height front, the top row pulled out when asked
+  // drawers: low sides with lightening holes, a hand hole in the back, a full-height front; the top row pulled out when asked
   const open = ui.open && !ui.drive;
   const fRow = (du - p.baseClear) / p.rows;
   for (let j = 0; j < p.rows; j++) for (let i = 0; i < p.nDraw; i++) {
@@ -1248,10 +1355,10 @@ function build3d(g, p){
     const y0 = g.yCarc + dy, y1 = y0 + p.slideLen;
     const z0 = bt + j * g.rowH + 8, z1 = z0 + g.hb, zsd = z0 + g.sideH;
     B(x0, x1, y0, y1, z0, z0 + 9, M.plylt);
-    B(x0, x0 + 12, y0, y1, z0, zsd, M.plylt);
-    B(x1 - 12, x1, y0, y1, z0, zsd, M.plylt);
+    plate('yz', x0, x0 + 12, y0, y1, z0, zsd, Hh.side, M.plylt);
+    plate('yz', x1 - 12, x1, y0, y1, z0, zsd, Hh.side, M.plylt);
     B(x0 + 12, x1 - 12, y0, y0 + 12, z0, z1, M.plylt);
-    B(x0 + 12, x1 - 12, y1 - 12, y1, z0, zsd, M.plylt);
+    plate('xz', x0 + 12, x1 - 12, y1 - 12, y1, z0, zsd, Hh.back, M.plylt);
     const fx0 = zs + i * g.Zc / p.nDraw + 1.5, f0 = p.baseClear + j * fRow + 1.5, mid = fx0 + g.fw / 2;
     B(fx0, fx0 + g.fw, g.yFace + dy, g.yCarc + dy, f0, f0 + g.fh, M.ply);
     B(mid - 60, mid + 60, g.yFace + dy - 14, g.yFace + dy, f0 + g.fh - 50, f0 + g.fh - 36, M.steel, false);
@@ -1264,38 +1371,32 @@ function build3d(g, p){
 
   if (!ui.drive) {
     // bed beams in slots, rear support on pinned feet
-    g.joists.forEach(y => B(g.jx0, g.jx1, y - 9, y + 9, du - g.jD, du, M.ply));
+    g.joists.forEach(y => plate('xz', g.jx0, g.jx1, y - 9, y + 9, du - g.jD, du, Hh.beam, M.ply));
     g.trestles.forEach(c => {
-      B(c.x - 9, c.x + 9, c.y0, c.y1, du - g.tbD, du, M.ply);
-      c.legs.forEach(y => { B(c.x - 27, c.x - 9, y - 100, y + 100, 65, du - 20, M.ply); B(c.x - 200, c.x + 40, y - 40, y + 40, 25, 65, M.ply); });
+      plate('yz', c.x - 9, c.x + 9, c.y0, c.y1, du - g.tbD, du, c.holes, M.ply);
+      c.legs.forEach(y => { plate('zy', c.x - 27, c.x - 9, y - 100, y + 100, 65, du - 20, Hh.foot, M.ply); B(c.x - 200, c.x + 40, y - 40, y + 40, 25, 65, M.ply); });
     });
-    if (!ui.hideBed) {
+    if (showDeck) {
       // two deck halves, each a row of slotted panels joined by piano hinges
-      g.halves.forEach(([h0, h1]) => {
-        const cols = Math.max(1, Math.floor((h1 - h0 - 80) / 270)), cw = (h1 - h0) / cols;
-        for (let i = 0; i < g.kd; i++) {
-          const a = g.panels[i][0] + 1.5, b = g.panels[i][1] - 1.5;
-          B(a, b, h0, h1, du, g.deckTop, M.ply);
-          if (i) B(a - 3, a, h0 + 20, h1 - 20, g.deckTop, g.deckTop + 3, M.steel, false);
-          const rows = Math.max(1, Math.floor((b - a - 100) / 120) + 1), r0 = (a + b) / 2 - (rows - 1) * 60;
-          for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
-            const x = r0 + r * 120, y = h0 + (c + 0.5) * cw;
-            B(x - 15, x + 15, y - 100, y + 100, g.deckTop, g.deckTop + 1, M.slot, false);
-          }
-        }
-      });
-      B(p.bedStart + 10, p.bedStart + 10 + p.matL, (W - p.matW) / 2, (W + p.matW) / 2, g.deckTop, g.matTop, M.mat);
+      g.halves.forEach(([h0, h1]) => g.panels.forEach(([a, b], i) => {
+        plate('xy', a + 1.5, b - 1.5, h0, h1, du, g.deckTop, i ? Hh.deckRear : Hh.deckFront, M.ply);
+        if (i) B(a - 1.5, a + 1.5, h0 + 20, h1 - 20, g.deckTop, g.deckTop + 3, M.steel, false);
+      }));
+      if (showMat) B(p.bedStart + 10, p.bedStart + 10 + p.matL, (W - p.matW) / 2, (W + p.matW) / 2, g.deckTop, g.matTop, M.mat);
     }
-  } else if (!ui.hideBed) {
+  } else if (showDeck) {
     // folded for driving: rear panels on the front one, loose parts flat on top, mattress folded in three
     const [a, b] = g.panels[0];
     g.halves.forEach(([h0, h1]) => {
-      B(a + 1.5, b - 1.5, h0, h1, du, g.deckTop, M.ply);
-      for (let i = 1; i < g.kd; i++) { const len = g.panels[i][1] - g.panels[i][0]; B(b - 1.5 - len, b - 1.5, h0, h1, du + i * p.deckT, du + (i + 1) * p.deckT, M.ply); }
+      plate('xy', a + 1.5, b - 1.5, h0, h1, du, g.deckTop, Hh.deckFront, M.ply);
+      for (let i = 1; i < g.kd; i++) {
+        const len = g.panels[i][1] - g.panels[i][0] - 3;
+        plate('xy', b - 1.5 - len, b - 1.5, h0, h1, du + i * p.deckT, du + (i + 1) * p.deckT, Hh.deckRear, M.ply);
+      }
     });
     g.stow.forEach(q => B(q.x0, q.x1, q.y0, q.y1, q.z0, q.z1, M.ply));
     const mf = p.matL / 3, mx1 = b - 5;
-    for (let i = 0; i < 3; i++) B(mx1 - mf, mx1, (W - p.matW) / 2, (W + p.matW) / 2, g.stowTop + i * p.matT, g.stowTop + (i + 1) * p.matT, M.mat);
+    if (showMat) for (let i = 0; i < 3; i++) B(mx1 - mf, mx1, (W - p.matW) / 2, (W + p.matW) / 2, g.stowTop + i * p.matT, g.stowTop + (i + 1) * p.matT, M.mat);
   }
   S.add(grp);
   v3.group = grp; v3.mats = mats;
@@ -1381,7 +1482,7 @@ function render(){
     + (m.tooBig.length ? `<p class="warnline">Too big for one board: ${[...new Set(m.tooBig.map(q => `${q.id} ${q.name.toLowerCase()} (${fmt(q.L)} × ${fmt(q.W)})`))].join(', ')}. Use bigger boards or join two pieces.</p>` : '')
     + `<div class="sheets" style="grid-template-columns:repeat(${cols},minmax(0,1fr))">`
     + m.boards.map((b, bi) => `<figure class="sheetfig"><figcaption><b>Board ${bi + 1} of ${m.boards.length}</b> · ${b.parts.length} parts · ${b.cuts.length} cuts · ${Math.round(b.parts.reduce((s, q) => s + q.w * q.h, 0) / (m.BL * m.BW) * 100)}% used</figcaption><div class="svgbox">${viewBoard(b, `v-board-${mi}-${bi}`, m.BL, m.BW, Math.max(240, bw))}</div>`
-      + `<details><summary>Cut by cut</summary><ol class="cutsteps">${b.cuts.map(c => `<li>${c.rip ? 'Rip' : 'Crosscut'} the ${fmt(c.pl)} × ${fmt(c.pw)} piece ${fmt(c.at)} mm from its ${c.rip ? 'top edge' : 'left end'}${c.frees ? ` <b>→ ${c.frees}</b>` : ''}</li>`).join('')}</ol></details></figure>`).join('')
+      + `<details><summary>Cut by cut</summary><ol class="cutsteps">${b.cuts.map(c => `<li>${c.rip ? 'Rip' : 'Crosscut'} the ${fmt(c.pl)} × ${fmt(c.pw)} piece ${fmt(c.at)} mm from its ${c.rip ? 'top edge' : 'left end'}${c.frees ? ` <b>→ ${c.frees}</b>` : ''}</li>`).join('')}${(ids => ids.length ? `<li>Then the cut-outs in <b>${ids.join(', ')}</b>: drill a 10 mm hole inside each rounded corner and cut between them with a jigsaw</li>` : '')([...new Set(b.parts.filter(q => q.holes && q.holes.length).map(q => q.id))])}</ol></details></figure>`).join('')
     + `</div></div>`).join('');
 
   const hw = [
@@ -1418,7 +1519,9 @@ $('#form').addEventListener('change', e => {
 });
 $('#hints').addEventListener('change', e => { ui.hints = e.target.checked; $('#form').classList.toggle('nohints', !ui.hints); save(); });
 $('#open3d').checked = ui.open;
-$('#hidebed').checked = !!ui.hideBed;
+if (ui.hideBed && !ui.layers) ui.layers = 'frame';
+delete ui.hideBed;
+$('#layers').value = ui.layers || 'all';
 $('#drive3d').checked = !!ui.drive;
 $('#cuts').checked = ui.cuts !== false;
 $('#cuts').addEventListener('change', e => { ui.cuts = e.target.checked; save(); render(); });
@@ -1426,7 +1529,7 @@ $('#drive3d').addEventListener('change', e => { ui.drive = e.target.checked; sav
 const setOpen = v => { ui.open = v; $('#open').checked = v; $('#open3d').checked = v; save(); render(); };
 $('#open').addEventListener('change', e => setOpen(e.target.checked));
 $('#open3d').addEventListener('change', e => setOpen(e.target.checked));
-$('#hidebed').addEventListener('change', e => { ui.hideBed = e.target.checked; save(); render(); });
+$('#layers').addEventListener('change', e => { ui.layers = e.target.value; save(); render(); });
 $('#view3d').addEventListener('click', () => { if (v3.ok) { view3d(p); draw3d(); } });
 try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => render()); } catch (e) {}
 $('#reset').addEventListener('click', () => {

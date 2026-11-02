@@ -20,7 +20,8 @@ A removable plywood kit that locks into the floor rails already in the van. It b
 - **Water** in one or two 35 L containers with taps (47 × 42 × 24 cm). They stand in the rear drawer, strapped to its front, so pulling the drawer out brings the tap to you, and the containers lift out from above to refill.
 - A **storage box** along the left wall, joined to the back of the drawer box with wing nuts. It suits a leisure battery or bedding.
 - **Plywood bed beams** that drop into slots in the boxes and in a **rear support** standing in front of the lift. The beams run beside the fixed seat, not over it. The support's feet stand on the rails, and ring pins set their height to level the bed.
-- A **deck in two halves**. In each half, a front panel covers the boxes and shorter panels are hinged behind it. The panels have slots cut in them, which saves weight and lets the mattress breathe. The front panel of the wall-side half lifts like a lid to reach the storage box.
+- A **deck in two halves** that folds up and is the bed base, as on the BlitzBed. In each half, a front panel covers the boxes and shorter panels are hinged behind it. The panels are slotted, which saves weight and lets the mattress breathe. The front panel of the wall-side half lifts like a lid to reach the storage box.
+- **Cut-outs wherever the wood doesn't carry load.** The box end panels and dividers are open frames, and the storage box is open frame with a lip so things stay in. The beams, rear support, feet and drawer sides get oval lightening holes. Only the panel between the drawers and the storage box stays solid, so nothing spills into the drawers.
 - **It folds for driving.** The rear panels fold onto the front ones, the beams and support lie flat on top, and the mattress folds in three over them. The boxes stay closed and the floor behind them is free.
 - **No drilling and no tools.** The boxes and the support's feet are held in the existing rails by seat-rated quick-release fittings, the same type the seats already use. The wheelchair conversion stays as it was approved, and the kit comes out in pieces one person can carry when the van is needed for the wheelchair.
 
@@ -45,10 +46,10 @@ Seen from above, with the front on the right:
 
 The planner is a single web page. Type in the van's measurements and it redraws everything to scale:
 
-- a **3D view** you can turn and zoom, with the drawers in or out, the bed hidden to show the beams and boxes underneath, or the whole kit folded for driving
+- a **3D view** you can turn and zoom, with the drawers in or out, the kit folded for driving, and a choice of showing everything, the slotted deck without the mattress, or just the frame and boxes
 - a **plan**, a **side view** and a **cross-section** through the drawers
 - **checks** that flag problems: a mattress that doesn't fit, too little headroom, drawers that are too long, water containers that don't fit, the seat in the way, a support foot with no rail clear of the seat and wheel arches, missing anchor points
-- a **cut list** and a **cutting plan**: every part laid out on 2440 × 1220 boards (or whatever size you buy), with a numbered cut order and a written cut-by-cut list for each board
+- a **cut list** and a **cutting plan**: every part laid out on 2440 × 1220 boards (or whatever size you buy), with its cut-outs, a numbered cut order and a written cut-by-cut list for each board
 - a **hardware list**, a **weight estimate**, and the weight of each piece you have to lift
 
 The values it opens with are **examples**, taken from brochure figures and typical conversions. Replace them with real measurements. Every length is measured back from the front seats.
@@ -78,7 +79,7 @@ With the example values (high roof, seat about 48 cm high when closed, bed raise
 - When pulled out, the drawer top is about 1.08 m off the ground, a bit above a kitchen worktop (90 cm).
 - Folded for driving, the stack on the boxes reaches about 95 cm off the floor, mattress included.
 - The 18 mm parts, beams and support included, fit on **four 2440 × 1220 boards** of 18 mm poplar (about 82% used). The drawers need one 12 mm board and one 9 mm board. Birch beams are stiffer but need a fifth 18 mm board of their own.
-- The kit weighs about 99 kg in 18 mm poplar, mattress, slides and fittings included, or about 93 kg with 15 mm poplar boxes. The aluminium-frame version weighed about 118 kg. The heaviest piece is the drawer box with its drawers out, at about 22 kg; everything else is 13 kg or less.
+- The kit weighs about 95 kg in 18 mm poplar, mattress, slides and fittings included, or about 90 kg with 15 mm poplar boxes. The weight counts only the wood left after the cut-outs. The aluminium-frame version weighed about 118 kg. The heaviest piece is the drawer box with its drawers out, at about 23 kg; everything else is 12 kg or less.
 - Add about 73 kg of water when full. It sits low and between the axles, which is the right place for it, but the water drawer needs slides rated around 140 kg.
 
 ## Building it safely
