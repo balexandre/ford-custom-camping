@@ -177,6 +177,10 @@ button.small{padding:6px 10px;font-size:13px}
 .dw .ref{stroke:var(--accent);fill:none}
 .dw .gap{stroke:var(--paper);fill:none}
 .dw .hinge{stroke:var(--steel);fill:none}
+.dw .board{fill:none;stroke:var(--ply-edge)}
+.dw .cut{stroke:var(--accent);fill:none}
+.dw .cutn{fill:var(--accent)}
+.dw .tw{fill:var(--sheet)}
 
 section.block{display:grid;gap:14px;min-width:0}
 .block > p{max-width:72ch;color:var(--muted)}
@@ -187,6 +191,22 @@ th{font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.06em
 td.n,th.n{text-align:right;font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums}
 tr.grp td{font-family:var(--f-display);font-size:16px;font-weight:600;background:var(--paper);padding-top:9px}
 tr.tot td{font-weight:600;border-bottom:0}
+.pid{display:inline-block;min-width:2.2em;font:500 12px var(--f-mono);color:var(--accent)}
+.nesthead{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;justify-content:space-between}
+.nest{display:grid;gap:22px;min-width:0}
+.nestgrp{display:grid;gap:10px;min-width:0}
+.nestgrp h4{margin:0;font:600 17px/1.2 var(--f-display)}
+.nestgrp h4 span{font:400 13.5px var(--f-body);color:var(--muted);margin-left:8px}
+.nestgrp .warnline{font-size:14px;color:var(--bad)}
+.sheets{display:grid;gap:12px;min-width:0}
+.sheetfig{margin:0;background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:10px 12px 12px;display:grid;gap:6px;min-width:0}
+.sheetfig figcaption{font-size:13px;color:var(--muted)}
+.sheetfig figcaption b{color:var(--ink);font-weight:600}
+.sheetfig summary{cursor:pointer;font-size:13.5px;color:var(--accent);width:max-content}
+.cutsteps{margin:8px 0 0;padding-left:26px;font-size:13px;columns:2 240px;column-gap:28px}
+.cutsteps li{break-inside:avoid;margin-bottom:3px}
+.cutsteps li::marker{color:var(--accent);font-family:var(--f-mono)}
+.cutsteps b{color:var(--accent);font-family:var(--f-mono);font-weight:500}
 .hw{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px 24px;margin:0;padding:0;list-style:none}
 .hw li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;font-size:14px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--rule)}
 .hw .q{font-family:var(--f-mono);font-size:13px;color:var(--accent);min-width:3.5em}
@@ -293,8 +313,14 @@ tr.tot td{font-weight:600;border-bottom:0}
 
   <section class="block" aria-labelledby="cut-h">
     <h2 id="cut-h">Cut list</h2>
-    <p>Generated from the measurements above. Sizes are finished sizes in millimetres; sheet counts assume 2500 × 1250 boards and about 30% waste. Check every size against the real van before cutting.</p>
+    <p>Generated from the measurements above. Sizes are finished sizes in millimetres, and the letters match the cutting plan below. Check every size against the real van before cutting.</p>
     <div class="tablewrap"><table id="cut"></table></div>
+    <div class="nesthead">
+      <h3 id="nest-h">Cutting plan</h3>
+      <label class="tog"><input type="checkbox" id="cuts" checked> Show cut order</label>
+    </div>
+    <p>Every part laid out on the boards. Each cut runs straight across the piece you're holding, so a track saw or a circular saw with a straight edge can do all of it. Follow the numbers on each board, or open "Cut by cut", for an order that works. Distances run from the top edge or left end of each piece as drawn, so keep the blade on the waste side of the line. Long strips keep their length along the board, with the grain, and the hatched areas are offcuts.</p>
+    <div class="nest" id="nest" aria-labelledby="nest-h"></div>
     <h3>Hardware</h3>
     <ul class="hw" id="hw"></ul>
   </section>
@@ -421,6 +447,10 @@ const FIELDS = [
   ]},
   {g:'Material', items:[
     {id:'ply', type:'select', l:'Plywood', d:'poplar18', opts:[['poplar15','Poplar 15 mm, lightest'],['poplar18','Poplar 18 mm'],['birch18','Birch 18 mm, strongest']]},
+    {id:'beamPly', type:'select', l:'Bed beams and support', d:'poplar18', opts:[['poplar18','Poplar 18 mm'],['birch18','Birch 18 mm, stiffest']], h:'Poplar is strong enough here, and with poplar 18 mm boxes these parts come out of the same boards. Birch is stiffer and holds the pin holes better, but needs a board of its own.'},
+    {id:'boardL', l:'Board length', d:2440},
+    {id:'boardW', l:'Board width', d:1220, h:'Most boards are 2440 × 1220 (8 × 4 ft); some are 2500 × 1250. The cutting plan fits the parts onto this size.'},
+    {id:'kerf', l:'Saw cut', d:3, h:'Wood lost to each cut. About 3 mm for a circular or track saw.'},
   ]},
 ];
 const DEF = {};
@@ -676,7 +706,7 @@ function compute(p){
   const parts = [];
   // keep: share of the board left after cut-outs, for the weight
   const P = (grp, name, qty, a, b, mat, th, rho, keep = 1) => { if (qty > 0) parts.push({grp, name, qty, a:Math.round(a), b:Math.round(b), mat, th, rho, keep}); };
-  const B18 = MAT.birch18;
+  const B18 = g.B18 = MAT[p.beamPly] || MAT.birch18;   // bed beams and rear support
   const D1 = g.yBackEnd - g.yCarc;
   const frameKeep = (a, b) => 1 - Math.max(0, a - 160) * Math.max(0, b - 200 - (p.rows - 1) * 100) / (a * b);
   P('Drawer box', 'Base, with cut-outs between the battens', 1, g.Zc, D1, M.label, t, M.rho, 0.6);
@@ -709,6 +739,7 @@ function compute(p){
   const dm = `${M.sp} ${p.deckT} mm`, [f0, f1] = g.panels[0];
   P('Deck', 'Front panels, slotted, over the boxes', 2, f1 - f0 - 3, g.halfW, dm, p.deckT, M.rho, 0.75);
   if (g.kd > 1) P('Deck', 'Rear panels, slotted, folding onto the front ones', 2 * (g.kd - 1), g.panels[1][1] - g.panels[1][0] - 3, g.halfW, dm, p.deckT, M.rho, 0.75);
+  parts.forEach((q, i) => q.id = i < 26 ? String.fromCharCode(65 + i) : String.fromCharCode(64 + Math.floor(i / 26)) + String.fromCharCode(65 + i % 26));
   g.parts = parts;
   let plyKg = 0; const areaBy = {}, kgBy = {};
   parts.forEach(q => {
@@ -746,6 +777,8 @@ function scoped(id, px){
 #${id} .rail{stroke-width:${w(2)};stroke-dasharray:${w(6)} ${w(3)}}
 #${id} .ghost,#${id} .bedo{stroke-width:${w(1)};stroke-dasharray:${w(4)} ${w(3)}}
 #${id} .hinge{stroke-width:${w(1.5)};stroke-dasharray:${w(2)} ${w(2)}}
+#${id} .board{stroke-width:${w(1.5)}}
+#${id} .cut{stroke-width:${w(1.5)}}
 #${id} .door{stroke-width:${w(3.5)};stroke-dasharray:${w(8)} ${w(4)}}
 #${id} .dooro{stroke-width:${w(1.2)};stroke-dasharray:${w(5)} ${w(3)}}
 #${id} .anchor{stroke-width:${w(1.5)}}
@@ -965,6 +998,117 @@ function viewSec(g, p, cw){
   s += dimV(X(p.W / 2 + 60), Y(g.matTop), Y(rt), `${fmt(g.headroom)}`, headCls(g) + ' tb');
   s += Tx(dB + 120, rt - 16 * px, 'door side →', 'ts', 'start');
   return svg(id, VW, VH, s, 'Cross-section through the drawer box and storage box with a drawer pulled out of the sliding door');
+}
+
+/* ---------- cutting plan: guillotine packing, so every cut runs straight across the piece being cut ---------- */
+function packBoards(items, BL, BW, k, longSplit, shortFit){
+  const boards = [];
+  const newBoard = () => { const b = {free:[{x:0, y:0, w:BL + k, h:BW + k}], parts:[], cuts:[]}; boards.push(b); return b; };
+  // best fit in one board: the free piece that leaves least area over (or the closest edge), either way round
+  const fit = (b, it) => {
+    let best = null;
+    b.free.forEach((f, fi) => {
+      for (const rot of it.strip ? [false] : [false, true]) {
+        const w = (rot ? it.W : it.L) + k, h = (rot ? it.L : it.W) + k;
+        if (w > f.w || h > f.h) continue;
+        const left = shortFit ? Math.min(f.w - w, f.h - h) : f.w * f.h - w * h;
+        if (!best || left < best.left) best = {fi, w, h, left};
+      }
+    });
+    return best;
+  };
+  for (const it of items) {
+    let b = boards.find(b => fit(b, it)) || newBoard();
+    const m = fit(b, it);
+    if (!m) continue;
+    const f = b.free.splice(m.fi, 1)[0];
+    b.parts.push(Object.assign({x:f.x, y:f.y, w:m.w - k, h:m.h - k}, it));
+    const rw = f.w - m.w, rh = f.h - m.h;
+    // each cut: its line, rip (along the board) or crosscut, where it falls in the piece being cut, and that piece's size
+    const cut = (x0, y0, x1, y1, rip, at, pl, pw) => b.cuts.push({x0, y0, x1, y1, rip, at, pl, pw});
+    const n0 = b.cuts.length;
+    const across = longSplit ? rw >= rh : rw < rh;   // first cut runs right across the piece, below the part
+    if (across) {
+      if (rh > 0) cut(f.x, f.y + m.h - k / 2, f.x + f.w - k, f.y + m.h - k / 2, true, m.h - k, f.w - k, f.h - k);
+      if (rw > 0) cut(f.x + m.w - k / 2, f.y, f.x + m.w - k / 2, f.y + m.h - k, false, m.w - k, f.w - k, m.h - k);
+      if (rh > k) b.free.push({x:f.x, y:f.y + m.h, w:f.w, h:rh});
+      if (rw > k) b.free.push({x:f.x + m.w, y:f.y, w:rw, h:m.h});
+    } else {
+      if (rw > 0) cut(f.x + m.w - k / 2, f.y, f.x + m.w - k / 2, f.y + f.h - k, false, m.w - k, f.w - k, f.h - k);
+      if (rh > 0) cut(f.x, f.y + m.h - k / 2, f.x + m.w - k, f.y + m.h - k / 2, true, m.h - k, m.w - k, f.h - k);
+      if (rw > k) b.free.push({x:f.x + m.w, y:f.y, w:rw, h:f.h});
+      if (rh > k) b.free.push({x:f.x, y:f.y + m.h, w:m.w, h:rh});
+    }
+    if (b.cuts.length > n0) b.cuts[b.cuts.length - 1].frees = it.id;
+  }
+  return boards;
+}
+function nest(parts, p){
+  const BL = Math.max(300, p.boardL, p.boardW), BW = Math.max(300, Math.min(p.boardL, p.boardW)), k = Math.max(0, +p.kerf || 0);
+  const byMat = {};
+  parts.forEach(q => (byMat[q.mat] = byMat[q.mat] || []).push(q));
+  const orders = [
+    (a, b) => b.L * b.W - a.L * a.W,
+    (a, b) => b.L - a.L || b.W - a.W,
+    (a, b) => b.W - a.W || b.L - a.L,
+    (a, b) => b.L + b.W - a.L - a.W,
+  ];
+  return Object.entries(byMat).map(([mat, qs]) => {
+    const items = [], tooBig = [];
+    qs.forEach(q => {
+      const L = Math.max(q.a, q.b), W = Math.min(q.a, q.b);
+      for (let i = 0; i < q.qty; i++) (L <= BL && W <= BW ? items : tooBig).push({id:q.id, name:q.name, L, W, strip:L >= 4 * W});
+    });
+    // try the usual orders, then shuffled ones from a fixed seed so the same measurements give the same plan
+    let best = null, seed = 7;
+    const rnd = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+    const tryPack = (list, ls, sf) => {
+      const bs = packBoards(list, BL, BW, k, ls, sf);
+      const last = bs.length ? bs[bs.length - 1].parts.reduce((s, q) => s + q.w * q.h, 0) : 0;
+      if (!best || bs.length < best.boards.length || (bs.length === best.boards.length && last < best.last)) best = {boards:bs, last};
+    };
+    for (const o of orders) for (const ls of [false, true]) for (const sf of [false, true]) tryPack(items.slice().sort(o), ls, sf);
+    for (let r = 0; r < 300; r++) {
+      const list = items.slice().sort(orders[r % orders.length]);
+      for (let i = list.length - 1; i > 0; i--) if (rnd() < 0.35) { const j = Math.floor(rnd() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; }
+      tryPack(list, rnd() < 0.5, rnd() < 0.5);
+    }
+    const area = items.reduce((s, q) => s + q.L * q.W, 0);
+    return {mat, boards:best.boards, tooBig, used:best.boards.length ? area / (best.boards.length * BL * BW) : 0, BL, BW};
+  });
+}
+function viewBoard(b, id, BL, BW, cw){
+  const VW = BL / (1 - 4 / cw), px = VW / cw, m = 2 * px;
+  const VH = BW + 2 * m;
+  const X = x => m + x, Y = y => m + y;
+  const {R, Ln, Tx} = tools(X, Y, px);
+  let s = scoped(id, px) + hatch(id, px);
+  s += R(0, BL, 0, BW, 'lift', `fill="url(#${id}-h)"`);
+  b.parts.forEach(q => {
+    s += R(q.x, q.x + q.w, q.y, q.y + q.h, 'ply');
+    const pw = q.w / px, ph = q.h / px, cx = q.x + q.w / 2, cy = q.y + q.h / 2;
+    const tall = ph > pw * 1.3, rot = tall ? -90 : 0, along = tall ? ph : pw, thick = tall ? pw : ph;
+    const dims = `${fmt(Math.max(q.w, q.h))} × ${fmt(Math.min(q.w, q.h))}`;
+    if (along >= 78 && thick >= 42) {
+      const d = 7 * px;
+      s += Tx(tall ? cx - d : cx, tall ? cy : cy - d, q.id, 'tk tb', 'middle', rot) + Tx(tall ? cx + d : cx, tall ? cy : cy + d, dims, 'ts', 'middle', rot);
+    } else if (along >= 70 && thick >= 13) s += Tx(cx, cy, `${q.id} ${dims}`, 'ts tk', 'middle', rot);
+    else if (Math.min(pw, ph) >= 11) s += Tx(cx, cy, q.id, 'ts tk tb');
+  });
+  s += R(0, BL, 0, BW, 'board');
+  if (ui.cuts !== false) {
+    // numbers a third of the way along each cut, off the part labels; skip any that would overlap
+    const marks = [];
+    b.cuts.forEach(c => s += Ln(c.x0, c.y0, c.x1, c.y1, 'cut'));
+    b.cuts.forEach((c, i) => {
+      if (Math.hypot(c.x1 - c.x0, c.y1 - c.y0) / px < 30) return;
+      const cx = c.x0 + (c.x1 - c.x0) / 3, cy = c.y0 + (c.y1 - c.y0) / 3;
+      if (marks.some(([x, y]) => Math.hypot(x - cx, y - cy) / px < 17)) return;
+      marks.push([cx, cy]);
+      s += `<circle cx="${n(X(cx))}" cy="${n(Y(cy))}" r="${n(7 * px)}" class="cutn"/>` + Tx(cx, cy, i + 1, 'ts tw tb');
+    });
+  }
+  return svg(id, VW, VH, s, `Board layout with ${b.parts.length} parts and ${b.cuts.length} cuts`);
 }
 
 /* ---------- 3D view: three.js x = along the van, y = up, z = across from the door side ---------- */
@@ -1206,7 +1350,7 @@ function render(){
     ['Drawers', `${g.nd} × ${fmt(g.bw)} w × ${fmt(p.slideLen)} l, sides ${fmt(g.sideH)} h`],
     ['Drawer fronts', `${fmt(g.fw)} × ${fmt(g.fh)}`],
     ['Storage box', g.store ? `${fmt(g.Zc)} × ${fmt(g.rearComp)} × ${fmt(g.deckUnder)}` : 'none'],
-    ['Bed beams', g.joists.length ? `${g.joists.length} × ${fmt(g.jLen)} × ${g.jD} birch` : 'none, the deck rests on the boxes'],
+    ['Bed beams', g.joists.length ? `${g.joists.length} × ${fmt(g.jLen)} × ${g.jD}, ${g.B18.sp.toLowerCase()}` : 'none, the deck rests on the boxes'],
     ['Rear support', g.trestles.length ? `${g.trestles.length} beam${g.trestles.length > 1 ? 's' : ''}, ${legs} pinned feet` : 'none'],
     ['Folded for driving', `${fmt(g.driveTop)} high on the boxes`],
     ['Heaviest piece', `${g.heaviest.name}, ≈ ${fmt(g.heaviest.kg)} kg`],
@@ -1221,13 +1365,24 @@ function render(){
   let grp = '';
   g.parts.forEach(q => {
     if (q.grp !== grp) { grp = q.grp; h += `<tr class="grp"><td colspan="5">${grp}</td></tr>`; }
-    h += `<tr><td>${q.name}</td><td class="n">${q.qty}</td><td class="n">${fmt(Math.max(q.a, q.b))}</td><td class="n">${fmt(Math.min(q.a, q.b))}</td><td>${q.mat}</td></tr>`;
+    h += `<tr><td><span class="pid">${q.id}</span>${q.name}</td><td class="n">${q.qty}</td><td class="n">${fmt(Math.max(q.a, q.b))}</td><td class="n">${fmt(Math.min(q.a, q.b))}</td><td>${q.mat}</td></tr>`;
   });
-  h += `<tr class="grp"><td colspan="5">Totals</td></tr>`;
-  Object.entries(g.areaBy).forEach(([m, a]) => h += `<tr><td>${m}</td><td class="n">${Math.max(1, Math.ceil(a * 1.3 / 3.125))}</td><td class="n" colspan="2">${a.toFixed(2)} m²</td><td>sheets of 2500 × 1250</td></tr>`);
+  const plan = nest(g.parts, p);
+  h += `<tr class="grp"><td colspan="5">Boards</td></tr>`;
+  plan.forEach(m => h += `<tr><td>${m.mat}</td><td class="n">${m.boards.length}</td><td class="n" colspan="2">${g.areaBy[m.mat].toFixed(2)} m² of parts</td><td>boards of ${fmt(m.BL)} × ${fmt(m.BW)}, ${Math.round(m.used * 100)}% used</td></tr>`);
   h += `<tr class="tot"><td>Estimated weight</td><td class="n"></td><td class="n" colspan="2">≈ ${fmt(g.kgTotal)} kg</td><td>wood ${fmt(g.kg.ply)} · slides ${fmt(g.kg.slides)} · fittings and hinges ${fmt(g.kg.hw)} · mattress ${fmt(g.kg.mat)}</td></tr>`;
   h += `<tr><td colspan="5" class="note">Pieces to lift: ${g.pieces.map(q => `${q.name.toLowerCase()} ${fmt(q.kg)} kg`).join(' · ')}</td></tr>`;
   $('#cut').innerHTML = h + '</tbody>';
+
+  // cutting plan, one diagram per board
+  const nw = Math.max(260, $('#nest').clientWidth || 900), cols = nw >= 1000 ? 2 : 1;
+  const bw = (nw - (cols - 1) * 12) / cols - 26;
+  $('#nest').innerHTML = plan.map((m, mi) => `<div class="nestgrp"><h4>${m.mat}<span>${m.boards.length} board${m.boards.length === 1 ? '' : 's'} of ${fmt(m.BL)} × ${fmt(m.BW)}, ${Math.round(m.used * 100)}% used</span></h4>`
+    + (m.tooBig.length ? `<p class="warnline">Too big for one board: ${[...new Set(m.tooBig.map(q => `${q.id} ${q.name.toLowerCase()} (${fmt(q.L)} × ${fmt(q.W)})`))].join(', ')}. Use bigger boards or join two pieces.</p>` : '')
+    + `<div class="sheets" style="grid-template-columns:repeat(${cols},minmax(0,1fr))">`
+    + m.boards.map((b, bi) => `<figure class="sheetfig"><figcaption><b>Board ${bi + 1} of ${m.boards.length}</b> · ${b.parts.length} parts · ${b.cuts.length} cuts · ${Math.round(b.parts.reduce((s, q) => s + q.w * q.h, 0) / (m.BL * m.BW) * 100)}% used</figcaption><div class="svgbox">${viewBoard(b, `v-board-${mi}-${bi}`, m.BL, m.BW, Math.max(240, bw))}</div>`
+      + `<details><summary>Cut by cut</summary><ol class="cutsteps">${b.cuts.map(c => `<li>${c.rip ? 'Rip' : 'Crosscut'} the ${fmt(c.pl)} × ${fmt(c.pw)} piece ${fmt(c.at)} mm from its ${c.rip ? 'top edge' : 'left end'}${c.frees ? ` <b>→ ${c.frees}</b>` : ''}</li>`).join('')}</ol></details></figure>`).join('')
+    + `</div></div>`).join('');
 
   const hw = [
     [`${g.nd} pairs`, `Drawer slides, ${fmt(p.slideLen)} mm, full extension, lock-in and lock-out, rated ${g.slideRating} kg or more at this length`],
@@ -1265,6 +1420,8 @@ $('#hints').addEventListener('change', e => { ui.hints = e.target.checked; $('#f
 $('#open3d').checked = ui.open;
 $('#hidebed').checked = !!ui.hideBed;
 $('#drive3d').checked = !!ui.drive;
+$('#cuts').checked = ui.cuts !== false;
+$('#cuts').addEventListener('change', e => { ui.cuts = e.target.checked; save(); render(); });
 $('#drive3d').addEventListener('change', e => { ui.drive = e.target.checked; save(); render(); });
 const setOpen = v => { ui.open = v; $('#open').checked = v; $('#open3d').checked = v; save(); render(); };
 $('#open').addEventListener('change', e => setOpen(e.target.checked));

@@ -48,7 +48,7 @@ The planner is a single web page. Type in the van's measurements and it redraws 
 - a **3D view** you can turn and zoom, with the drawers in or out, the bed hidden to show the beams and boxes underneath, or the whole kit folded for driving
 - a **plan**, a **side view** and a **cross-section** through the drawers
 - **checks** that flag problems: a mattress that doesn't fit, too little headroom, drawers that are too long, water containers that don't fit, the seat in the way, a support foot with no rail clear of the seat and wheel arches, missing anchor points
-- a **cut list** for the plywood, with a sheet count
+- a **cut list** and a **cutting plan**: every part laid out on 2440 × 1220 boards (or whatever size you buy), with a numbered cut order and a written cut-by-cut list for each board
 - a **hardware list**, a **weight estimate**, and the weight of each piece you have to lift
 
 The values it opens with are **examples**, taken from brochure figures and typical conversions. Replace them with real measurements. Every length is measured back from the front seats.
@@ -74,10 +74,11 @@ With the example values (high roof, seat about 48 cm high when closed, bed raise
 - **Headroom is fine thanks to the high roof.** There's about 1 m from the mattress to the ceiling, so you can sit up in bed. Most adults need 85–90 cm.
 - Two 1 m drawers fit under the bed, with low 25 cm sides and fronts about 48 cm high. The rear one holds **both 35 L water containers** standing up; the front one is the kitchen.
 - A storage box about 57 cm deep sits behind the drawers.
-- Four 12 cm deep birch beams carry the bed from the boxes to one rear support, so nothing has to stand next to the seat.
+- Four 12 cm deep plywood beams carry the bed from the boxes to one rear support, so nothing has to stand next to the seat.
 - When pulled out, the drawer top is about 1.08 m off the ground, a bit above a kitchen worktop (90 cm).
 - Folded for driving, the stack on the boxes reaches about 95 cm off the floor, mattress included.
-- The kit weighs about 103 kg in 18 mm poplar, mattress, slides and fittings included, or about 98 kg in 15 mm poplar. The aluminium-frame version weighed about 118 kg. The heaviest piece is the drawer box with its drawers out, at about 22 kg; everything else is 13 kg or less.
+- The 18 mm parts, beams and support included, fit on **four 2440 × 1220 boards** of 18 mm poplar (about 82% used). The drawers need one 12 mm board and one 9 mm board. Birch beams are stiffer but need a fifth 18 mm board of their own.
+- The kit weighs about 99 kg in 18 mm poplar, mattress, slides and fittings included, or about 93 kg with 15 mm poplar boxes. The aluminium-frame version weighed about 118 kg. The heaviest piece is the drawer box with its drawers out, at about 22 kg; everything else is 13 kg or less.
 - Add about 73 kg of water when full. It sits low and between the axles, which is the right place for it, but the water drawer needs slides rated around 140 kg.
 
 ## Building it safely
